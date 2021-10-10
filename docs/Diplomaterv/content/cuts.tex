@@ -1,0 +1,235 @@
+% !TeX spellcheck = hu_HU
+% !TeX encoding = UTF-8
+
+%----------------------------------------------------------------------------
+\chapter{Vágások}
+%----------------------------------------------------------------------------
+
+
+Ebben a fejezetben különböző nehézségű vágási problémákat tekintek, illetve megvizsgálom, hogy miként fogalmazhatók meg valamilyen optimalizációs programként.
+
+\subsection{Jelölések}
+Ha máshogy nem jelzem, a továbbiak $G=(V,E)$ jelölje a gráfot, ahol szokásos módon $n=|V|$ és $m=|E|$. Jelölje továbbá $[k]$ az 1-től $k$-ig tartó egészek halmazát. $inf$ pedig egy elegendően nagy számkonstanst jelöljön.
+
+%----------------------------------------------------------------------------
+\section{Minimális vágás}
+%----------------------------------------------------------------------------
+
+\subsection{Kombinatorikus megoldással}
+
+Kombinatorikusan is "könnyen" megoldható feladat. Ha ismerünk két csúcsot $s, t$, melyeknek külön részbe kell kerülniük, akkor a feladat megoldható a jól ismert max-folyamot előállító algoritmussal. (Amennyiben nem ismerünk két ilyen csúcsot, akkor a gráf egy $s$ csúcsát fixálhatjuk, és az algoritmust lefuttatjuk minden $st$ párra.)
+
+\subsection{Lineáris programozással}
+%A probléma természetes módon felírható IP formában.
+%Sőt, belátható, hogy amennyiben a súlyok egészek, a relaxált feladatból is kinyerhető egy optimális megoldás. (Azt hiszem, még utána kell nézni.)
+
+\subsection{QUBO}
+
+A feladat felírható QUBO formában is. Az ötlet, hogy minden csúcsot jelöljünk egy $x_i$ bináris változóval, amelynek értéke mutatja, hogy az $i.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk minimalizálni.
+
+Ekkor persze a minimum az a triviális megoldás lenne, hogy minden csúcsot egy csoportba osztunk be. Vagyis azt kell elérni még, hogy egyik csoport sem üres.
+Ezt tudjuk kezelni, csakúgy mint a kombinatorikus esetben, azaz tegyük fel, hogy tudjuk egy $s$, $t$ csúcspárról, hogy nekik külön kell kerülniük. (Ha ezt nem tudjuk, akkor $s$ fixálásával $(n-1)$-szer kell futtassuk a megoldó algoritmust.)
+Ha $s$ és $t$ külön csoportba kell kerüljön, akkor feltehetjük, hogy $x_s=0$ és $x_t=1$. Vezessünk be büntető tagokat a célfüggvénybe, hogy ezt mindenképpen kikényszerítsük. (Megjegyzés: lényegtelen, hogy a változókra direkt módon, vagy a változók négyzetére szabjuk a büntetést.)
+
+\begin{align}
+	\min_{x} \left\{ \sum_ {\{i,j\}\in E(G)}{w_{ij}\cdot(x_i-x_j)^2} + x_s\cdot inf + (1-x_t)\cdot inf \right\}
+\end{align}
+
+
+%----------------------------------------------------------------------------
+\section{Maximális vágás}
+%----------------------------------------------------------------------------
+
+\subsection{Kombinatorikus megoldás}
+
+Kombinatorikusan is "nehéz" feladat. Jellemzően valamilyen kombinatorikus közelítő algoritmust alkalmaznak rá. 2-approximációt viszonylag gyors és egyszerű algoritmus segítségével is lehet már adni, de tetszőlegesen közeli approximációt már nem.
+
+\subsection{Lineáris programozással}
+
+IP felírható rá, ezúttal minden $\{i,j\} \in E(G)$ élre (pontosabban később látjuk majd, hogy minden csúcspárra) vezetünk be egy $d_{ij}$ bináris változót, melynek értéke akkor 1, ha az él benne van a vágásban. Ekkor a célfüggvényben világos, hogy azon élekre adjuk össze a súlyokat, melyek benne vannak a vágásban, és ezt szeretnénk maximalizálni.
+
+\begin{align}
+	\max_{d} \left\{ \sum_{\{i,j\}\in E(G)}{w_{ij}\cdot d_{ij}}\right\}
+\end{align}
+
+További korlátokat is fel kell vegyünk, különben a maximum akkor áll elő, ha a változók azonosan 1 értéket vesznek fel.
+Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből pontosan nulla vagy kettő él lehet benne a vágásban. Ez nyilvánvalóan egy szükséges feltétele egy helyes vágásnak, viszont az elégségesség is következik, ha a gráf teljes. Ehhez viszont nem létező éleket kell hozzávegyünk a gráfhoz (és így a változók száma is $n \cdot n$ -re növekszik.) Az élsúlyokat pedig vagy úgy kell megválasszuk, hogy ne zavarják a maximális vágást, (például ha az élsúlyok nemnegatívak, akkor az azonos 0 választás megfelelő) de általában még az sem probléma, ha nem rendelünk az új élekhez súlyokat, hiszen elég ha a célfüggvényben csak az eredeti élekre összegezzük a súlyokat.
+
+\begin{align}
+ d_{ij} \leq d_{ik}+d_{kj}  \\
+ d_{ij}+d_{ik}+d_{kj} \leq 2  
+\end{align}
+
+Érdemes pár szót ejteni a relaxált feladatról, ugyanis azzal 2-közelítő algoritmust kapunk. Ez persze egyáltalán nem biztos, hogy gyakorlatban is hasznos, hiszen egyszerű mohó algoritmussal is elérhető 2-approximáció \cite{10.5555/1283383.1283390, POLJAK1994191}.
+
+
+\subsection{QUBO}
+
+QUBO-ban természetesen felírható. Az élekre (csúcspárokra) felírt változók helyett, ismét csak a csúcsokra definiáljuk a bináris változóinkat. Csakúgy, mint a minimális vágás QUBO-ként felírt alakjában, annyi különbséggel, hogy ezúttal maximalizálni szeretnénk. Sőt, a helyzetünk ezúttal sokkal könnyebb, hiszen nincsenek elfajuló esetek, melyek esetén beállna a maximum, illetve további korlátok felvételére, így büntető tagok hozzávételére sincs szükség.
+
+\begin{align}
+	\max_{x} \left\{ \sum_{\{i,j\} \in E(G)}{w_{ij} \cdot (x_i-x_j)^2}\right\}
+\end{align}
+
+Ugyanez a négyzetes részt kibontva a következőképpen alakul:
+
+\begin{align}
+	\max_{x} \left\{ \sum_{\{i,j\} \in E(G)}{w_{ij} \cdot (x_i^2+x_j^2-2 x_i x_j)}\right\}
+\end{align}
+
+
+%----------------------------------------------------------------------------
+\section{Maximális K-vágás}
+%----------------------------------------------------------------------------
+
+
+\subsection{Lineáris programozással}
+
+Az ötlet itt is hasonlít a sima maximális vágáséhoz. Az élekre ezúttal is bevezetünk egy bináris változót, mely azt jelzi, hogy az él két különböző csoport között fut. Vagyis $y_{uv}=1$, akkor és cs
+ak akkor, ha $u, v$ él csoportok között fut. Ezen felül viszont azonosítanunk kell minden egyes csúcsot, hogy ő melyik csoportba fog kerülni. Ezeket szintén binárisan kódoljuk $n \cdot K$ db változóban, ahol $x_{vi}$ akkor és csak akkor 1, ha a $v.$ csúcs az $i.$ halmazba kerül. 
+
+A célfüggvény egyértelműen elkészíthető, egyszerűen azon élekre kell összeszámolnunk a súlyokat, melyek két különböző csoport között futnak.
+
+A korlátoknál az elsőként felveendő legfontosabb dolog, hogy bármely $v$, pontosan egy csoportba tartozhasson, ezt egy szummával adhatjuk meg.
+
+A további korlátok pedig azt biztosítják, hogy a változók konzisztensek, azaz  $y_{uv}$ valóban csak akkor legyen $1$, amikor  $u$ és $v$ különböző csoportba kerülnek.
+
+\begin{align} \max _{y} &\sum _{\{{u,v}\} \in E} w_{uv}y_{uv} \end{align}
+\begin{align} &\sum _{i \in [K]} x_{vi} = 1,&v \in V, \end{align}
+\begin{align}&x_{ui} - x_{vi} \le y_{uv},&\{{u,v}\} \in E, \ i\in [K],\end{align}
+\begin{align}&x_{vi} - x_{ui} \le y_{uv},&\{{u,v}\} \in E, \ i\in [K], \end{align}
+\begin{align}&x_{ui} + x_{vi} + y_{uv} \le 2,&\{{u,v}\} \in E, \ i\in [K],\end{align}
+\begin{align}&x_{vi} \in \{{0,1}\} ,&v \in V, \ i\in [K],\end{align}
+\begin{align}&y_{uv} \in \{{0,1}\} ,&\{{u,v}\} \in E,\end{align}
+
+Egy ehhez nagyon hasonló (több korlátot igénylő) probléma felírása megtalálható az internetet, részletes indoklással \cite{Hojny2021}. 
+
+\subsection{QUBO-val}
+
+\subsubsection{One-hot encoding}
+
+A maximális vágásnál a QUBO forma segítségével jelentősen le tudtuk csökkenteni a változók számát, hiszen nem kellett az élekre bevezetnünk változókat. Ezt a trükköt próbáljuk meg itt is.
+Vagyis a lineáris programhoz hasonlóan, a $x_{vi}$ változókat megtartjuk, az a tény pedig, hogy egy $uv$ él kettő különböző csoport között fut, pedig egyértelműen következik, ha $x_{vi}*x_{uj}=1$ valamely $i \neq j$ és $u \neq v$-re.
+
+Ez alapján meg is konstruálhatjuk és fel is írhatjuk a maximalizálandó célunkat. (Egyelőre megengedjük további korlátok létezését is.) Világos, hogy minden, csoportok között futó élet pontosan egyszer fogunk megszámolni, mivel minden csúcs pontosan egy csoportnak lehet az eleme.
+
+\begin{align} \max_{x} &\sum _{\substack{\{{u,v}\} \in E \\ \{{i,j}\} \in [K]}} w_{uv}(x_{vi} \cdot x_{uj}) \end{align}
+\begin{align} &\sum _{i \in [K]} x_{vi} = 1, &v \in V \end {align}
+
+A korlátokat viszont szeretnénk kiiktatni a felírásból, így azokat valamilyen büntető tagként kell hozzáadni a célfüggvényhez. Amit így büntetni szeretnénk, azok azok az esetek, amikor egy csúcs két különböző csoportba is bekerül. Egy $v$ csúcs pontosan akkor kerül bele két különböző csoportba, ha $x_{vi}\cdot x_{vj}$ szorzat értéke $1$ valamilyen $i \neq j$-re. Így a célfüggvényünk kiegészül még a következő taggal:
+
+\begin{align} \sum _{\substack{u \in V \\ i,j \in [K] \\  i \neq j}} (-inf) \cdot x_{vi} \cdot x_{vj} \end{align}
+
+Szerencsére elég a kisebb-egyenlő esetet büntetni, hiszen impliciten teljesül, hogy az egy csúcshoz tartozó bináris változók közül legalább az egyik $1$ értéket vesz fel. Hiszen ha lenne egy változóbehelyettesítés, melynél egy csúcs nem kerülne bele egyetlen csoportba sem, a belőle kimenő élek nem kerülnének bele a vágásba. Így bármelyik csoportba is kerüljön bele, így a célfüggvény értéke biztosan nőni fog.
+
+Így a végső QUBO forma:
+
+\begin{align} 
+	\max_{x} & \left\{\sum _{\substack{\{u,v\} \in E \\ i,j \in [K]}} w_{uv}(x_{vi}  x_{uj}) + \sum _{\substack{u \in V \\ i,j \in [K] \\  i \neq j}} (-inf) \cdot x_{vi} \cdot x_{vj}\right\} 
+\end{align}
+
+
+
+\subsubsection{Binary encoding}
+
+Más megoldást is megpróbáltunk keresni, amellyel a QUBO-t tovább egyszerűsíthetjük, a változók számát csökkenthetjük. Erre egy lehetséges irányzat, hogy azt, hogy a csúcs mely csoportba tartozik nem úgy kódoljuk, hogy minden csoport-csúcs párhoz egy bináris változót rendelünk, és a csúcs csoportját "one-hot" módon kódoljuk, hanem kifinomultabb módon, a csoport sorszámát binárisan kódoljuk le. Ennek előnye lehet, hogy így nem szükséges $n \cdot K$ darab bit, hanem elég volna $n \cdot \log K$, ráadásul a problémás korlátot, amely azért szükséges, hogy biztosítsuk, hogy egy csúcs pontosan egy csoportba kerüljön, ezt impliciten teljesítené. Motivációt ad egy friss kutatás, ahol ezt a módszer sikeresen alkalmazták kvantumgép esetében, azonban ezt natív módon tették meg. A mi kérdésünk, hogy vajon ezt meg lehet-e csinálni eggyel magasabb absztrakciós szinten, csupán QUBO felírást használva \cite{fuchs2020efficient}.
+
+A továbbiakban az egyszerű szemléltetés kedvéért feltesszük, hogy a készítendő csoportok száma valamilyen kettő hatvány, vagyis $K=2^m$, így $log(K)$ egész. Ezzel mindig feltehető, hogy minden bit szabadon lehet 0 és 1, mert nem lesznek "tiltott" csoportok. Később kitérek arra az esetre, ha ez nem így volna.
+
+A megoldáshoz elsősorban minden csúcshoz definiálunk kell az ő csoportját tartalmazó változókat. Az $u.$ csúcs csoportját jelölje $x_u$, illetve ennek bináris felírását tekintve, az $x_u$ $i.$ bitjét jelölje $x_{ui}$.
+
+Amire szükségünk van, az egy bináris függvény, amely megmondja, hogy két csúcs különböző csoportba esik-e. Ha igen, akkor természetesen a köztük lévő él súlya hozzá kell adódjon a maximalizálandó célfüggvényhez. Ellenkező esetben viszont figyelmen kívül kell hagyni ezt a súlyt.
+
+\begin{align}
+D_{uv} = diff(x_u,x_v)
+\end{align}
+
+\begin{align} 
+	\max_{x} & \left\{\sum _{\{u,v\} \in E } D_{uv} \cdot w_{uv} \right\} 
+\end{align}
+
+
+Annak jelölésére, hogy az $u$ és $v$ csúcsok különböző csoportokba kerülnek-e, használjuk a $D_{uv}$ bináris változót. Két egyedi bit összehasonlítására pedig $d_{uvi}$ változót definiáljuk, melynek jelentése, hogy az $x_u$ és $x_v$ számok $i.$ bitjük különböző. $d_{uvi}$ így a KIZÁRÓ VAGY műveletének eredménye $x_{ui}$ és  $x_{vi}$-re alkalmazva.
+
+Mivel két szám pontosan akkor különböző, ha legalább egy helyiértékükön eltérnek, ezért a $D_{uv}$-t érdemes úgy előállítani, hogy minden bit különbözőségét VAGY kapcsolatba állítjuk.
+
+\begin{align}
+	D_{uv} = \bigvee_{i \in [ \log K ] }{d_{uvi}}
+\end{align}
+
+
+\begin{align}
+	d_{uvi} = x_{ui} \oplus x_{vi}
+\end{align}
+
+Kiszámolható, hogy ezzel összesen hány változóra van szükségünk. A csoportok elkódolásához kell $n \cdot \log K$ db. Minden csúcspár összehasonlításához kell $\log K + 1$ darab, ez összesen $\binom{n}{2} \cdot ( \log K + 1 )$.
+
+(Spórolhatnák, ha csak azokat a csúcspárokat néznénk, amelyek között fut él?)
+
+\subsubsection{Logikai kapuk megvalósítása}
+
+EGYENLŐ:
+
+\begin{align}
+	(x-y)^2=-2xy+x+y
+\end{align}
+
+NEMEGYENLŐ:
+
+\begin{align}
+	1-(x-y)^2=1+2xy-x-y
+\end{align}
+
+
+ÉS:
+
+\begin{align}
+	xy-2(x+y)z+3z
+\end{align}
+
+
+VAGY:
+
+\begin{align}
+	(x+y)+z-2(x+y)z+xy = \\
+	x+y+z-2xz+-2yz+xy
+\end{align}
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{ c c c c }
+		\toprule
+		x & y & z & büntetés \\
+		\midrule
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 1 & 1 \\
+		0 & 1 & 0 & 1 \\
+		0 & 1 & 1 & 0 \\
+		1 & 0 & 0 & 1 \\
+		1 & 0 & 1 & 0 \\
+		1 & 1 & 0 & 3 \\
+		1 & 1 & 1 & 0 \\
+		
+		\bottomrule
+	\end{tabular}
+	\caption{VAGY}
+	\label{tab:VAGY}
+\end{table}
+
+NEMVAGY:
+
+\begin{align}
+	1-(x+y)-z+2(x+y)z+xy = \\
+	 -x-y-z+2xz+2yz+xy
+\end{align}
+
+XOR:
+
+\begin{align}
+	4(xy-2(x+y)z+3z)+(...) = \\
+	-2xy-2(x+y)t+(x+y)+t+4zt+4xy-8z(x+y)+12z = \\
+	(x+y)+t+12z+2xy-2(x+y)t+4zt-8z(x+y)
+\end{align}
+
+

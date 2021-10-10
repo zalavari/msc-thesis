@@ -1,0 +1,32 @@
+\select@language {magyar} \contentsline {chapter}{Kivonat}{i}{chapter*.2}%
+\select@language {english} \contentsline {chapter}{Abstract}{ii}{chapter*.3}%
+\select@language {magyar} \contentsline {chapter}{\numberline {1}Bevezetés}{1}{chapter.1}%
+\select@language {magyar} \contentsline {chapter}{\numberline {2}Optimalizációs technikák}{2}{chapter.2}%
+\select@language {magyar} \contentsline {section}{\numberline {2.1}Lineáris programozás}{2}{section.2.1}%
+\select@language {magyar} \contentsline {section}{\numberline {2.2}Kvadratikus programozás}{2}{section.2.2}%
+\select@language {magyar} \contentsline {section}{\numberline {2.3}Korlátolt illetve korlátmentes programozás}{4}{section.2.3}%
+\select@language {magyar} \contentsline {chapter}{\numberline {3}Vágások}{6}{chapter.3}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.0.1}Jelölések}{6}{subsection.3.0.1}%
+\select@language {magyar} \contentsline {section}{\numberline {3.1}Minimális vágás}{6}{section.3.1}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.1.1}Kombinatorikus megoldással}{6}{subsection.3.1.1}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.1.2}Lineáris programozással}{6}{subsection.3.1.2}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.1.3}QUBO}{6}{subsection.3.1.3}%
+\select@language {magyar} \contentsline {section}{\numberline {3.2}Maximális vágás}{7}{section.3.2}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.1}Kombinatorikus megoldás}{7}{subsection.3.2.1}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.2}Lineáris programozással}{7}{subsection.3.2.2}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.3}QUBO}{7}{subsection.3.2.3}%
+\select@language {magyar} \contentsline {section}{\numberline {3.3}Maximális K-vágás}{8}{section.3.3}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.3.1}Lineáris programozással}{8}{subsection.3.3.1}%
+\select@language {magyar} \contentsline {subsection}{\numberline {3.3.2}QUBO-val}{9}{subsection.3.3.2}%
+\select@language {magyar} \contentsline {subsubsection}{\numberline {3.3.2.1}One-hot encoding}{9}{subsubsection.3.3.2.1}%
+\select@language {magyar} \contentsline {subsubsection}{\numberline {3.3.2.2}Binary encoding}{10}{subsubsection.3.3.2.2}%
+\select@language {magyar} \contentsline {subsubsection}{\numberline {3.3.2.3}Logikai kapuk megvalósítása}{11}{subsubsection.3.3.2.3}%
+\select@language {magyar} \contentsline {chapter}{\numberline {4}Gyakorlati eredmények}{13}{chapter.4}%
+\select@language {magyar} \contentsline {section}{\numberline {4.1}QUBO-k megoldása}{13}{section.4.1}%
+\select@language {magyar} \contentsline {section}{\numberline {4.2}Gráf generálása}{14}{section.4.2}%
+\select@language {magyar} \contentsline {section}{\numberline {4.3}Minimális vágás}{14}{section.4.3}%
+\select@language {magyar} \contentsline {subsection}{\numberline {4.3.1}Klasszikus}{14}{subsection.4.3.1}%
+\select@language {magyar} \contentsline {subsection}{\numberline {4.3.2}QUBO}{15}{subsection.4.3.2}%
+\select@language {magyar} \contentsline {section}{\numberline {4.4}Maximális vágás}{15}{section.4.4}%
+\select@language {magyar} \contentsline {section}{\numberline {4.5}Maximális K-vágás}{15}{section.4.5}%
+\select@language {magyar} \contentsline {chapter}{Irodalomjegyz\'ek}{18}{table.caption.5}%

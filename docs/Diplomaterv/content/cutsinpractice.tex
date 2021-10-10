@@ -1,0 +1,162 @@
+% !TeX spellcheck = hu_HU
+% !TeX encoding = UTF-8
+
+%----------------------------------------------------------------------------
+\chapter{Gyakorlati eredmények}
+%----------------------------------------------------------------------------
+Ebben a fejezetben alkalmazom a korábbiakban megismert elméleti módszereket, megvizsgálom milyen futásidőt érnek el különböző megoldóprogramok használatával, illetve összevetem az így kapott eredményeket a kombinatorikus algoritmusok hatékonyságával.
+
+Az implementációkat a Google által üzemeltetett Colaboratory segítségével készítettem Python nyelven. A választás többek között azért esett erre a rendszerre, mert a D-Wave Systems által, Python nyelven publikált könyvtárat szerettem volna felhasználni, és ez így nem csak minimális konfigurációval megoldható, de az eredmények könnyen rekonstruálhatók a konténer technológia miatt, és nem befolyásolja őket a lokális gépemen eszközölt idő közbeni módosítások.
+
+A teszteléshez generált gráfok előállításához és reprezentálásához a NetworkX könyvtárat használtam fel \cite{NetworkX}.
+
+\section{QUBO-k megoldása}
+
+A D-Wave Ocean nevű programcsomagja több lehetőséget kínál QUBO formák megoldására. Van egzakt megoldója, ez azonban nagyon kicsi bemenetekre is használhatatlan a gyakorlatban, hiszen működési elvét tekintve, minden lehetőséget kipróbál. Ezen kívül van lehetőség kvantum számítás szimulálására, vagy egy valós kvantumgépnek is elküldhetjük a problémát a megfelelő API használatával \cite{DWaveOcean}.
+
+Lényeges észrevétel, hogy a D-Wave megoldója csak minimalizálni tud, ezért a korábban bemutatott QUBO-kat is ilyen alakra kell hozni. Ez szerencsére könnyen megy, mert ha eredetileg maximalizálni szerettünk volna, egyszerűen minden tagot $-1$-gyel kell megszoroznunk, és az így kapott függvényt minimalizálni.
+
+A helyes konfiguráció után van lehetőségünk a korábban bemutatott QUBO modellek tényleges próbájára.
+
+A szimulált kvantumgépen való megoldás mellett két fő iránya van a D-Wave számítógépek használatának. Ebből az egyik a direkt módon beágyazása a problémának kvantumszámítógépre, a mások pedig egy hibrid megoldót használ, mely klasszikus optimalizációkat is végez.
+
+A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú időnként túl sokat kellett kvantum erőforrásra várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
+
+
+
+A QUBO-kat, és általánosságban a kvadratikus programozási feladatokat persze más, klasszikus megoldóprogramokkal is használhatunk. Egy kereskedelmi forgalomban lévő, egyik piacvezető lineáris programozás megoldó szoftver a Gurobi, melynek bár nem fő iránya a kvadratikus programok megoldása, ezeket is támogatja \cite{gurobi}. 
+
+Sajnos az eredmények viszont itt sem voltak bíztatóak, viszonylag kevés változószámnál is reménytelennek tűnt például egy QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. 
+
+
+
+\section{Gráf generálása}
+Az alkalmazások ellenőrzésére speciális gráfokat generáltam, melyen így előre meg tudtam határozni a várható minimális, illetve maximális vágásokat.
+A generált gráf rendelkezik négy különböző paraméterrel, ezek $N$, $K$, $p$ és $q$.
+A gráfot ezek után jelöljük $G(N,K,p,q)$-val.
+Az ötlet csupán annyi, hogy előre meghatározunk $K$ darab diszjunkt halmazt, hogy mindegyik csoportban pontosan $N$ darab csúcs legyen. Ezután minden élről egyénileg döntünk, hogy őt hozzávesszük-e a gráfhoz. Amennyiben egy él egy csúcs $N$-esen belül fut, ez a valószínűség legyen $q$, amennyiben két különböző csúcs $N$-es között fut, akkor legyen ez a valószínűség $p$. Világos, hogy ha $p$ kicsi, $q$ pedig nagy, akkor $K$ klasztert kapunk, ahol az élek sűrűek, a csoportok között viszont ritkák. Ellenkező esetben $K$ darab egymástól majdnem független ponthalmazt kapunk, ahol a halmazok között viszont sok él hozzá van adva a gráfhoz. Az előbbivel egy minimális vágás várhatóan a $K$ klasztert szétválasztó vágás lesz, utóbbi esetben pedig ugyanígy a maximális vágásra lesz egy jó becslésünk.
+
+Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcs teljes gráfot kapunk. $G(N,K,1,0)$ esetén pedig ennek a komplementerét kapjuk. 
+
+Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre. Jellemzően 0 és 1 közötti egyenletes eloszlással.
+
+Érdemes észben tartani, hogy $n=|V|=N \cdot K$, tehát a kicsi $n$ és nagy $N$ nem keverendő.
+
+%----------------------------------------------------------------------------
+\section{Minimális vágás}
+%----------------------------------------------------------------------------
+
+
+\subsection{Klasszikus}
+
+A probléma klasszikusan is megoldható, például folyamalgoritmus segítségével. Referenciaként a NetworkX-ben ilyen módon implementált \verb+minimum_cut+ függvényt fogom használni.
+
+\begin{lstlisting}[language=Python,caption=Min-cut flow,label=code:minCutFlow]
+	cut_value, partition = nx.minimum_cut(G, s, t, 'weight')
+\end{lstlisting}
+
+
+\subsection{QUBO}
+Egy $n$ változós bináris kvadratikus kifejezést megadhatunk tömören mátrixos formában is, ahol a $Q$ mátrix $q_{ij}$ eleme az $x_i x_j$ együtthatója. Mivel ezt a formát képes kezelni a legtöbb a megoldó, (vagy ha nem, akkor könnyen átalakítható olyan formára) ezért a továbbiakban ilyen formában adjuk meg.
+
+A minimális vágás problémája könnyen felírható QUBO-ként, ahogyan azt korábban is láttuk. Az egyetlen "trükk", hogy két speciális pontot ki kell jelölni, amelyeknek külön csoportba kell kerülniük. Mivel azonban ez a klasszikus folyamalgoritmusnál is így működik, ezért ilyen tekintetben ez a megoldás sem alsóbbrendűbb.
+
+\begin{lstlisting}[language=python,caption=Min-cut QUBO,label=code:minCutQUBO]
+	for u, v in G.edges:
+		w=G.edges[u,v]['weight']
+		Q[(u,u)]+= 1*w
+		Q[(v,v)]+= 1*w
+		Q[(u,v)]+= -2*w
+	
+	Q[(s,s)]+=inf
+	Q[(t,t)]-=inf
+\end{lstlisting}
+
+%----------------------------------------------------------------------------
+\section{Maximális vágás}
+%----------------------------------------------------------------------------
+
+A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetjük. Éppen úgy működik, mint a minimális vágás, de nem szükségesek a büntető tagok. Érdemes megfigyelni, hogy a változók száma pontosan $|V|=n$.
+
+\begin{lstlisting}[language=python,caption=Max-cut QUBO,label=code:maxCutQUBO]
+	for u, v in G.edges:
+		w=G.edges[u,v]['weight']
+		Q[(u,u)]+= -1*w
+		Q[(v,v)]+= -1*w
+		Q[(u,v)]+= 2*w
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------
+\section{Maximális K-vágás}
+%----------------------------------------------------------------------------
+
+A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis az $x_{ui}$ változót kettő indexszel indexeltük, azonban most egy index kell, ezt pedig úgy oldjuk meg, hogy a változókat sorba rakva blokkonként következnek az egy csúcshoz tartozó változók, azaz $x_{ui}$ az $(uK+i)$. változó lesz. Ennek megfelelően használjuk tehát az indexeket.
+
+Ebből továbbá következik az a fontos megfigyelés is, hogy a változók száma itt $n \cdot K = N \cdot K^2$.
+
+\begin{lstlisting}[language=python,caption=Max-K-cut QUBO, label=code:maxKCutQUBO]
+for u, v in G.edges:
+	for i in range(K):
+		for j in range(K):
+			if (i!=j):
+				w=G.edges[u,v]['weight']
+				Q[(u*K+i,v*K+j)] += -1*w
+
+for u in range(K*N):
+	for i in range(K):
+		for j in range(K):
+			if (i!=j):
+				Q[(u*K+i,u*K+j)] += inf 
+\end{lstlisting}
+
+\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (alternatív),label=code:maxKCutQUBOAlt]
+for u, v in G.edges:
+	for i in range(K):
+		for j in range(i+1, K):
+			w=G.edges[u,v]['weight']
+			Q[(u*K+i,v*K+j)] += -1*w
+			Q[(v*K+i,u*K+j)] += -1*w
+
+for u in range(K*N):
+	for i in range(K):
+		for j in range(i+1, K):
+			Q[(u*K+i,u*K+j)] += inf
+\end{lstlisting}
+
+A maximális K-vágásra pár futásidőt szemléltetően, egy táblázatot készítettem néhány gráfra. A táblázat első két sorában a $K=2$ eset miatt, az egyszerű maximális vágásnál látott módon oldottam meg, amíg a 3-4. sorban az általános K-vágást alkalmaztam ugyanarra a gráfra. A gráfoknál $p=0.95$ és $q=0.05$ paramétereket használtam, így ezeket nem jelöltem külön.
+
+A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Mindezért csak közelítőleg másodperces pontosságot használtam.
+
+A vágások várható optimumát is feltüntettem  ezresekre kerekítve. Ez egyrészt kijön a saját méréseimből, másrészről, ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a $\binom{K}{2} \cdot N^2 \cdot E(W)$, képlettel, ahol $E(W)$ az élsúlyok várható értéke.
+
+$inf$ értékére egységes mindenhol $10000$ használtam.
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{ l c c c }
+		\toprule
+		Gráf & Vágás optimuma & Szimulált kvantum (s) & Hibrid (s) \\
+		\midrule
+		$G(N=100, K=2, p, q)$ & $5000$ & 0.37 & 2.5   \\
+		$G(N=1000, K=2, p, q)$ & $500000$ & 32.5 & 11.5 \\
+		$G(N=100, K=2, p, q)$ & $5000$ & 0.9 & 3.5  \\
+		$G(N=1000, K=2, p, q)$ & $500000$ & 73 & 21 \\	
+		$G(N=100, K=3, p, q)$ & $15000$ & 6 & 2.5 \\		
+		$G(N=50, K=4, p, q)$ & $7500$ & 6 & 3 \\		
+		$G(N=100, K=4, p, q)$ & $30000$ & 25 & 8 \\
+
+		\bottomrule
+	\end{tabular}
+	\caption{Futásidők különböző gráfokra}
+	\label{tab:TabularExample}
+\end{table}
+
+Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. $K=2$ esetre minden esetben megtaláltuk az optimumot, bármely elkódolást is használjuk.
+Sajnos $K>2$ esetre viszont elképesztően rossz vágásokat kaptunk vissza. Például az utolsó esetben a 30000 körüli vágásérték helyett a szimulált kvantum esetén 23000 körüli értéket kaptunk. Amely nem csak, hogy az optimumtól nagyon távol esik, (több mint $20\%$), hanem ha végig gondoljuk, egy véletlenszerű vágás, amikor a $K$ csoport mindegyikébe minden eredeti csoport $K$-ad részét tesszük, akkor is várhatón ilyen körüli vágást kell kapjunk. Ugyanis ha $p=1, q=0$, akkor $K \cdot \frac{N}{K} \cdot (N-\frac{N}{K}) \cdot \binom{K}{2}$ adja az élek számát, amelyet még szorozni kell az élsúlyozás várható értékével. Ez az utolsó példára $22500$-at ad. A kapott felosztáson továbbá "szemmel végignézve" is úgy tűnik, mintha véletlen felosztásról lenne szó.
+Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a felosztás megvizsgálásánál is olykor látszik, hogy a csúcsok mintha lassan elkezdenének megfelelően csoportokba tömörülni, azonban még mindig alig kapunk jobbat egy véletlenszerű vágásnál.
+
+Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az is elképzelhető, hogy az általam adott elkódolásban van a hiba, viszont ekkor érdekes, hogy $K=2$ esetre mindkét módszer hibátlanul működik.  Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
+
+

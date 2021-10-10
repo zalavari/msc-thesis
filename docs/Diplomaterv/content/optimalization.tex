@@ -1,0 +1,132 @@
+% !TeX spellcheck = hu_HU
+% !TeX encoding = UTF-8
+
+%----------------------------------------------------------------------------
+\chapter{Optimalizációs technikák}
+%----------------------------------------------------------------------------
+Ebben a fejezetben általános optimalizációs technikákat tekintünk át.
+
+
+
+%----------------------------------------------------------------------------
+\section{Lineáris programozás}
+%----------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------
+\section{Kvadratikus programozás}
+%----------------------------------------------------------------------------
+
+A kvadratikus programozás a lineáris programozásnál egy általánosabb technika, hiszen megengedi négyzetes tagok jelenlétét a célfüggvényben és a korlátokban is. Ezzel az alkalmazások körét jóval kibővíti, ugyanakkor az általános feladat megoldása sokkal nehezebbé válik.
+
+Az általános $n$ változós, $m$ korláttal rendelkező feladatot a következő mátrixos alakban írhatjuk le tömören.
+
+Paraméterek:
+
+\begin{tabular}{lll}
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+	$c$ & $\in \mathbb{R}^n$   & A lineáris tagok együtthatói \\
+	$A$ & $\in \mathbb{R}^{m×n}$  & $m × n$-es valós mátrix, a korlátokban szereplő együtthatók \\
+	$b$ & $\in \mathbb{R}^m$   & A korlátokban szereplő konstans tagok \\
+\end{tabular}
+
+Változók:
+
+\begin{tabular}{lll}
+	$x$ & $x \in \mathbb{R}^n$ & változók \\
+\end{tabular}
+
+Célfüggvény:
+
+\begin{align}
+	\min_{x} \frac{1}{2} x^T Q x + c^T x 
+\end{align}
+
+Korlátok:
+
+\begin{align}
+	Ax \leq b
+\end{align}
+
+A felírásnál $Q$ jellemzően egy szimmetrikus mátrix, ekkor a $q_{i,j}$ jelentése, a $x_i \cdot x_j$ változószorzat eggyütthatója, azonban mivel a pár kétszer is meg fog jelenni, így normálni kell $frac{1}{2}$-vel. Másik szokásos felírás, hogy $Q$ egy felső háromszög mátrix. Ekkor ha $i \leq j$, akkor $q_{i,j}$ az az együtthatóval egyezik meg, különben nullával.
+
+Említésre méltó megfigyelés még, hogy ha a kvadratikus polinomok helyett tetszőlegesen nagy fokszámú polinomok szerepelnek, a probléma mindig átírható klasszikus kvadratikus alakra, egyszerűen csak új változókat kell bevezetni, úgy, hogy a fokszámok csökkenjenek. Ezzel persze mind a változók száma, mind a kifejezések hossza rendkívüli módon megnőhet. Ha csak egyszerű mohó módszerrel próbálkozunk, akkor akár exponenciálisan is. Nem ismert, hogy van-e jó stratégia a polinomok fokszámának ilyen módon történő csökkentésének.
+
+A kvadratikus optimalizálásnak több speciális esete is kutatott tématerület. Egyik ilyen eset, ha a $Q$ mátrix szimmetrikus pozitív definit. Ekkor a probléma ekvivalens a legkisebb négyzetek megkeresésének problémájával.
+
+Ebben a dolgozatban most egy másik speciális esetet fogok elemezni, méghozzá megkötöm, hogy a változók csak és kizárólag binárisak lehetnek, és több korlát nem adható meg. Mivel a szakirodalom egyszerűen csak QUBO (Quadratic Unconstrained Binary Optimization) néven hivatkozik erre a fajta felírásra, én is így teszek a továbbiakban.
+
+Az általános $n$ változós, feladat így a következő alakban írható.
+
+
+Paraméterek:
+
+\begin{tabular}{lll}
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+	$c$ & $\in \mathbb{R}^n$   & A lineáris tagok együtthatói \\
+\end{tabular}
+
+Változók:
+
+\begin{tabular}{lll}
+	$x$ & $x \in \mathbb{B}^n$ & változók \\
+\end{tabular}
+
+Célfüggvény:
+
+\begin{align}
+	\min_{x} \frac{1}{2} x^T Q x + c^T x 
+\end{align}
+
+Korlátok:
+
+\begin{align}
+	\emptyset
+\end{align}
+
+A bináris változók alatt szokásosan 0 vagy 1 értékeket jelölünk, így a továbbiakban is $\mathbb{B}=\{0,1\}$. Ugyanakkor itt érdemes kitérni, hogy bizonyos alkalmazásoknál inkább a $\{-1,1\}$ alaphalmazt tekintik. Erre elterjedt módon Ising modellként hivatkozhatunk, a fizikai spin irányultságok miatt. Bizonyos esetekben ezt könnyebb lehet elméleti síkon is kezelni, azonban a kettő között (QUBO és Ising modell) egyszerű lineáris transzformáció ad átjárást, így lényegi különbséget végül nem ad. A D-Wawe Systems gyűjtőnéven, BQM-ként (Binary Quadratic Model) hivatkozik a két problémára együttesen.
+
+A továbbiakban tehát feltesszük, hogy a bináris változóink 0 vagy 1 értéket vesznek fel. Ekkor a korábban felírt általános alakot rögtön egyszerűbb alakra hozhatjuk, hiszen bármely változó megegyezik saját négyzetével. Így elég a négyzetes tagokat felírni, mert az esetleges lineáris tagokat belevehetjük a négyzetes tagok közé. Továbbá az $\frac{1}{2}$-del való szorzás sem tesz hozzá így már érdemben a felíráshoz, ennek ellenére benne hagytam.
+
+Paraméterek:
+
+\begin{tabular}{lll}
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+\end{tabular}
+
+Változók:
+
+\begin{tabular}{lll}
+	$x$ & $x \in \mathbb{B}^n$ & változók \\
+\end{tabular}
+
+Célfüggvény:
+
+\begin{align}
+	\min_{x} \frac{1}{2} x^T Q x
+\end{align}
+
+Korlátok:
+
+\begin{align}
+	\emptyset
+\end{align}
+
+
+
+\section{Korlátolt illetve korlátmentes programozás}
+
+A korábbi alfejezetben röviden kitértünk arra, hogy a kvantumszámítógépek segítségével elméletileg hatékonyan megoldhatóak a bináris kvadratikus programozási feladatok, amennyiben nem szabunk további korlátokat. Továbbiakban egyszerűen QUBO (Quadratic Unconstrained Binary Optimalization) néven hivatkozhatunk erre a problémára\cite{enwiki:1020700695}.
+
+Azonban felmerül a kérdés, hogy miként tudjuk mégis használni a gyakorlatban ezt a technikát, nem szorítja meg a kezünket túlságosan az, hogy nem adhatunk meg korlátot, és egy "egyszerű" függvény szélsőértékét keressük? A válasz szerencsére nemleges, mely látszik a következő, röviden bemutatott technikából \cite{DBLP:journals/corr/abs-1811-11538}. 
+
+Általánosan elmondható, hogy egy optimalizációs esetben kétféle követelményt állítunk a rendszerrel szemben. Ezek közül az egyik típus a erős (hard) követelmény. Ezeket mindenképpen szeretnénk, hogy teljesítse a rendszer, a követelmény sérülése használhatatlanná tenné az eredményt. Általában ezeket a típusú követelményeket korlátként adjuk hozzá a programozási feladathoz.
+
+A másik típus a gyenge (soft) követelmény. Ezeket is szeretnénk minél jobban teljesíteni, de nem követeljük meg az összes teljesítését. Ez olykor nem is lenne lehetséges, hiszen elég valószínű egy olyan való életbeli probléma, hogy minden gyenge követelmény hozzávétele inkonzisztenssé tenné a rendszert. (Hiszen nem lehet minden tökéletes.) Ezeket a követelményeket általában igyekszünk az optimalizálandó célfüggvénybe belefogalmazni.
+
+A kettő követelménytípus között azonban van átjárás. Hiszen csak annyiról van szó, hogy az erős követelményeket is bele tehetjük a célfüggvénybe, egyszerűen csak szorozzuk meg őket valamilyen jó nagy együtthatóval (úgynevezett büntetőtaggal), hogy bármelyik erős követelmény sérülése esetén az optimumtól nagyon távol essen a függvény értéke.
+Ezt a technikát én is felhasználom a megoldásokban, a képletekben és kódmintákban $inf$ szimbólummal jelölve ezt az alkalmasan megválasztott nagy konstans számot.
+
+Ugyanakkor a konstans(ok) megválasztása koránt sem triviális feladat. Bár elméletileg az eredmény ugyanaz, ha túl nagyra választjuk a büntetőtagot, akkor a nem optimális megoldások nagyon messze esnek az optimálistól, ha túl kicsire, akkor pedig túl közel. Egy heurisztikus elven működő optimalizáló szoftver mind a két szélsőséges eset károsan befolyásolhat. Hiszen ha a helytelen megoldások túl messze vannak az optimumtól, akkor lehet, hogy rossz helyen keresgetünk, és nem találjuk meg a "szűk" kis optimumot, amíg ha túl közel esnek, akkor egy nagyon rossz megoldásra is rámondhatjuk, hogy már "elég jó".
+
+Ráadásul tapasztalatok azt is mutatják, hogy az explicit korlátokat megoldó programok sokkal jobban tudják kezelni, amíg ha a célfüggvénybe fogalmazunk bele mindent, az meglehetősen "ködösít" a megoldó számára, hiszen nem tud lényegi különbséget tenni a különböző funkciójú változók között.
