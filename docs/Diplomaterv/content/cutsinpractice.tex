@@ -20,13 +20,17 @@ A helyes konfiguráció után van lehetőségünk a korábban bemutatott QUBO mo
 
 A szimulált kvantumgépen való megoldás mellett két fő iránya van a D-Wave számítógépek használatának. Ebből az egyik a direkt módon beágyazása a problémának kvantumszámítógépre, a mások pedig egy hibrid megoldót használ, mely klasszikus optimalizációkat is végez.
 
-A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú időnként túl sokat kellett kvantum erőforrásra várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
+A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú volt a beágyazás, és időnként túl sokat kellett kvantum erőforrásra várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
+
+A D-Wave rendszer esetén a QUBO megadására a Python collections könyvtárának defaultdict osztályát használom, ahol kulcsként adom meg a változópárt, amelyen a kapcsolatban állnak, értékként pedig a szorzatukhoz tartozó együtthatót.
 
 
 
-A QUBO-kat, és általánosságban a kvadratikus programozási feladatokat persze más, klasszikus megoldóprogramokkal is használhatunk. Egy kereskedelmi forgalomban lévő, egyik piacvezető lineáris programozás megoldó szoftver a Gurobi, melynek bár nem fő iránya a kvadratikus programok megoldása, ezeket is támogatja \cite{gurobi}. 
+A QUBO-kat, és általánosságban a kvadratikus programozási feladatokat persze más, klasszikus megoldóprogramokkal is megoldathatjuk. A D-Wave maga is publikál egy qbsolv nevű csomagot, melyen kvantum erőforrások használata nélkül is lehetőség van a QUBO megoldására. A dokumentáció szerint ez képes megtalálni nagy QUBO problémák optimumát, a probléma részproblémákká bontásával, miközben egy klasszikus megoldót használ, amely a tabu algoritmust futtatja \cite{DWaveOceanQbsolv}. 
 
-Sajnos az eredmények viszont itt sem voltak bíztatóak, viszonylag kevés változószámnál is reménytelennek tűnt például egy QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. 
+Egy kereskedelmi forgalomban lévő, egyik piacvezető lineáris programozás megoldó szoftver a Gurobi, melynek bár nem fő iránya a kvadratikus programok megoldása, ezeket is támogatja \cite{gurobi}. 
+
+Sajnos az eredmények viszont itt sem voltak biztatóak, viszonylag kevés változószámnál is reménytelennek tűnt például egy QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. 
 
 
 
@@ -88,7 +92,7 @@ A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetj�
 
 
 %----------------------------------------------------------------------------
-\section{Maximális K-vágás}
+\section{Maximális K-vágás (one-hot encoded)}
 %----------------------------------------------------------------------------
 
 A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis az $x_{ui}$ változót kettő indexszel indexeltük, azonban most egy index kell, ezt pedig úgy oldjuk meg, hogy a változókat sorba rakva blokkonként következnek az egy csúcshoz tartozó változók, azaz $x_{ui}$ az $(uK+i)$. változó lesz. Ennek megfelelően használjuk tehát az indexeket.
@@ -159,4 +163,78 @@ Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a 
 
 Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az is elképzelhető, hogy az általam adott elkódolásban van a hiba, viszont ekkor érdekes, hogy $K=2$ esetre mindkét módszer hibátlanul működik.  Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
 
+%----------------------------------------------------------------------------
+\section{Maximális K-vágás (binary encoded)}
+%----------------------------------------------------------------------------
 
+Mivel rengeteg segédváltozó is bejön, így nehéz lett volna a természetes számok halmazára leképezni a változókat. Ezért a QUBO definiálásánál kihasználtam, hogy a defaultdict kulcsainak stringeket (string párokat) is megadhatunk, így string-ként kezelve a változóneveket kicsit követhetőbb a folyamat. Így a kódban a csoportokat elkódoló változókat \verb+x_u_i+-vel jelöltem, melynek jelentése továbbra is, az u csúcs csoportját elkódoló szám i. bitje. \verb+d_u_v_i+-vel jelöltem, hogy az u és v csoportját elkódoló számok i. bitje különbözik-e, illetve \verb+dtemp_u_v_i+-vel a XOR kapu használatánál szükséges segédváltozót. Ennek mintájára \verb+D_u_v+ jelöli az u és v különböző csoportba kerülését. Ezen kívül további változók jönnek majd be az \verb+or_gate_list+ meghívásánál, ott a függvényen belül adom hozzá a Q-hoz az új változókat, úgy hogy azok nevükben egyediek legyenek, méghozzá a kimeneti változónév mögé mindig hozzákonkatenálom, hogy a lista mely indexű elemeit állítja OR kapcsolatba.
+
+A kód egyébként két nagyobb részből áll, egyrészt a \verb+D_u_v+ változók előállítása, másrészt a  \verb+D_u_v+ változókat össze kell szorozni a megfelelő súlyokkal.
+
+\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (bináris kódolás),label=code:maxKCutQUBOBinary]
+
+import math
+
+# Initialize our Q matrix
+Q = defaultdict(int)
+
+# k is the number of bits needed to write a groupnumber
+k = math.ceil(math.log2(K))
+
+# Define the D_u_v variables with constraints
+for u in range(K*N):
+	for v in range(u+1, K*N):
+		x_ui="x_"+str(u)+"_"+str(i)
+		x_vi="x_"+str(v)+"_"+str(i)
+		d_uvi="d_"+str(u)+"_"+str(v)+"_"+str(i)
+		dtemp_uvi="dtemp_"+str(u)+"_"+str(v)+"_"+str(i)
+		xor_gate(Q,x_ui,x_vi,d_uvi,dtemp_uvi)
+		listOfds.append(d_uvi)
+		or_gate_list(Q, listOfds, "D_"+str(u)+"_"+str(v))
+
+# Update Q matrix for every edge in the graph
+for u, v in G.edges:
+	w=G.edges[u,v]['weight']
+	Q[("D_"+str(u)+"_"+str(v),"D_"+str(u)+"_"+str(v))] += -1*w
+
+\end{lstlisting}
+
+\subsection{Logikai kapuk megvalósítása}
+
+A fenti módszer működéséhez azonban implementálni kell a logikai kapukat is.
+Ezek az elemi kapuk esetében nem okoznak különösebb problémát, paraméterként át kell venni egy Q objektumot, melybe a változók együtthatói elmentésre kerülnek, és magukat a változókat azonosító neveket.
+
+\begin{lstlisting}[language=python,caption=Elemi kapuk,label=code:ElementaryGates]
+	
+def same(Q, in1, in2):
+	Q[(in1,in2)] -= 2*p
+	Q[(in1,in1)] += 1*p
+	Q[(in2,in2)] += 1*p
+
+def and_gate(Q, in1, in2, out):
+	Q[(in1,in2)] += 1*p
+	Q[(in1,out)] -= 2*p
+	Q[(in2,out)] -= 2*p
+	Q[(out,out)] += 3*p
+
+def or_gate(Q, in1, in2, out):
+	Q[(in1,in2)] += 1*p
+	Q[(in1,out)] -= 2*p
+	Q[(in2,out)] -= 2*p
+	Q[(out,out)] += 1*p
+	Q[(in1,in1)] += 1*p
+	Q[(in2,in2)] += 1*p
+
+def xor_gate(Q, in1, in2, out1, out2):
+	Q[(in1,in2)] += 2*p
+	Q[(in1,out1)] -= 2*p
+	Q[(in2,out1)] -= 2*p
+	Q[(out1,out1)] += 1*p
+	Q[(in1,in1)] += 1*p
+	Q[(in2,in2)] += 1*p
+	Q[(out2,out2)] += 12*p
+	Q[(out1,out2)] += 4*p
+	Q[(in1,out2)] -= 8*p
+	Q[(in2,out2)] -= 8*p
+	
+\end{lstlisting}

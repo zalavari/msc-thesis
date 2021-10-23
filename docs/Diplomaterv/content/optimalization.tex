@@ -4,27 +4,27 @@
 %----------------------------------------------------------------------------
 \chapter{Optimalizációs technikák}
 %----------------------------------------------------------------------------
-Ebben a fejezetben általános optimalizációs technikákat tekintünk át.
+Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Történelmi okokból gyakran hívjuk ezeket a technikákat programozásnak, és a felírt formulát programnak, holott természetesen ennek nincs köze ahhoz, amit manapság programozás illetve program alatt értünk. Ezért is a modern szakirodalom pereferálja az optimalizálás szó használatát, de még mindig szinonimaként tekintve a programozást is.
 
 
 
 %----------------------------------------------------------------------------
-\section{Lineáris programozás}
+\section{Lineáris optimalizálás}
 %----------------------------------------------------------------------------
 
 
 %----------------------------------------------------------------------------
-\section{Kvadratikus programozás}
+\section{Kvadratikus optimalizálás}
 %----------------------------------------------------------------------------
 
-A kvadratikus programozás a lineáris programozásnál egy általánosabb technika, hiszen megengedi négyzetes tagok jelenlétét a célfüggvényben és a korlátokban is. Ezzel az alkalmazások körét jóval kibővíti, ugyanakkor az általános feladat megoldása sokkal nehezebbé válik.
+A kvadratikus optimalizálás, vagy kvadratikus programozás a lineáris programozásnál egy általánosabb technika, hiszen megengedi négyzetes tagok jelenlétét a célfüggvényben, amíg a korlátok továbbra is lineárisak. \footnote{Egyes források úgy definiálják az általános feladatot, hogy a korlátokban is megengedik négyzetes tagok jelenlétét. Ez szempontunkból most kevésbé lényeges, hiszen a dolgozat jórészt a korlátmentes esetre fókuszál.} Ezzel az alkalmazások körét jóval kibővíti, ugyanakkor az általános feladat megoldása sokkal nehezebbé válik. 
 
 Az általános $n$ változós, $m$ korláttal rendelkező feladatot a következő mátrixos alakban írhatjuk le tömören.
 
 Paraméterek:
 
 \begin{tabular}{lll}
-	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, (szimmetrikus) mátrix, a négyzetes tagok együtthatói \\
 	$c$ & $\in \mathbb{R}^n$   & A lineáris tagok együtthatói \\
 	$A$ & $\in \mathbb{R}^{m×n}$  & $m × n$-es valós mátrix, a korlátokban szereplő együtthatók \\
 	$b$ & $\in \mathbb{R}^m$   & A korlátokban szereplő konstans tagok \\
@@ -48,13 +48,15 @@ Korlátok:
 	Ax \leq b
 \end{align}
 
-A felírásnál $Q$ jellemzően egy szimmetrikus mátrix, ekkor a $q_{i,j}$ jelentése, a $x_i \cdot x_j$ változószorzat eggyütthatója, azonban mivel a pár kétszer is meg fog jelenni, így normálni kell $frac{1}{2}$-vel. Másik szokásos felírás, hogy $Q$ egy felső háromszög mátrix. Ekkor ha $i \leq j$, akkor $q_{i,j}$ az az együtthatóval egyezik meg, különben nullával.
+A felírásnál $Q$ jellemzően egy szimmetrikus mátrix, ekkor a $q_{i,j}$ jelentése, a $x_i \cdot x_j$ változószorzat együtthatója, azonban mivel a pár kétszer is meg fog jelenni, így normálni kell $\frac{1}{2}$-vel. Másik szokásos felírás, hogy $Q$ egy felső háromszög mátrix. Ekkor ha $i \leq j$, akkor $q_{i,j}$ a megfelelő együtthatóval egyezik meg, különben nullával.
 
-Említésre méltó megfigyelés még, hogy ha a kvadratikus polinomok helyett tetszőlegesen nagy fokszámú polinomok szerepelnek, a probléma mindig átírható klasszikus kvadratikus alakra, egyszerűen csak új változókat kell bevezetni, úgy, hogy a fokszámok csökkenjenek. Ezzel persze mind a változók száma, mind a kifejezések hossza rendkívüli módon megnőhet. Ha csak egyszerű mohó módszerrel próbálkozunk, akkor akár exponenciálisan is. Nem ismert, hogy van-e jó stratégia a polinomok fokszámának ilyen módon történő csökkentésének.
+Említésre méltó megfigyelés még, hogy ha a kvadratikus polinomok helyett tetszőlegesen nagy fokszámú polinomok szerepelhetnek, a probléma mindig átírható klasszikus kvadratikus alakra, úgymond kvadratizálható, hiszen egyszerűen csak új változókat kell bevezetni, úgy, hogy a fokszámok csökkenjenek. Ezzel persze mind a változók száma, mind a kifejezések hossza rendkívüli módon megnőhet. Ha csak egyszerű mohó módszerrel próbálkozunk, akkor akár exponenciálisan is. Nem ismert, hogy van-e jó stratégia a polinomok fokszámának ilyen módon történő csökkentésének, sőt ez a probléma egy jelenleg is futó kutatás alapkérdése.
 
-A kvadratikus optimalizálásnak több speciális esete is kutatott tématerület. Egyik ilyen eset, ha a $Q$ mátrix szimmetrikus pozitív definit. Ekkor a probléma ekvivalens a legkisebb négyzetek megkeresésének problémájával.
+A kvadratikus optimalizálásnak több speciális esete is kutatott tématerület. Egyik ilyen egyszerű eset, ha a $Q$ mátrix szimmetrikus pozitív definit. Ekkor a probléma ekvivalens a legkisebb négyzetek megkeresésének problémájával. [forrás?]
 
-Ebben a dolgozatban most egy másik speciális esetet fogok elemezni, méghozzá megkötöm, hogy a változók csak és kizárólag binárisak lehetnek, és több korlát nem adható meg. Mivel a szakirodalom egyszerűen csak QUBO (Quadratic Unconstrained Binary Optimization) néven hivatkozik erre a fajta felírásra, én is így teszek a továbbiakban.
+Ebben a dolgozatban most egy másik speciális esetet fogok elemezni, méghozzá megkötöm, hogy a változók csak és kizárólag binárisak lehetnek, és több korlát nem adható meg. Mivel a szakirodalom egyszerűen csak QUBO (Quadratic Unconstrained Binary Optimization) néven hivatkozik erre a fajta felírásra, én is így teszek a továbbiakban\cite{enwiki:1020700695}.
+
+Bár a probléma rendkívül speciális, gondolhatnánk, hogy akár könnyen megoldható, hiszen csak egy polinom maximum vagy minimumhelyét keressük. Ugyanakkor, mint a későbbi fejezetekben látni fogjuk, több közismerten NP-nehéz feladat visszavezető erre a probléma, így ő maga is NP-nehéz. 
 
 Az általános $n$ változós, feladat így a következő alakban írható.
 
@@ -62,7 +64,7 @@ Az általános $n$ változós, feladat így a következő alakban írható.
 Paraméterek:
 
 \begin{tabular}{lll}
-	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, (szimmetrikus) mátrix, a négyzetes tagok együtthatói \\
 	$c$ & $\in \mathbb{R}^n$   & A lineáris tagok együtthatói \\
 \end{tabular}
 
@@ -86,12 +88,12 @@ Korlátok:
 
 A bináris változók alatt szokásosan 0 vagy 1 értékeket jelölünk, így a továbbiakban is $\mathbb{B}=\{0,1\}$. Ugyanakkor itt érdemes kitérni, hogy bizonyos alkalmazásoknál inkább a $\{-1,1\}$ alaphalmazt tekintik. Erre elterjedt módon Ising modellként hivatkozhatunk, a fizikai spin irányultságok miatt. Bizonyos esetekben ezt könnyebb lehet elméleti síkon is kezelni, azonban a kettő között (QUBO és Ising modell) egyszerű lineáris transzformáció ad átjárást, így lényegi különbséget végül nem ad. A D-Wawe Systems gyűjtőnéven, BQM-ként (Binary Quadratic Model) hivatkozik a két problémára együttesen.
 
-A továbbiakban tehát feltesszük, hogy a bináris változóink 0 vagy 1 értéket vesznek fel. Ekkor a korábban felírt általános alakot rögtön egyszerűbb alakra hozhatjuk, hiszen bármely változó megegyezik saját négyzetével. Így elég a négyzetes tagokat felírni, mert az esetleges lineáris tagokat belevehetjük a négyzetes tagok közé. Továbbá az $\frac{1}{2}$-del való szorzás sem tesz hozzá így már érdemben a felíráshoz, ennek ellenére benne hagytam.
+A továbbiakban tehát feltesszük, hogy a bináris változóink 0 vagy 1 értéket vesznek fel. Ekkor a korábban felírt általános alakot rögtön egyszerűbb alakra hozhatjuk, hiszen bármely változó megegyezik saját négyzetével. Így elég a négyzetes tagokat felírni, mert az esetleges lineáris tagokat belevehetjük a négyzetes tagok közé. Továbbá az $\frac{1}{2}$-del való szorzás sem tesz hozzá így már érdemben a felíráshoz, hiszen csak az optimum értékét skálázza, de az optimum helyek nem változnak. Ennek ellenére az általános felírásban ezen a helyen még benne hagytam.
 
 Paraméterek:
 
 \begin{tabular}{lll}
-	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, szimmetrikus* mátrix, a négyzetes tagok együtthatói \\
+	$Q$ & $\in \mathbb{R}^{n×n}$  & $n × n$-es valós, (szimmetrikus) mátrix, a négyzetes tagok együtthatói \\
 \end{tabular}
 
 Változók:
@@ -116,11 +118,11 @@ Korlátok:
 
 \section{Korlátolt illetve korlátmentes programozás}
 
-A korábbi alfejezetben röviden kitértünk arra, hogy a kvantumszámítógépek segítségével elméletileg hatékonyan megoldhatóak a bináris kvadratikus programozási feladatok, amennyiben nem szabunk további korlátokat. Továbbiakban egyszerűen QUBO (Quadratic Unconstrained Binary Optimalization) néven hivatkozhatunk erre a problémára\cite{enwiki:1020700695}.
+A korábbi alfejezetben röviden kitértünk arra, hogy a kvantumszámítógépek segítségével elméletileg hatékonyan megoldhatóak a bináris kvadratikus programozási feladatok, amennyiben nem szabunk további korlátokat.
 
 Azonban felmerül a kérdés, hogy miként tudjuk mégis használni a gyakorlatban ezt a technikát, nem szorítja meg a kezünket túlságosan az, hogy nem adhatunk meg korlátot, és egy "egyszerű" függvény szélsőértékét keressük? A válasz szerencsére nemleges, mely látszik a következő, röviden bemutatott technikából \cite{DBLP:journals/corr/abs-1811-11538}. 
 
-Általánosan elmondható, hogy egy optimalizációs esetben kétféle követelményt állítunk a rendszerrel szemben. Ezek közül az egyik típus a erős (hard) követelmény. Ezeket mindenképpen szeretnénk, hogy teljesítse a rendszer, a követelmény sérülése használhatatlanná tenné az eredményt. Általában ezeket a típusú követelményeket korlátként adjuk hozzá a programozási feladathoz.
+Általánosan elmondható, hogy egy optimalizációs esetben kétféle követelményt állítunk a rendszerrel szemben. Ezek közül az egyik típus a erős (hard) követelmény. Ezeket mindenképpen szeretnénk, hogy teljesítse a rendszer, a követelmény sérülése érvénytelenné tenné az eredményt. Általában ezeket a típusú követelményeket korlátként adjuk hozzá a programozási feladathoz.
 
 A másik típus a gyenge (soft) követelmény. Ezeket is szeretnénk minél jobban teljesíteni, de nem követeljük meg az összes teljesítését. Ez olykor nem is lenne lehetséges, hiszen elég valószínű egy olyan való életbeli probléma, hogy minden gyenge követelmény hozzávétele inkonzisztenssé tenné a rendszert. (Hiszen nem lehet minden tökéletes.) Ezeket a követelményeket általában igyekszünk az optimalizálandó célfüggvénybe belefogalmazni.
 
@@ -130,3 +132,32 @@ Ezt a technikát én is felhasználom a megoldásokban, a képletekben és kódm
 Ugyanakkor a konstans(ok) megválasztása koránt sem triviális feladat. Bár elméletileg az eredmény ugyanaz, ha túl nagyra választjuk a büntetőtagot, akkor a nem optimális megoldások nagyon messze esnek az optimálistól, ha túl kicsire, akkor pedig túl közel. Egy heurisztikus elven működő optimalizáló szoftver mind a két szélsőséges eset károsan befolyásolhat. Hiszen ha a helytelen megoldások túl messze vannak az optimumtól, akkor lehet, hogy rossz helyen keresgetünk, és nem találjuk meg a "szűk" kis optimumot, amíg ha túl közel esnek, akkor egy nagyon rossz megoldásra is rámondhatjuk, hogy már "elég jó".
 
 Ráadásul tapasztalatok azt is mutatják, hogy az explicit korlátokat megoldó programok sokkal jobban tudják kezelni, amíg ha a célfüggvénybe fogalmazunk bele mindent, az meglehetősen "ködösít" a megoldó számára, hiszen nem tud lényegi különbséget tenni a különböző funkciójú változók között.
+
+\section{QUBO-k formalizálása}
+
+Mielőtt belevágnánk konkrét feladatok elemzésébe, érdemes áttekinteni az elméleti és gyakorlati hátterét, hogy miként érdemes QUBO feladatokat megkonstruálni, milyen egyszerű mérőszámokkal írható le egy program, mellyel megbecsülhető, hogy milyen könnyen kezelhető az optimalizálás során.
+
+Az egyik legegyszerűbb ilyen metrika a változók száma. Ettől szinte közvetlenül függ maga a program mérete is, hiszen nagyságrendileg legfeljebb a váltózószám négyzetével arányos. Így a változók száma egy nagyon triviális, ugyanakkor egy nagyon fontos mérőszám lesz, bármilyen megoldó programot is használjunk végül az optimalizálási folyamat elvégzésére.
+
+A változók számán felül fontos, hogy megpróbáljuk jellemezni a változók közötti összefonódások bonyolultságát. A legegyszerűbb, ha ehhez definiáljuk a változók gráfját, a következőképpen.
+
+A változók gráfjában a csúcsoknak a változók felelnek meg, és két csúcs között pontosan akkor van él, amennyiben a nekik megfelelő változók kapcsolatban vannak, azaz szorzatuk megjelenik a QUBO felírásban nem nulla együtthatóval.
+
+Ekkor a változók gráfját különböző, a gráfelméletben megszokott alapvető metrikákkal jellemezhetjük, amely utal a QUBO felírás összetettségére is. Ilyen metrika, a már említett csúcsok száma (vagyis a változók száma), élek száma (hány kvadratikus tag szerepel), maximális fokszám (a legtöbb másik változóval kapcsolatban álló változó hány kvadratikus tagban szerepel), vagy az átlagos fokszám (átlagosan hány kvadratikus tagban szerepel egy változó). Ez utolsó természetesen a élek és csúcsok számából már kiszámolható. A fenti metrikákon felül még nézhetjük a klikkszámot is.
+
+Érdemes megfigyelni, hogy amennyiben nem QUBO, hanem PUBO (Polinomial Unconstrained Binary Optimization) alakban formalizáljuk a feladatot, vagyis kvadratikus tagok helyett megengedjük tetszőlegesen nagy fokszámú tagok jelenlétét, akkor is definiálhatjuk a változók gráfját a fent megadott módon, ám ekkor egy hipergráf keletkezik. Korábbi megfigyelésünk szerint, ami alapján új változók bevezetésével tetszőleges polinom kvadratizálható, egy gráfelméleti problémát ad, amely arra keresi a választ, hogy miként érdemes új csúcsokat bevezetni, hogy az eredeti hipergráfot egyszerű gráffá konvertáljuk, miközben ne veszítsünk el bizonyos strukturális információkat.
+
+
+A dolgozatnak nem célja bemutatni részletesen, hogy például a D-Wave gépek miként oldják meg a QUBO feladatokat, hiszen sokkal inkább a QUBO-k megfelelő formalizálásán van a hangsúly, úgy gondolom, hogy mégis elengedhetetlen ennek rövid áttekintése, hiszen csak így van értelme arról beszélni, hogy milyen metrikákra szeretnénk optimalizálni egy QUBO feladat formalizálása közben.
+
+Így a D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csak át, hiszen a dolgozat motivációját is lényegében ez adja. A D-Wave Systems egy 1999-ben alapított kanadai cég, mely elsőként hozott kereskedelmi forgalomba kvantumjelenségeket használó számítógépeket. A kvantumgépeik úgynevezett lehűtéses elv alapján működnek, azaz konkrét számolás vagy heurisztika helyett fizikai folyamatok, pontosabban az energiaminimumra törekvés jelenségétől várjuk a megoldást. \cite{Szabo}
+
+A számítási modell alapját egy gráfba (jellemzően kiméra vagy az újabb gépeken a pegazus gráf) rendezett fizikai qubitek adják, melyek egymással a gráf struktúrája szerint vannak kapcsolatban. A gráf éleit és csúcsait egyaránt súlyokkal láthatjuk el, végül a megoldás várhatóan a legalacsonyabb energiaszintű állapot lesz, azaz, amikor a qubitek aszerint vesznek fel 0 vagy 1 értéket, hogy az általuk súlyokkal meghatározott kvadratikus függvény értéke minimális.
+
+Érdemes megkülönböztetni a fizikai qubit-eket, melyeken a tényleges optimalizálás történik, illetve a logikai qubit-eket, melyek a QUBO-ban felírt változóknak felelnek meg. A kettő között bijektív leképezés lenne a legjobb, azonban sajnos ez a legtöbb esetben nem kivitelezhető, hiszen amíg a logikai qubitek között tetszőleges gráfot definiálhatok, (ezt nevezzük máshol a változók gráfjának), addig a fizikai qubit-ek struktúrája nagyon kötött. Így a logikai qubiteket ügyesen rá kell képezni a fizikai hardware-re, amely folyamatot hívjuk beágyazásnak.
+Például a kiméra gráfban a maximális fokszám 6, és lévén páros gráf, már egy háromszöget sem lehet beágyazni új változó bevezetése nélkül. Ekkor a módszer jellemzően az, hogy a fizikai qubit-ek gráfjában láncokat alakítunk ki, amely fizikai qubitek-et köt össze, és ugyanannak a logikai qubit-nek, azaz változónak felelnek meg.
+
+TODO: ide jöhetne valami jó kép pl. egy háromszög beágyazásáról.
+
+TODO: Itt már elfáradtam, így a következő mondat kicsit értelmetlen, újra kell írni:
+A dolgozat szempontjából így mindenképpen lényeges elem, hogy van jelentősége a konstruált QUBO formulák elemzésének. 
