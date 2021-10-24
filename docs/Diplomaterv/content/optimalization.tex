@@ -4,7 +4,7 @@
 %----------------------------------------------------------------------------
 \chapter{Optimalizációs technikák}
 %----------------------------------------------------------------------------
-Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Történelmi okokból gyakran hívjuk ezeket a technikákat programozásnak, és a felírt formulát programnak, holott természetesen ennek nincs köze ahhoz, amit manapság programozás illetve program alatt értünk. Ezért is a modern szakirodalom pereferálja az optimalizálás szó használatát, de még mindig szinonimaként tekintve a programozást is.
+Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Történelmi okokból gyakran hívjuk ezeket a technikákat programozásnak, és a felírt formulát programnak, holott természetesen ennek nincs köze ahhoz, amit manapság programozás illetve program alatt értünk. Ezért is a modern szakirodalom preferálja az optimalizálás szó használatát, de még mindig szinonimaként tekintve a programozást is.
 
 
 
@@ -12,6 +12,7 @@ Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Tö
 \section{Lineáris optimalizálás}
 %----------------------------------------------------------------------------
 
+TODO: Hasonlóan, mit a következő fejezet
 
 %----------------------------------------------------------------------------
 \section{Kvadratikus optimalizálás}
@@ -135,24 +136,24 @@ Ráadásul tapasztalatok azt is mutatják, hogy az explicit korlátokat megoldó
 
 \section{QUBO-k formalizálása}
 
-Mielőtt belevágnánk konkrét feladatok elemzésébe, érdemes áttekinteni az elméleti és gyakorlati hátterét, hogy miként érdemes QUBO feladatokat megkonstruálni, milyen egyszerű mérőszámokkal írható le egy program, mellyel megbecsülhető, hogy milyen könnyen kezelhető az optimalizálás során.
+Mielőtt belevágnánk konkrét feladatok elemzésébe, érdemes áttekinteni az elméleti és gyakorlati hátterét, hogy miként érdemes QUBO feladatokat megkonstruálni, milyen egyszerű mérőszámokkal írható le egy program, mellyel megbecsülhető, hogy milyen könnyen kezelhető az optimalizálás során, és hogy egyáltalán mi a ad gyakorlati jelentőséget ennek a megközelítésnek.
 
-Az egyik legegyszerűbb ilyen metrika a változók száma. Ettől szinte közvetlenül függ maga a program mérete is, hiszen nagyságrendileg legfeljebb a váltózószám négyzetével arányos. Így a változók száma egy nagyon triviális, ugyanakkor egy nagyon fontos mérőszám lesz, bármilyen megoldó programot is használjunk végül az optimalizálási folyamat elvégzésére.
+Az egyik legegyszerűbb metrika, mellyel a QUBO-t jellemezhetjük, az a változók száma. Ettől szinte közvetlenül függ maga a program mérete is, hiszen nagyságrendileg legfeljebb a váltózószám négyzetével arányos. Így a változók száma egy nagyon triviális, ugyanakkor egy nagyon fontos mérőszám lesz, bármilyen megoldó programot is használjunk végül az optimalizálási folyamat elvégzésére.
 
 A változók számán felül fontos, hogy megpróbáljuk jellemezni a változók közötti összefonódások bonyolultságát. A legegyszerűbb, ha ehhez definiáljuk a változók gráfját, a következőképpen.
 
 A változók gráfjában a csúcsoknak a változók felelnek meg, és két csúcs között pontosan akkor van él, amennyiben a nekik megfelelő változók kapcsolatban vannak, azaz szorzatuk megjelenik a QUBO felírásban nem nulla együtthatóval.
 
-Ekkor a változók gráfját különböző, a gráfelméletben megszokott alapvető metrikákkal jellemezhetjük, amely utal a QUBO felírás összetettségére is. Ilyen metrika, a már említett csúcsok száma (vagyis a változók száma), élek száma (hány kvadratikus tag szerepel), maximális fokszám (a legtöbb másik változóval kapcsolatban álló változó hány kvadratikus tagban szerepel), vagy az átlagos fokszám (átlagosan hány kvadratikus tagban szerepel egy változó). Ez utolsó természetesen a élek és csúcsok számából már kiszámolható. A fenti metrikákon felül még nézhetjük a klikkszámot is.
+Ekkor a változók gráfját különböző, a gráfelméletben megszokott alapvető metrikákkal jellemezhetjük, amely közvetlenül utal a QUBO felírás összetettségére is. Ilyen metrika, a már említett csúcsok száma (vagyis a változók száma), élek száma (hány kvadratikus tag szerepel), maximális fokszám (a legtöbb másik változóval kapcsolatban álló változó hány kvadratikus tagban szerepel), vagy az átlagos fokszám (átlagosan hány kvadratikus tagban szerepel egy változó). Ez utolsó természetesen a élek és csúcsok számából már kiszámolható. A fenti metrikákon felül érdemes még nézni a klikkszámot, minimális lefogó méretét, vagy bármely más, a gráf nagyságát vagy bonyolultságát leíró értéket.
 
 Érdemes megfigyelni, hogy amennyiben nem QUBO, hanem PUBO (Polinomial Unconstrained Binary Optimization) alakban formalizáljuk a feladatot, vagyis kvadratikus tagok helyett megengedjük tetszőlegesen nagy fokszámú tagok jelenlétét, akkor is definiálhatjuk a változók gráfját a fent megadott módon, ám ekkor egy hipergráf keletkezik. Korábbi megfigyelésünk szerint, ami alapján új változók bevezetésével tetszőleges polinom kvadratizálható, egy gráfelméleti problémát ad, amely arra keresi a választ, hogy miként érdemes új csúcsokat bevezetni, hogy az eredeti hipergráfot egyszerű gráffá konvertáljuk, miközben ne veszítsünk el bizonyos strukturális információkat.
 
 
-A dolgozatnak nem célja bemutatni részletesen, hogy például a D-Wave gépek miként oldják meg a QUBO feladatokat, hiszen sokkal inkább a QUBO-k megfelelő formalizálásán van a hangsúly, úgy gondolom, hogy mégis elengedhetetlen ennek rövid áttekintése, hiszen csak így van értelme arról beszélni, hogy milyen metrikákra szeretnénk optimalizálni egy QUBO feladat formalizálása közben.
+A dolgozatnak nem célja bemutatni részletesen, hogy például a D-Wave gépek miként oldják meg a QUBO feladatokat, hiszen sokkal inkább a QUBO-k megfelelő formalizálásán van a hangsúly, úgy gondolom, hogy mégis elengedhetetlen ennek rövid áttekintése, hiszen csak így van értelme arról beszélni, hogy milyen, és miért ezen metrikákra szeretnénk optimalizálni egy QUBO feladat formalizálása közben.
 
-Így a D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csak át, hiszen a dolgozat motivációját is lényegében ez adja. A D-Wave Systems egy 1999-ben alapított kanadai cég, mely elsőként hozott kereskedelmi forgalomba kvantumjelenségeket használó számítógépeket. A kvantumgépeik úgynevezett lehűtéses elv alapján működnek, azaz konkrét számolás vagy heurisztika helyett fizikai folyamatok, pontosabban az energiaminimumra törekvés jelenségétől várjuk a megoldást. \cite{Szabo}
+A D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csak át, hiszen a dolgozat motivációját is lényegében ez adja. A D-Wave Systems egy 1999-ben alapított kanadai cég, mely elsőként hozott kereskedelmi forgalomba kvantumjelenségeket használó számítógépeket. A kvantumgépeik úgynevezett lehűtéses elv alapján működnek, azaz konkrét számolás vagy heurisztika helyett fizikai folyamatok, pontosabban az energiaminimumra törekvés jelenségétől várjuk a megoldást. \cite{Szabo}
 
-A számítási modell alapját egy gráfba (jellemzően kiméra vagy az újabb gépeken a pegazus gráf) rendezett fizikai qubitek adják, melyek egymással a gráf struktúrája szerint vannak kapcsolatban. A gráf éleit és csúcsait egyaránt súlyokkal láthatjuk el, végül a megoldás várhatóan a legalacsonyabb energiaszintű állapot lesz, azaz, amikor a qubitek aszerint vesznek fel 0 vagy 1 értéket, hogy az általuk súlyokkal meghatározott kvadratikus függvény értéke minimális.
+A számítási modell alapját egy gráfba (jellemzően kiméra vagy az újabb gépeken a pegazus gráf) rendezett fizikai qubitek adják, melyek  egymással a gráf struktúrája szerint vannak kapcsolatban. A gráf éleit és csúcsait egyaránt súlyokkal láthatjuk el, végül a megoldás várhatóan a legalacsonyabb energiaszintű állapot lesz, azaz, amikor a qubitek aszerint vesznek fel 0 vagy 1 értéket, hogy az általuk súlyokkal meghatározott kvadratikus függvény értéke minimális.
 
 Érdemes megkülönböztetni a fizikai qubit-eket, melyeken a tényleges optimalizálás történik, illetve a logikai qubit-eket, melyek a QUBO-ban felírt változóknak felelnek meg. A kettő között bijektív leképezés lenne a legjobb, azonban sajnos ez a legtöbb esetben nem kivitelezhető, hiszen amíg a logikai qubitek között tetszőleges gráfot definiálhatok, (ezt nevezzük máshol a változók gráfjának), addig a fizikai qubit-ek struktúrája nagyon kötött. Így a logikai qubiteket ügyesen rá kell képezni a fizikai hardware-re, amely folyamatot hívjuk beágyazásnak.
 Például a kiméra gráfban a maximális fokszám 6, és lévén páros gráf, már egy háromszöget sem lehet beágyazni új változó bevezetése nélkül. Ekkor a módszer jellemzően az, hogy a fizikai qubit-ek gráfjában láncokat alakítunk ki, amely fizikai qubitek-et köt össze, és ugyanannak a logikai qubit-nek, azaz változónak felelnek meg.

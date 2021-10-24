@@ -4,9 +4,10 @@
 %----------------------------------------------------------------------------
 \chapter{Gyakorlati eredmények}
 %----------------------------------------------------------------------------
-Ebben a fejezetben alkalmazom a korábbiakban megismert elméleti módszereket, megvizsgálom milyen futásidőt érnek el különböző megoldóprogramok használatával, illetve összevetem az így kapott eredményeket a kombinatorikus algoritmusok hatékonyságával.
+Ebben a fejezetben alkalmazom a korábbiakban megismert elméleti módszereket, megvizsgálom milyen futásidőt érnek el különböző megoldóprogramok használatával.
+%, illetve összevetem az így kapott eredményeket a kombinatorikus algoritmusok hatékonyságával.
 
-Az implementációkat a Google által üzemeltetett Colaboratory segítségével készítettem Python nyelven. A választás többek között azért esett erre a rendszerre, mert a D-Wave Systems által, Python nyelven publikált könyvtárat szerettem volna felhasználni, és ez így nem csak minimális konfigurációval megoldható, de az eredmények könnyen rekonstruálhatók a konténer technológia miatt, és nem befolyásolja őket a lokális gépemen eszközölt idő közbeni módosítások.
+Az implementációkat a Google által üzemeltetett Colaboratory segítségével készítettem Python nyelven. A választás többek között azért esett erre a rendszerre, mert a D-Wave Systems által, Python nyelven publikált könyvtárat szerettem volna felhasználni, és ez így nem csak minimális konfigurációval megoldható, de az eredmények könnyen rekonstruálhatók a konténer technológia miatt, és nem befolyásolják őket a lokális, saját gépen eszközölt módosítások.
 
 A teszteléshez generált gráfok előállításához és reprezentálásához a NetworkX könyvtárat használtam fel \cite{NetworkX}.
 
@@ -14,7 +15,7 @@ A teszteléshez generált gráfok előállításához és reprezentálásához a
 
 A D-Wave Ocean nevű programcsomagja több lehetőséget kínál QUBO formák megoldására. Van egzakt megoldója, ez azonban nagyon kicsi bemenetekre is használhatatlan a gyakorlatban, hiszen működési elvét tekintve, minden lehetőséget kipróbál. Ezen kívül van lehetőség kvantum számítás szimulálására, vagy egy valós kvantumgépnek is elküldhetjük a problémát a megfelelő API használatával \cite{DWaveOcean}.
 
-Lényeges észrevétel, hogy a D-Wave megoldója csak minimalizálni tud, ezért a korábban bemutatott QUBO-kat is ilyen alakra kell hozni. Ez szerencsére könnyen megy, mert ha eredetileg maximalizálni szerettünk volna, egyszerűen minden tagot $-1$-gyel kell megszoroznunk, és az így kapott függvényt minimalizálni.
+Lényeges észrevétel, hogy a D-Wave megoldója - az energiaminimumra törekvés elve alapján - csak minimalizálni tud, ezért a korábban bemutatott QUBO-kat is ilyen alakra kell hozni. Ez szerencsére könnyen megy, mert ha eredetileg maximalizálni szerettünk volna, egyszerűen minden tagot $-1$-gyel kell megszoroznunk, és az így kapott függvényt minimalizálni.
 
 A helyes konfiguráció után van lehetőségünk a korábban bemutatott QUBO modellek tényleges próbájára.
 
@@ -42,45 +43,49 @@ Az ötlet csupán annyi, hogy előre meghatározunk $K$ darab diszjunkt halmazt,
 
 Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcs teljes gráfot kapunk. $G(N,K,1,0)$ esetén pedig ennek a komplementerét kapjuk. 
 
-Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre. Jellemzően 0 és 1 közötti egyenletes eloszlással.
+Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre, a példákban mindenhol 0 és 1 közötti egyenletes eloszlással, holott ez a példakódban paraméter segítségével állíthatóan oldottam meg.
 
 Érdemes észben tartani, hogy $n=|V|=N \cdot K$, tehát a kicsi $n$ és nagy $N$ nem keverendő.
 
-%----------------------------------------------------------------------------
-\section{Minimális vágás}
-%----------------------------------------------------------------------------
+TODO: Néhány példakód
 
-
-\subsection{Klasszikus}
-
-A probléma klasszikusan is megoldható, például folyamalgoritmus segítségével. Referenciaként a NetworkX-ben ilyen módon implementált \verb+minimum_cut+ függvényt fogom használni.
-
-\begin{lstlisting}[language=Python,caption=Min-cut flow,label=code:minCutFlow]
-	cut_value, partition = nx.minimum_cut(G, s, t, 'weight')
-\end{lstlisting}
-
-
-\subsection{QUBO}
-Egy $n$ változós bináris kvadratikus kifejezést megadhatunk tömören mátrixos formában is, ahol a $Q$ mátrix $q_{ij}$ eleme az $x_i x_j$ együtthatója. Mivel ezt a formát képes kezelni a legtöbb a megoldó, (vagy ha nem, akkor könnyen átalakítható olyan formára) ezért a továbbiakban ilyen formában adjuk meg.
-
-A minimális vágás problémája könnyen felírható QUBO-ként, ahogyan azt korábban is láttuk. Az egyetlen "trükk", hogy két speciális pontot ki kell jelölni, amelyeknek külön csoportba kell kerülniük. Mivel azonban ez a klasszikus folyamalgoritmusnál is így működik, ezért ilyen tekintetben ez a megoldás sem alsóbbrendűbb.
-
-\begin{lstlisting}[language=python,caption=Min-cut QUBO,label=code:minCutQUBO]
-	for u, v in G.edges:
-		w=G.edges[u,v]['weight']
-		Q[(u,u)]+= 1*w
-		Q[(v,v)]+= 1*w
-		Q[(u,v)]+= -2*w
-	
-	Q[(s,s)]+=inf
-	Q[(t,t)]-=inf
-\end{lstlisting}
+%%----------------------------------------------------------------------------
+%\section{Minimális vágás}
+%%----------------------------------------------------------------------------
+%
+%
+%\subsection{Klasszikus}
+%
+%A probléma klasszikusan is megoldható, például folyamalgoritmus segítségével. Referenciaként a NetworkX-ben ilyen módon implementált \verb+minimum_cut+ függvényt fogom használni.
+%
+%\begin{lstlisting}[language=Python,caption=Min-cut flow,label=code:minCutFlow]
+%	cut_value, partition = nx.minimum_cut(G, s, t, 'weight')
+%\end{lstlisting}
+%
+%
+%\subsection{QUBO}
+%Egy $n$ változós bináris kvadratikus kifejezést megadhatunk tömören mátrixos formában is, ahol a $Q$ mátrix $q_{ij}$ eleme az $x_i x_j$ együtthatója. Mivel ezt a formát képes kezelni a legtöbb a megoldó, (vagy ha nem, akkor könnyen átalakítható olyan formára) ezért a továbbiakban ilyen formában adjuk meg.
+%
+%A minimális vágás problémája könnyen felírható QUBO-ként, ahogyan azt korábban is láttuk. Az egyetlen "trükk", hogy két speciális pontot ki kell jelölni, amelyeknek külön csoportba kell kerülniük. Mivel azonban ez a klasszikus folyamalgoritmusnál is így működik, ezért ilyen tekintetben ez a megoldás sem alsóbbrendűbb.
+%
+%\begin{lstlisting}[language=python,caption=Min-cut QUBO,label=code:minCutQUBO]
+%	for u, v in G.edges:
+%		w=G.edges[u,v]['weight']
+%		Q[(u,u)]+= 1*w
+%		Q[(v,v)]+= 1*w
+%		Q[(u,v)]+= -2*w
+%	
+%	Q[(s,s)]+=inf
+%	Q[(t,t)]-=inf
+%\end{lstlisting}
 
 %----------------------------------------------------------------------------
 \section{Maximális vágás}
 %----------------------------------------------------------------------------
 
-A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetjük. Éppen úgy működik, mint a minimális vágás, de nem szükségesek a büntető tagok. Érdemes megfigyelni, hogy a változók száma pontosan $|V|=n$.
+A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetjük.
+%Éppen úgy működik, mint a minimális vágás, de nem szükségesek a büntető tagok.
+Érdemes megfigyelni, hogy a változók száma pontosan $|V|=n$.
 
 \begin{lstlisting}[language=python,caption=Max-cut QUBO,label=code:maxCutQUBO]
 	for u, v in G.edges:
@@ -95,11 +100,13 @@ A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetj�
 \section{Maximális K-vágás (one-hot encoded)}
 %----------------------------------------------------------------------------
 
-A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis az $x_{ui}$ változót kettő indexszel indexeltük, azonban most egy index kell, ezt pedig úgy oldjuk meg, hogy a változókat sorba rakva blokkonként következnek az egy csúcshoz tartozó változók, azaz $x_{ui}$ az $(uK+i)$. változó lesz. Ennek megfelelően használjuk tehát az indexeket.
+A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis amíg az $x_{ui}$ változót kettő indexszel indexeltük, az elméleti felírásban, most egy indexszel kell megadnunk egyértelműen, hogy a mátrixos formába leképezhető legyen.
+\footnote{Igazából ez nem szükségszerű, mert a mátrix felírásához, a Python dict típusa miatt, akár sztringeket is használhatunk kulcsként, vagyis a sor-oszlop koordináták azonosítására. Ezt a következő példában ki is használom, de ennél a feladatnál még könnyen kezelhetőek az indexek leképezése is.}
+Ezt pedig úgy oldjuk meg, hogy a változókat sorba rakva blokkonként következnek az egy csúcshoz tartozó változók, azaz $x_{ui}$ az $(uK+i)$. változó lesz. Ennek megfelelően használjuk tehát az indexeket.
 
-Ebből továbbá következik az a fontos megfigyelés is, hogy a változók száma itt $n \cdot K = N \cdot K^2$.
+Ebből következik továbbá az a korábbi, de fontos megfigyelés is, hogy a változók száma itt $n \cdot K = N \cdot K^2$.
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO, label=code:maxKCutQUBO]
+\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (szimmetrikus mátrix), label=code:maxKCutQUBOSymmetric]
 for u, v in G.edges:
 	for i in range(K):
 		for j in range(K):
@@ -114,7 +121,7 @@ for u in range(K*N):
 				Q[(u*K+i,u*K+j)] += inf 
 \end{lstlisting}
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (alternatív),label=code:maxKCutQUBOAlt]
+\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (háromszög mátrix),label=code:maxKCutQUBOTriangle]
 for u, v in G.edges:
 	for i in range(K):
 		for j in range(i+1, K):
@@ -167,7 +174,7 @@ Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne 
 \section{Maximális K-vágás (binary encoded)}
 %----------------------------------------------------------------------------
 
-Mivel rengeteg segédváltozó is bejön, így nehéz lett volna a természetes számok halmazára leképezni a változókat. Ezért a QUBO definiálásánál kihasználtam, hogy a defaultdict kulcsainak stringeket (string párokat) is megadhatunk, így string-ként kezelve a változóneveket kicsit követhetőbb a folyamat. Így a kódban a csoportokat elkódoló változókat \verb+x_u_i+-vel jelöltem, melynek jelentése továbbra is, az u csúcs csoportját elkódoló szám i. bitje. \verb+d_u_v_i+-vel jelöltem, hogy az u és v csoportját elkódoló számok i. bitje különbözik-e, illetve \verb+dtemp_u_v_i+-vel a XOR kapu használatánál szükséges segédváltozót. Ennek mintájára \verb+D_u_v+ jelöli az u és v különböző csoportba kerülését. Ezen kívül további változók jönnek majd be az \verb+or_gate_list+ meghívásánál, ott a függvényen belül adom hozzá a Q-hoz az új változókat, úgy hogy azok nevükben egyediek legyenek, méghozzá a kimeneti változónév mögé mindig hozzákonkatenálom, hogy a lista mely indexű elemeit állítja OR kapcsolatba.
+Mivel a korábban bemutatott elmélet alapján rengeteg segédváltozó bejön, így nehéz lett volna a természetes számok halmazára leképezni az összes változót, és így felírni a mátrixot. Ezért a QUBO definiálásánál kihasználtam, hogy a defaultdict kulcsainak nemcsak egész számokat, hanem akár stringeket (pontosabban string párokat) is megadhatunk, így string-ként kezelve a változóneveket kicsit követhetőbb a folyamat. Ezáltal a kódban a csoportokat elkódoló változókat \verb+x_u_i+-vel jelöltem, melynek jelentése továbbra is, az $u$ csúcs csoportját elkódoló szám i. bitje. \verb+d_u_v_i+-vel jelöltem, hogy az $u$ és $v$ csoportját elkódoló számok i. bitje különbözik-e, illetve \verb+dtemp_u_v_i+-vel a XOR kapu használatánál szükséges segédváltozót. Ennek mintájára \verb+D_u_v+ jelöli az $u$ és $v$ különböző csoportba kerülését. Ezen kívül további változók jönnek majd be az \verb+or_gate_list+ meghívásánál, ott a függvényen belül adom hozzá a Q-hoz az új változókat, úgy hogy azok nevükben egyediek legyenek, méghozzá a kimeneti változónév mögé mindig hozzákonkatenálom, hogy a lista mely indexű elemeit állítja OR kapcsolatba.
 
 A kód egyébként két nagyobb részből áll, egyrészt a \verb+D_u_v+ változók előállítása, másrészt a  \verb+D_u_v+ változókat össze kell szorozni a megfelelő súlyokkal.
 
@@ -202,7 +209,7 @@ for u, v in G.edges:
 \subsection{Logikai kapuk megvalósítása}
 
 A fenti módszer működéséhez azonban implementálni kell a logikai kapukat is.
-Ezek az elemi kapuk esetében nem okoznak különösebb problémát, paraméterként át kell venni egy Q objektumot, melybe a változók együtthatói elmentésre kerülnek, és magukat a változókat azonosító neveket.
+Ezek az elemi kapuk esetében nem okoznak különösebb problémát, hiszen a korábbi fejezetben már megadtuk, hogy milyen együtthatókat kell használni, így az implementálásnál elég egyszerűen paraméterként átvenni egy Q objektumot, melybe a változók együtthatói elmentésre kerülnek, és magukat a változókat azonosító neveket, melyekre a logikai összefüggést alkalmazni akarjuk. A Q mátrix megfelelő mezőihez hozzáadjuk a korábban kiszámolt együtthatókat, és ezzel kész is vagyunk.
 
 \begin{lstlisting}[language=python,caption=Elemi kapuk,label=code:ElementaryGates]
 	
@@ -238,3 +245,5 @@ def xor_gate(Q, in1, in2, out1, out2):
 	Q[(in2,out2)] -= 8*p
 	
 \end{lstlisting}
+
+A több-bemenetű OR kapura is készítettem egy rövid függvényt, amely elvégzi az OR műveletet az összes bemenetére. Mindezt úgy végzi, hogy közben felépít egy bináris fát OR kapukból, időközben segédváltozókat behozva. Implementációját tekintve "oszd meg és uralkodj" elven működik, vagyis rekurzívan meghívja saját magát a paraméterként átadott tömb első-, illetve második felére, majd a kapott eredményekre alkalmazza az OR műveletet.

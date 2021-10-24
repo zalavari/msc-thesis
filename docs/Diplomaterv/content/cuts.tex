@@ -6,34 +6,34 @@
 %----------------------------------------------------------------------------
 
 
-Ebben a fejezetben különböző nehézségű vágási problémákat tekintek, illetve megvizsgálom, hogy miként fogalmazhatók meg valamilyen optimalizációs programként.
+Ebben a fejezetben különböző vágási problémákat tekintek, különös tekintettel a maximális, és a maximális-K-vágásra, illetve megvizsgálom, hogy miként fogalmazhatók meg valamilyen optimalizációs programként. Az egyik ötlet megvalósításához szükség van logikai kifejezések QUBO-ként való felírására is, ezért erre még egy teljes külön alfejezetet szánok a fejezet végén.
 
 \subsection{Jelölések}
 Ha máshogy nem jelzem, a továbbiak $G=(V,E)$ jelölje a gráfot, ahol szokásos módon $n=|V|$ és $m=|E|$. Jelölje továbbá $[k]$ az 1-től $k$-ig tartó egészek halmazát. $inf$ pedig egy elegendően nagy számkonstanst jelöljön.
 
-%----------------------------------------------------------------------------
-\section{Minimális vágás}
-%----------------------------------------------------------------------------
-
-\subsection{Kombinatorikus megoldással}
-
-Kombinatorikusan is "könnyen" megoldható feladat. Ha ismerünk két csúcsot $s, t$, melyeknek külön részbe kell kerülniük, akkor a feladat megoldható a jól ismert max-folyamot előállító algoritmussal. (Amennyiben nem ismerünk két ilyen csúcsot, akkor a gráf egy $s$ csúcsát fixálhatjuk, és az algoritmust lefuttatjuk minden $st$ párra.)
-
-\subsection{Lineáris programozással}
-%A probléma természetes módon felírható IP formában.
-%Sőt, belátható, hogy amennyiben a súlyok egészek, a relaxált feladatból is kinyerhető egy optimális megoldás. (Azt hiszem, még utána kell nézni.)
-
-\subsection{QUBO}
-
-A feladat felírható QUBO formában is. Az ötlet, hogy minden csúcsot jelöljünk egy $x_i$ bináris változóval, amelynek értéke mutatja, hogy az $i.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk minimalizálni.
-
-Ekkor persze a minimum az a triviális megoldás lenne, hogy minden csúcsot egy csoportba osztunk be. Vagyis azt kell elérni még, hogy egyik csoport sem üres.
-Ezt tudjuk kezelni, csakúgy mint a kombinatorikus esetben, azaz tegyük fel, hogy tudjuk egy $s$, $t$ csúcspárról, hogy nekik külön kell kerülniük. (Ha ezt nem tudjuk, akkor $s$ fixálásával $(n-1)$-szer kell futtassuk a megoldó algoritmust.)
-Ha $s$ és $t$ külön csoportba kell kerüljön, akkor feltehetjük, hogy $x_s=0$ és $x_t=1$. Vezessünk be büntető tagokat a célfüggvénybe, hogy ezt mindenképpen kikényszerítsük. (Megjegyzés: lényegtelen, hogy a változókra direkt módon, vagy a változók négyzetére szabjuk a büntetést.)
-
-\begin{align}
-	\min_{x} \left\{ \sum_ {\{i,j\}\in E(G)}{w_{ij}\cdot(x_i-x_j)^2} + x_s\cdot inf + (1-x_t)\cdot inf \right\}
-\end{align}
+%%----------------------------------------------------------------------------
+%\section{Minimális vágás}
+%%----------------------------------------------------------------------------
+%
+%\subsection{Kombinatorikus megoldással}
+%
+%Kombinatorikusan is "könnyen" megoldható feladat. Ha ismerünk két csúcsot $s, t$, melyeknek külön részbe kell kerülniük, akkor a feladat megoldható a jól ismert max-folyamot előállító algoritmussal. (Amennyiben nem ismerünk két ilyen csúcsot, akkor a gráf egy $s$ csúcsát fixálhatjuk, és az algoritmust lefuttatjuk minden $st$ párra.)
+%
+%\subsection{Lineáris programozással}
+%%A probléma természetes módon felírható IP formában.
+%%Sőt, belátható, hogy amennyiben a súlyok egészek, a relaxált feladatból is kinyerhető egy optimális megoldás. (Azt hiszem, még utána kell nézni.)
+%
+%\subsection{QUBO}
+%
+%A feladat felírható QUBO formában is. Az ötlet, hogy minden csúcsot jelöljünk egy $x_i$ bináris változóval, amelynek értéke mutatja, hogy az $i.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk minimalizálni.
+%
+%Ekkor persze a minimum az a triviális megoldás lenne, hogy minden csúcsot egy csoportba osztunk be. Vagyis azt kell elérni még, hogy egyik csoport sem üres.
+%Ezt tudjuk kezelni, csakúgy mint a kombinatorikus esetben, azaz tegyük fel, hogy tudjuk egy $s$, $t$ csúcspárról, hogy nekik külön kell kerülniük. (Ha ezt nem tudjuk, akkor $s$ fixálásával $(n-1)$-szer kell futtassuk a megoldó algoritmust.)
+%Ha $s$ és $t$ külön csoportba kell kerüljön, akkor feltehetjük, hogy $x_s=0$ és $x_t=1$. Vezessünk be büntető tagokat a célfüggvénybe, hogy ezt mindenképpen kikényszerítsük. (Megjegyzés: lényegtelen, hogy a változókra direkt módon, vagy a változók négyzetére szabjuk a büntetést.)
+%
+%\begin{align}
+%	\min_{x} \left\{ \sum_ {\{i,j\}\in E(G)}{w_{ij}\cdot(x_i-x_j)^2} + x_s\cdot inf + (1-x_t)\cdot inf \right\}
+%\end{align}
 
 
 %----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ A problémának ismert felírása egészértékű- illetve kvadratikus programoz
 
 \subsection{Lineáris programozással}
 
-Egész értékű felírható rá, ezúttal minden $\{i,j\} \in E(G)$ élre (pontosabban később látjuk majd, hogy minden csúcspárra) vezetünk be egy $d_{ij}$ bináris változót, melynek értéke akkor 1, ha az él benne van a vágásban. Ekkor a célfüggvényben világos, hogy azon élekre adjuk össze a súlyokat, melyek benne vannak a vágásban, és ezt szeretnénk maximalizálni.
+Egész értékű felírható rá, minden $\{i,j\} \in E(G)$ élre (pontosabban később látjuk majd, hogy minden csúcspárra) vezetünk be egy $d_{ij}$ bináris változót, melynek értéke akkor 1, ha az él benne van a vágásban. Ekkor a célfüggvényben világos, hogy azon élekre adjuk össze a súlyokat, melyek benne vannak a vágásban, és ezt szeretnénk maximalizálni.
 
 \begin{align}
 	\max_{d} \left\{ \sum_{\{i,j\}\in E(G)}{w_{ij}\cdot d_{ij}}\right\}
@@ -66,12 +66,13 @@ Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből
  d_{ij}+d_{ik}+d_{kj} \leq 2  
 \end{align}
 
-Érdemes pár szót ejteni a relaxált feladatról, ugyanis azzal 2-közelítő algoritmust kapunk. Ez persze egyáltalán nem biztos, hogy gyakorlatban is hasznos, hiszen egyszerű mohó algoritmussal is elérhető a 2-approximáció \cite{10.5555/1283383.1283390, POLJAK1994191}.
+Érdemes pár szót ejteni a relaxált, azaz az egészértékűségi kényszerek elhagyása után kapott feladatról. Ekkor egy lineáris programot kapunk, amely megoldható, viszont a változók értékeit még kerekíteni kell, hogy egészértékű megoldást kapjunk. Ezzel a módszerrel ugyanis egy 2-közelítő algoritmust kapunk. Ez persze egyáltalán nem biztos, hogy gyakorlatban is hasznos, hiszen ahogyan korábban említettem, egyszerű mohó algoritmussal is elérhető a 2-approximáció \cite{10.5555/1283383.1283390, POLJAK1994191}.
+Ugyanakkor, ahogyan azt is korábban kiemeltem, a legjobb közelítést mégis pont egy ehhez nagyon hasonló módszer, a szemidefinit programozás adja. TODO: forrás.
 
 
 \subsection{QUBO}
 
-QUBO-val természetesen felírható. Az élekre (csúcspárokra) felírt változók helyett, ismét csak a csúcsokra definiáljuk a bináris változóinkat. Csakúgy, mint a minimális vágás QUBO-ként felírt alakjában, annyi különbséggel, hogy ezúttal maximalizálni szeretnénk. Sőt, a helyzetünk ezúttal sokkal könnyebb, hiszen nincsenek elfajuló esetek, melyek esetén beállna a maximum, illetve további korlátok felvételére, így büntető tagok hozzávételére sincs szükség.
+QUBO-val természetesen módon felírható. Az élekre (csúcspárokra) felírt változók helyett, ismét csak a csúcsokra definiáljuk a bináris változóinkat. Csakúgy, mint a minimális vágás QUBO-ként felírt alakjában, annyi különbséggel, hogy ezúttal maximalizálni szeretnénk. Sőt, a helyzetünk ezúttal sokkal könnyebb, hiszen nincsenek elfajuló esetek, melyek esetén beállna a maximum, illetve további korlátok felvételére, így büntető tagok hozzávételére sincs szükség.
 
 \begin{align}
 	\max_{x} \left\{ \sum_{\{i,j\} \in E(G)}{w_{ij} \cdot (x_i-x_j)^2}\right\}
@@ -87,7 +88,8 @@ Ugyanez a négyzetes részt kibontva a következőképpen alakul:
 %----------------------------------------------------------------------------
 \section{Maximális K-vágás}
 %----------------------------------------------------------------------------
-
+\subsection{Kombinatorikus megoldás}
+TODO: mi maga a feladat? feladat nehézsége? stb.
 
 \subsection{Lineáris programozással}
 
@@ -110,9 +112,8 @@ A további korlátok pedig azt biztosítják, hogy a változók konzisztensek, a
 
 Egy ehhez nagyon hasonló (több korlátot igénylő) probléma felírása megtalálható az internetet, részletes indoklással \cite{Hojny2021}. 
 
-\subsection{Felírás QUBO-val}
+\subsection{QUBO-val (One-hot encoding)}
 
-\subsubsection{One-hot encoding}
 
 A maximális vágásnál a QUBO forma segítségével jelentősen le tudtuk csökkenteni a változók számát, hiszen nem kellett az élekre bevezetnünk változókat. Ezt a trükköt próbáljuk meg itt is.
 Vagyis a lineáris programhoz hasonlóan, a $x_{vi}$ változókat megtartjuk, az a tény pedig, hogy egy $uv$ él kettő különböző csoport között fut, egyértelműen következik, ha $x_{vi} \cdot x_{uj}=1$ valamely $i \neq j$ és $u \neq v$-re.
@@ -137,7 +138,7 @@ Fontos megjegyezni, hogy a korábban vázolt általános módszerhez képest, ez
 
 
 
-\subsubsection{Binary encoding}
+\subsection{QUBO-val (Binary encoding)}
 
 Más megoldást is megpróbáltunk keresni, amellyel a QUBO-t tovább egyszerűsíthetjük, a változók számát csökkenthetjük. Erre egy lehetséges irányzat, hogy azt, hogy a csúcs mely csoportba tartozik nem úgy kódoljuk, hogy minden csoport-csúcs párhoz egy bináris változót rendelünk, és a csúcs csoportját "one-hot" módon kódoljuk, hanem kifinomultabb módon, a csoport sorszámát binárisan kódoljuk le. Ennek előnye lehet, hogy így nem szükséges $n \cdot K$ darab bit, hanem elég volna $n \cdot \log K$, ráadásul a problémás korlátot, amely azért szükséges, hogy biztosítsuk, hogy egy csúcs pontosan egy csoportba kerüljön, ezt impliciten teljesítené. Motivációt ad egy friss kutatás, ahol ezt a módszert sikeresen alkalmazták kvantumgép esetében, bár ezt natív módon tették meg  \cite{fuchs2020efficient}. A mi kérdésünk, hogy vajon ezt meg lehet-e csinálni eggyel magasabb absztrakciós szinten, csupán QUBO felírást használva.
 
@@ -166,9 +167,6 @@ Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \
 Kellő számú változó bevezetésével, és azok behelyettesítésével természetesen a formula kvadratikus alakra hozható (úgymond kvadratizálható), de ez a konkrét esetben nem könnyű feladat. Bár mechanikusan elvégezhető, de nem ismert jó módszer erre a feladatra, amely az újonnan bevezetett változókra és a keletkező kvadratikus tagokra minimalizálna. Így a továbbiakban, bár az eredmény lényegében az előzővel azonos, egy másik szemléletet fogok alkalmazni, amely természetesebben adja, hogy hol és mennyi változó bevezetése szükséges.
 
 
-
-
-
 Annak jelölésére, hogy az $u$ és $v$ csúcsok különböző csoportokba kerülnek-e, használjuk a $D_{uv}$ bináris változót. Két egyedi bit összehasonlítására pedig $d_{uvi}$ változót definiáljuk, melynek jelentése, hogy az $x_u$ és $x_v$ számok $i.$ bitje különböző. $d_{uvi}$ így a XOR műveletének eredménye $x_{ui}$ és  $x_{vi}$-re alkalmazva.
 
 Mivel két szám pontosan akkor különböző, ha legalább egy helyiértékükön eltérnek, ezért a $D_{uv}$-t érdemes úgy előállítani, hogy minden bit különbözőségét OR kapcsolatba állítjuk.
@@ -177,34 +175,45 @@ Mivel két szám pontosan akkor különböző, ha legalább egy helyiértékük�
 	D_{uv} = \bigvee_{i \in [ \log K ] }{d_{uvi}}
 \end{align}
 
-
 \begin{align}
 	d_{uvi} = x_{ui} \oplus x_{vi}
 \end{align}
 
-Ha feltesszük, hogy a logikai kapuk által definiált relációk megvalósíthatók további változók bevezetése nélkül, akkor kiszámolható, hogy ezzel összesen hány változóra van szükségünk. A csoportok elkódolásához kell $n \cdot \log K$ db. Minden csúcspár összehasonlításához kell $\log K + 1$ darab, hiszen minden bitpárhoz kell egy, és végül maga a $D_{uv}$. Ez összesen $\binom{n}{2} \cdot ( \log K + 1 )$ változó.
+Ha feltesszük, hogy a logikai kapuk által definiált relációk megvalósíthatók további változók bevezetése nélkül, akkor kiszámolható, hogy ezzel összesen hány változóra van szükségünk. A csoportok elkódolásához kell $n \cdot \log K$ db. Minden csúcspár összehasonlításához kell $\log K + 1$ darab, hiszen minden bitpárhoz kell egy, és végül maga a $D_{uv}$. Így ez összesen $\binom{n}{2} \cdot ( \log K + 1 ) + n \cdot \log K$ változó.
 
-(Spórolhatnák, ha csak azokat a csúcspárokat néznénk, amelyek között fut él?)
+Valamennyit spórolhatunk, ha a gráf ritka, és ezáltal csak azokat a csúcspárokat hasonlítjuk, melyek között fut él. Ekkor ha az élek száma $m$, akkor $m \cdot ( \log K + 1 ) + n \cdot \log K$ változó szükségeltetik.
 
-A valóságban ráadásul még ennél is több segédváltozó szükségeltetik. Mint ahogyan a következő fejezetben látni fogjuk a XOR kapu megvalósításához egy további segédváltozót igénybe kell venni, és $\log K$ darab bitre alkalmazott OR művelet sem megy egy lépésben. Itt egymás után láncolt, vagy bináris fában felépített OR kapukkal érhető el a kívánt eredmény, amely további $\log K -1$ változót igényel, bár ebben már benne van maga a $D_{uv}$ is. Ez így minden csúcspárnál $2\log K - 1$
- változót jelent, vagyis összesen $\binom{n}{2} \cdot (2\log K -  1 )$.
+\subsection{A két felírás összehasonlítása}
+
+A bináris elkódolás módszerével kapott változószám első közelítésre mindenképpen rosszabb, mint a másik felírásban kapott $n \cdot K$, hiszen $n$ legalább akkora, de tipikusan jóval nagyobb, mint $K$, így a $\binom{n}{2}$ tényező (vagy az $m$) várhatóan önmagában is nagyobb lesz, mint $n \cdot K$.
+
+A valóságban ráadásul sajnos még ennél is több segédváltozó szükségeltetik. Mint ahogyan a következő alfejezetben látni fogjuk a XOR kapu megvalósításához egy további segédváltozót igénybe kell venni, és $\log K$ darab bitre alkalmazott OR művelet sem megy egy lépésben. Itt például egymás után láncolt, vagy bináris fában felépített OR kapukkal érhető el a kívánt eredmény, amely további $\log K -1$ változót igényel, bár ebben már benne van maga a $D_{uv}$ is. Ez így minden csúcspárnál $3\log K - 1$ változót jelent, vagyis összesen $\binom{n}{2} \cdot (3\log K -  1 ) + n \cdot \log K$ változóra van szükség.
  
-Ez így végeredményben sokkal rosszabb, mint a másik felírásban kapott $n \cdot K$, hiszen $n$ legalább akkora, de tipikusan jóval nagyobb, mint $K$.
+Térjünk át a korábban definiált változók gráfjára, és vizsgáljuk a továbbiakban azt.
+Itt a maximum fokszám szempontjából is érdemes lehet elemezni az eredményt, azaz egy változó legfeljebb hány másik változóval van kapcsolatban. A segédváltozók fokszáma többnyire kicsi, hiszen csak néhány másikkal állnak kapcsolatban, viszont a csoportot elkódoló változókra ez már nem igaz, hiszen egy $x_{ui}$ változó kapcsolatban lesz a $d_{uvi}$ és $x_{vi}$,  változókkal, minden $v \neq u$-ra. Így ezen változók fokszáma az eredeti gráf csúcsszámának kétszeresével egyenlő. (Valójában ennél még rosszabb a helyzet, mert ahogyan korábban említettem, a XOR kapu implementálásánál bejön még egy segédváltozó, amely miatt a csúcsszám háromszorosa lesz a maximum fokszám.)
  
-A maximum fokszám szempontjából is érdemes lehet elemezni az eredményt, azaz egy változó legfeljebb hány másik változóval van kapcsolatban. A segédváltozók fokszáma többnyire kicsi, hiszen csak néhány másikkal állnak kapcsolatban, viszont a csoportot elkódoló változók a gráf csúcsszámával azonos szomszéddal rendelkeznek, hiszen egy $x_{ui}$ változó kapcsolatban lesz a $d_{uvi}$ és $x_{vi}$,  változókkal, minden $v \neq u$-ra. Így ezen változók fokszáma a gráf csúcsszámának kétszeresével egyenlő. (Valójában ennél még rosszabb a helyzet, mert a XOR kapu implementálásánál bejön még egy segédváltozó, amely miatt a csúcsszám háromszorosa lesz a maximum fokszám.)
- 
-A másik felírásban, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így a változók gráfja, egy $n \cdot K$ csúcsú teljes gráf, tehát a maximum fokszám  $n \cdot K -1$. Ez bár rosszabb, mint a bináris felírással adott megoldás, ugyanakkor itt egy nagy teljes gráfról beszélhetünk, amíg a bináris felírásnál, egymástól függetlenül megjelenik egy $\log K$ darab $n$ méretű teljes részgráf, melyek egy bonyolultabb struktúrán keresztül csatlakoznak.
+A másik felírásban, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így ott a változók gráfja, egy $n \cdot K$ csúcsú teljes gráf, tehát a maximum fokszám  $n \cdot K -1$. Ez bár rosszabb, mint a bináris felírással adott megoldás, ugyanakkor itt egy nagy teljes gráfról beszélhetünk, amíg a bináris felírásnál, egymástól függetlenül megjelenik egy $\log K$ darab $n$-nel arányos méretű teljes részgráf, (minden helyiértékre 1 darab) melyek egy bonyolultabb struktúrán keresztül csatlakoznak egymáshoz.
+
+A két felírás különbségeit az alábbi táblázat foglalja össze:
+TODO
+
+
   
- 
+
+\section{Logikai kapuk megvalósítása}
+
+A korábbi fejezetben előkerülő részprobléma volt, hogy bizonyos logikai függvényeket szeretnénk megvalósítani QUBO segítségével. Ez egy általánosabb probléma, mint ahogyan a konkrét példában alkalmaztuk, így a probléma motivációját nem csak ez a konkrét feladat adja. Nagyon egyszerű példa, hogy ha feltudunk írni tetszőleges logikai kifejezést QUBO segítségével, akkor az választ adhat például a kielégíthetőség kérdésére, amely egy közismert NP-teljes probléma.(TODO: forrás?)
 
 
-\subsubsection{Logikai kapuk megvalósítása}
+Ennek tudatában, a következő részben szeretném áttekinteni a leggyakrabban előforduló logikai kapukat, és hogy azok miként valósíthatók meg QUBO-val. Valójában logikai kapu alatt jelen esetben csupán azt értjük, hogy változók közötti valamilyen reláció mindig teljesüljön. Tehát pl. ha az AND kapu bemenete $x$ és $y$, kimenete pedig $z$, akkor elvárható, hogy az $x \wedge y = z$ logikai kifejezés mindig teljesüljön. Így általános elv, hogy a logikai kapuk megvalósításánál igazából arra törekszünk, hogy a változók helyes konfigurációi mellett egy adott értékű, praktikusan 0-t adó kifejezést konstruáljunk, amíg minden más, nem megengedett változóbehelyettesítés mellett a kifejezés értéke ennél nagyobb legyen. Ekkor minimalizálás esetén biztosak lehetünk, hogy a minimumhely ott van, ahol minden logikai kapunak megfelelő változóbehelyettesítést kapunk. A kifejezést természetes megszorozhatjuk egy kellően nagyra választott konstanssal, így biztosak lehetünk, hogy a büntetés értéke elég nagy lesz.
 
-A következő részben szeretném áttekinteni a leggyakrabban előforduló logikai kapukat, és hogy azok miként valósíthatók meg QUBO-val. Valójában logikai kapu alatt jelen esetben csupán azt értjük, hogy változók közötti valamilyen reláció mindig teljesüljön. Tehát pl. ha az AND kapu bemenete $x$ és $y$, kimenete pedig $z$, akkor elvárható, hogy az $x \wedge y = z$ logikai kifejezés mindig teljesüljön. Így általános elv, hogy a logikai kapuk megvalósításánál igazából arra törekszünk, hogy a változók helyes konfigurációi mellett egy adott értékű, praktikusan 0-t adó kifejezést konstruáljunk, amíg minden más, nem megengedett változóbehelyettesítés mellett a kifejezés értéke ennél nagyobb legyen. Ekkor minimalizálás esetén biztosak lehetünk, hogy a minimumhely ott van, ahol minden logikai kapunak megfelelő változóbehelyettesítést kapunk. A kifejezést természetes megszorozhatjuk egy kellően nagyra választott konstanssal, így biztosak lehetünk, hogy a büntetés értéke elég nagy lesz.
 Nyilvánvalóan, ha önmagának ellentmondó kombinációs hálózatot képzünk le így, akkor nem lehet majd minden büntetésként megfogalmazott korlátot teljesíteni, és az optimum sem lesz ennek megfelelő.
 Ahogyan tehát az előbb is kiderült, itt lényegében csak arról van szó, hogy változók bizonyos konfigurációt szeretnénk csak megengedni, ezért a logikai kapukra is jobb így tekinteni, és nem mint olyan elemek vagy függvények, melyeknek adott bemenete(i) és arra adott kimenete(i) van.
 
-"Azonos kapu" ($x=y$)
+\subsection{Elemi kapuk}
+
+\subsubsection{"Azonos kapu" ($x=y$)}
+
 
 Első ilyen "kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonosság. (Nem mint eldöntendő logikai kifejezés, hanem mint értékadás.) Igazából nem is kapu, hanem a fizikai interpretációja a vezeték vagy a buffer volna. Azt már láttuk korábban, hogy két bináris változóról hogyan lehet eldönteni, hogy ők különbözőek-e, ehhez csak a különbségük négyzetösszege kell. Természetesen itt is elég ennyi, ekkor a megfelelő büntetőtagot ezzel a kifejezéssel szorozhatjuk. Tehát amennyiben azt szeretnénk elérni, hogy $x$ és $y$ változóink azonos értékkel bírjanak, a következő kifejezést kell használnunk a célfüggvényben:
 
@@ -229,7 +238,7 @@ Első ilyen "kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonoss
 	\label{tab:SAMEgate}
 \end{table}
 
-NOT kapu ($x= \neg y$)
+\subsubsection{NOT kapu ($x= \neg y$)}
 
 A következő hasonlóan egyszerű eset a nem-egyenlőség esete. Ha azt szeretnénk leírni, hogy az $x$ bináris változó nem egyenlő az $y$ értékével, ez könnyen megkapható az előző esetből, hiszen akkor 1 értéket kaptunk a rossz, és 0-t a jó esetekben, így csak ezt kell logikailag negálnunk. Vagyis a konstans 1-ből kivonni az így kapott kifejezésünket.
 
@@ -258,7 +267,7 @@ A következő hasonlóan egyszerű eset a nem-egyenlőség esete. Ha azt szeretn
 
 Mivel két változóra felírható összefüggéseket ezzel nagyjából kimerítettük, hiszen két bináris változó vagy azonos vagy különböző értéket vesz fel, ezért nézzük meg néhányat a klasszikus értelemben vett logikai kapuk közül, melyeknél általában, de minden esetben legalább 3 változó szerepel.
 
-AND kapu ($x \wedge y = z$)
+\subsubsection{AND kapu ($x \wedge y = z$)}
 
 Mivel két változóra felírható összefüggéseket az előző két esettel lényegében kimerítettük, hiszen két bináris változó vagy azonos, vagy különböző értéket vesz fel, ezért nézzük meg néhányat a klasszikus értelemben vett logikai kapuk közül, melyeknél általában, (de minden esetben legalább) 3 változó szerepel.
 
@@ -294,7 +303,7 @@ Fontos megfigyelni azt a korábban kiemelt tényt, hogy itt is lényeges, hogy a
 	\label{tab:ANDgate}
 \end{table}
 
-OR kapu ($x \vee y = z$)
+\subsubsection{OR kapu ($x \vee y = z$)}
 
 Az AND kapu mellett a másik alapvető logikai kapu az OR kapu. Ez persze a De Morgan azonosság szerint felírható csupán az AND és a NOT kapu használatával, azonban ez plusz változókat hozna be. Az OR kaput direkt módon is fel tudjuk írni a következő kifejezéssel: 
 
@@ -324,17 +333,38 @@ Az AND kapu mellett a másik alapvető logikai kapu az OR kapu. Ez persze a De M
 	\label{tab:ORgate}
 \end{table}
 
-NOR kapu ($x \vee y = \neg z$)
+\subsubsection{NOR kapu ($x \vee y = \neg z$)}
 
 A NOR kaput megkaphatjuk az OR kapu kimeneti változójának negálásával, azonban ez plusz egy változót kellene jelentsen. Ehelyett direkt módon próbáljuk meg felírni a kifejezést. Használhatnánk a NOT kapunál látott logikai negálást, azonban amíg ott az kifejezés értékkészlete is bináris volt, ezúttal a kifejezés akár a $3$-at is felveheti értékként. Ennek ellenére a NOR kapu kifejezése majdnem valóban az OR logikai negáltja lesz, csupán az $xy$ szorzat együtthatója változatlan marad.
 
 
 \begin{align}
 	1-(x+y)-z+2(x+y)z+xy = \\
-	 -x-y-z+2xz+2yz+xy
+	 1-x-y-z+2xz+2yz+xy
 \end{align}
 
-XOR kapu ($x \oplus y = z$)
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{ c c c c }
+		\toprule
+		x & y & z & büntetés \\
+		\midrule
+		0 & 0 & 0 & 1 \\
+		0 & 0 & 1 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 1 & 1 & 1 \\
+		1 & 0 & 0 & 0 \\
+		1 & 0 & 1 & 1 \\
+		1 & 1 & 0 & 0 \\
+		1 & 1 & 1 & 3 \\		
+		\bottomrule
+	\end{tabular}
+	\caption{NOR kapu}
+	\label{tab:NORgate}
+\end{table}
+
+\subsubsection{XOR kapu ($x \oplus y = z$)}
 
 Ahogyan korábban ez előtérbe került a "két szám bináris felírása különböző-e" kérdéskörben, nagyon hasznos lenne egy KIZÁRÓ VAGY vagy XOR kapu is. Közismert, hogy csupán az AND és a NOT segítségével is felírható bármely Boole függvény, így ezek tetszőleges kombinálásával természetesen a XOR is.
 Ha megpróbáljuk direkt módon, csupán 3 változó segítségével felírni, problémába ütközünk, mivel ez nem lehetséges. Ezt a tényt alább bizonyítom, mely egyben ad egy általános módszert is, hasonló problémák felírására.
@@ -410,7 +440,7 @@ Ekkor a kifejezésünket megkonstruálhatjuk, hogy már a korábban látott mód
 
 Ezáltal minden alapvető logikai kaput le tudunk írni QUBO alakkal, és a XOR kapu 3 változóval történő felírásának bizonyításánál egy általános módszert is kaptunk további, összetettebb kapuk implementálására, amellett, hogy természetesen az alapszintű kapukból is megkonstruálhatunk tetszőleges kombinációs hálózatot.
 
-Sokbemenetű OR kapu ($x \vee y \vee z = t$)
+\subsubsection{Sokbemenetű OR kapu ($x \vee y \vee z = t$)}
 
 Korábban részfeladatként került elő, sokbemenetű OR kapu előállítása. Ekkor arra hivatkoztam, hogy ez csak több OR kapu kaszkádosításával érhető el. Az alább közlök egy, az előbb látotthoz hasonló bizonyítást, mely szerint nem létezhet QUBO alakban felírt 3 bemenetű OR kapu, segédváltozó használata nélkül.
 
@@ -451,3 +481,5 @@ Mivel $0=0 \vee 0 \vee 0$ igaz, ezért $C=0$, így a továbbiakban ezt a konstan
 A táblázatban 4. és 6. egyenleteket kivonva a 8.-ból következik az $A_{yz}=A_{t}$ azonosság. Hasonlóan, szimmetria okok miatt is, a 4. 10. 12. egyenletekből következik $A_{xz}=A_{t}$ illetve 6. 10. 14. egyenletekből következik $A_{xy}=A_{t}$.
 
 Ezeket behelyettesítve a 16. egyenletbe $A_{x}+A_{y}+A_{z}+4A_{t}+A_{xt}+A_{yt}+A_{zt}=0$ adódik. Melyből kivonva a 4. 6. és 10. egyenleteket, $A_{t}=0$ következik. Ez persze ellentmondásba kerül a 2. egyenlőtlenséggel, tehát az indirekt feltevésünk hibás, vagyis valóban nem lehet segédváltozó nélkül 3 bemenetű OR kaput definiálni QUBO segítségével.
+
+Azt látjuk tehát, hogy 3 bit OR kapcsolatba állításához szükség van legalább 2 segédváltozóra, melyből egyik az eredmény. Ez el is érhető például úgy, hogy az első két bit-re kiszámítjuk az OR értékét, majd az így kapott segédváltozóra újra alkalmazzuk az OR operátort, így megkapjuk az eredményt. Ebből persze nem következik triviálisan, hogy $k$ darab bit OR kapcsolatba állításához mindig további $k-1$ segédváltozóra van szükség, de hirtelen úgy tűnik, hogy ennél jobbat nem lehet csinálni.
