@@ -26,7 +26,7 @@
   \bibEarlyBegin
 \else \let\bibEarlyEnd\relax \fi
 
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \frenchspacing
 \makeatletter
 \global\def\bibIE@lowc{%
@@ -150,10 +150,32 @@ Svatopluk Poljak\bibAnd 1Zsolt Tuza:
 \bibUrll{URL}
   >https://www.sciencedirect.com/science/article/pii/016763779490068X>.
 
+\bibitem{algoritmusokBook}
+Lajos Rónyai\bibAnd 0Gábor Ivanyos\bibAnd 2Réka Szabó:
+\bibNewBlock {\em Algoritmusok}.
+\bibNewBlock 2008, Typotex.
+
+\bibitem{DWaveOceanBQM}
+D-Wave Systems:
+\bibNewBlock {D-Wave Concepts BQM}.
+\bibNewBlock \url{https://docs.ocean.dwavesys.com/en/stable/concepts/bqm.html}.
+
+\bibitem{DWaveOceanQbsolv}
+D-Wave Systems:
+\bibNewBlock {D-Wave Ocean qbsolv documentation}.
+\bibNewBlock \url{https://docs.ocean.dwavesys.com/projects/qbsolv}.
+
 \bibitem{DWaveOcean}
 D-Wave Systems:
 \bibNewBlock {D-Wave Ocean Software Documentation}.
 \bibNewBlock \url{https://docs.ocean.dwavesys.com/}.
+
+\bibitem{Szabo}
+Dániel Szabó:
+\bibNewBlock Kvantuminformatika és gépi tanulás.
+\bibNewBlock
+  \url{https://diplomaterv.vik.bme.hu/hu/Theses/Kvantuminformatika-es-gepi-tanulas},
+  2018.\ 12.
 
 \bibitem{enwiki:1020700695}
 {Wikipedia contributors}:

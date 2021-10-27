@@ -23,7 +23,8 @@
 \newcommand{\vikkonzulensCVezeteknev}{}
 \newcommand{\vikkonzulensCKeresztnev}{}
 
-\newcommand{\vikcim}{Módszerek közel optimális vágások keresésére} % Cím
+%\newcommand{\vikcim}{Módszerek közel optimális vágások keresésére} % Cím
+\newcommand{\vikcim}{Kvadratikus optimalizálás kvantum alapú számítógéppel} % Cím
 \newcommand{\viktanszek}{\bmeszit} % Tanszék
 \newcommand{\vikdoktipus}{\msc} % Dokumentum típusa (\bsc vagy \msc)
 \newcommand{\vikmunkatipusat}{diplomatervet} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
@@ -37,6 +38,8 @@
 % Settings for English documents
 %\input{include/thesis-en}
 
+
+
 \input{include/preamble}
 
 %--------------------------------------------------------------------------------------
@@ -46,18 +49,19 @@
 
 \pagenumbering{gobble}
 
-
 \selectthesislanguage
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\include{include/titlepage}		   % Szakdolgozat/Diplomaterv címlap
-%\include{include/titlepage-tdk}	% TDK címlap
+%\include{include/titlepage}		   % Szakdolgozat/Diplomaterv címlap
+\include{include/titlepage-tdk}	% TDK címlap
 %\include{include/titlepage-otdk}   % OTDK címlap
 
 
 % Table of Contents
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \tableofcontents\vfill
+
+\pagenumbering{arabic}
 
 
 % Declaration and Abstract
@@ -68,13 +72,14 @@
 
 % The main part of the thesis
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\pagenumbering{arabic}
+
 
 %TODO import your own content
 \include{content/introduction}
 \include{content/optimalization}
 \include{content/cuts}
 \include{content/cutsinpractice}
+\include{content/summary}
 
 
 

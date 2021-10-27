@@ -2,11 +2,18 @@
 \chapter{\bevezetes}
 %----------------------------------------------------------------------------
 
-Gráfokon vágások keresése a (számítógép)hálózatok megjelenése óta egy sokat kutatott tématerület.
+A kvadratikus programozás a lineáris programozásnál egy általánosabb technika, hiszen megengedi négyzetes tagok jelenlétét a célfüggvényben. Ezzel az alkalmazások körét jóval kibővíti, ugyanakkor az általános feladat megoldása sokkal nehezebbé válik.
 
-A polinom időben megoldható problémáktól, mint az egyszerű minimális vágás, a még közelítéssel
-is nehezen kezelhető problémákig, mint a maximális vágás, széles a paletta. Ezáltal nem csak az elméleti eredmények érdekesek, hanem az alkalmazási területek is rendkívül sokrétűek. Például egy
-klaszterezési probléma is megfogalmazható vágás kereséseként, ha az adatokat gráffal reprezentáljuk, úgy hogy az adatpontok a gráf csúcsai, az élek súlyát pedig valamilyen hasonlósági metrikából kapjuk. Ekkor a gráf k részre való vágása egy k klasztert előállító algoritmus.
+Ez a fajta optimalizációs technika többek között azért is érdekes és hasznos, mert ha a változók binárisak és nincsenek további korlátjaink, akkor a probléma megoldásához felhasználható egy kvantumállapotokat használó számítógép, ezzel remélhetőleg jelentősen csökkentve az optimalizáláshoz szükséges időt. A szakirodalom egyszerűen csak QUBO (Quadratic Unconstrained Binary Optimization) néven hivatkozik erre a fajta felírásra.
 
-A munkában először bemutatok általános optimalizációs technikákat, ezután több különböző vágási problémát vizsgálok meg, és elemzem, hogy milyen módon lehet az optimalizációs technikákat alkalmazni.
-A munka végén pedig a gyakorlati eredményeket és tapasztalatokat gyűjtöm össze.
+Gráfokon vágások keresése a (számítógép)hálózatok megjelenése óta egy sokat kutatott tématerület. A polinom időben megoldható problémáktól, mint az egyszerű minimális vágás, a még közelítéssel is nehezen kezelhető problémákig, mint a maximális vágás, széles a paletta. Ezáltal nem csak az elméleti eredmények érdekesek, hanem az alkalmazási területek is rendkívül sokrétűek. Például egy klaszterezési probléma is megfogalmazható vágás kereséseként, ha az adatokat gráffal reprezentáljuk, úgy hogy az adatpontok a gráf csúcsai, az élek súlyát pedig valamilyen hasonlósági metrikából kapjuk. Ekkor a gráf k részre való vágása egy k klasztert előállító algoritmus.
+
+A munkában először bemutatok általános optimalizációs technikákat, ezután maximális vágással kapcsolatos problémákat vizsgálok meg, és elemzem, hogy milyen módon lehet az optimalizációs technikákat alkalmazni. Ezekre többféle QUBO felírást is adok, melyeket elméleti és gyakorlati szempontból is összehasonlítóan elemzek. Az elkészített formulákat több szempontból elemzem, például a legegyszerűbb ilyen összehasonlítási metrika a felhasznált változók száma.
+
+A QUBO-k optimalizálásához főként a D-Wave Ocean nevű programcsomagját használtam fel, mely több lehetőséget kínál a formulák megoldására. A klasszikus megoldók mellett lehetőség van például valódi, a D-Wave Systems által forgalmazott kvantumszámítógépeket is használni, vagy a klasszikus és kvantum eljárásokat hibrid módon ötvözni.
+
+Összehasonlítom a különböző lehetőségekből adódó módszereket azok eredményessége és hatékonysága alapján.
+Természetesen a kapott eredményeket összevetem más, klasszikus heurisztikus megoldók használatával is.
+Így a munka végén a gyakorlati eredményeket gyűjtöm össze.
+
+A munka jelentős részét tette ki számos tapasztalat gyűjtése a D-Wave-es programcsomaggal kapcsolatban, hiszen a terület újdonságából kifolyólag az elérhető dokumentációk meglehetősen limitáltnak bizonyultak.

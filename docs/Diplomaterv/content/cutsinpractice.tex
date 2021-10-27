@@ -21,18 +21,39 @@ A helyes konfiguráció után van lehetőségünk a korábban bemutatott QUBO mo
 
 A szimulált kvantumgépen való megoldás mellett két fő iránya van a D-Wave számítógépek használatának. Ebből az egyik a direkt módon beágyazása a problémának kvantumszámítógépre, a mások pedig egy hibrid megoldót használ, mely klasszikus optimalizációkat is végez.
 
-A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú volt a beágyazás, és időnként túl sokat kellett kvantum erőforrásra várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
+A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú volt a beágyazás, és időnként túl sokat kellett kvantum erőforrásra is várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
 
-A D-Wave rendszer esetén a QUBO megadására a Python collections könyvtárának defaultdict osztályát használom, ahol kulcsként adom meg a változópárt, amelyen a kapcsolatban állnak, értékként pedig a szorzatukhoz tartozó együtthatót.
-
+A D-Wave rendszer esetén a QUBO megadására a Python collections könyvtárának defaultdict osztályát használom, ahol kulcsként adom meg a változópárt, amelyen a kapcsolatban állnak, értékként pedig a szorzatukhoz tartozó együtthatót. Mivel elsődlegesen a D-Wave-et használom, mint megoldószoftvert, így a példakódokban is így konstruálom meg a QUBO-t, azaz, egy Q defaultdict osztályt használok.
 
 
 A QUBO-kat, és általánosságban a kvadratikus programozási feladatokat persze más, klasszikus megoldóprogramokkal is megoldathatjuk. A D-Wave maga is publikál egy qbsolv nevű csomagot, melyen kvantum erőforrások használata nélkül is lehetőség van a QUBO megoldására. A dokumentáció szerint ez képes megtalálni nagy QUBO problémák optimumát, a probléma részproblémákká bontásával, miközben egy klasszikus megoldót használ, amely a tabu algoritmust futtatja \cite{DWaveOceanQbsolv}. 
 
 Egy kereskedelmi forgalomban lévő, egyik piacvezető lineáris programozás megoldó szoftver a Gurobi, melynek bár nem fő iránya a kvadratikus programok megoldása, ezeket is támogatja \cite{gurobi}. 
 
-Sajnos az eredmények viszont itt sem voltak biztatóak, viszonylag kevés változószámnál is reménytelennek tűnt például egy QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. 
+Sajnos az eredmények viszont itt sem voltak biztatóak, viszonylag kevés változószámnál is reménytelennek tűnt egy általános QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. Az akadémia licenc igénylése kutatási célokra ugyan egyszerűen működik, ezek a licencek nem kompatibilisek konténerizált környezetekel, így a Colaboratory-ban sem használhatók. Egy viszonylag új licencelési módszer a Web License Service (WLS) használata, azonban bár a konfiguráció egyszerű, megfelelő dokumentáció hiányában, napok munkája volt ezt megfelelően elvégezni.
 
+Ha mindent jól beállítottunk, akkor például a korábban elkészített Q szótárat is átkonvertálhatjuk Gurobi modellé, és megoldhatjuk a problémát, így kapva egy QUBO megoldót. Persze, érdemes észben tartani, hogy a Gurobi nem fő profilja a kvadratikus optimalizálás, és ha lehet, akkor érdemes korlátként hozzávenni a kényszereket, ahelyett, hogy azokat a büntetőtagokként a célfüggvénybe fogalmaznánk bele. Alább látható egy példakód, amellyel a már felépített QUBO-t tudjuk megoldani, végeredményként ugyanolyan típúsú look-up-table (lut)-t kapva, amelyet a D-Wawe válaszából is ki tudunk nyerni. Azaz a lut i. eleme megmondja, hogy az i. változó értéke 0 vagy 1.
+
+
+\begin{lstlisting}[language=python,caption=Max-cut QUBO,label=code:solveQUBOWithGurobi]	
+def solveQUBOWithGurobi(Q):
+	model = gp.Model('ModelFromQUBO', env=gurobiEnv)
+	X = defaultdict(lambda: model.addVar(vtype=GRB.BINARY))
+	expr = gp.QuadExpr()
+	for ((u, v), w) in Q.items():
+		expr.add(w*(X[u]*X[v]))
+	
+	model.setObjective(expr, GRB.MINIMIZE)
+	
+	model.optimize()
+	
+	lut = dict()
+	for var in sorted(X):
+		lut[var]=X[var].X
+	
+	return lut
+	
+\end{lstlisting}
 
 
 \section{Gráf generálása}
@@ -96,6 +117,22 @@ A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetj�
 \end{lstlisting}
 
 
+Az egyszerű maximális vágásra felírt QUBO-t szinte minden megoldó szoftver jól kezelte. Nagy bemenetekre is általában pontos eredményt kaptunk vissza. A leglassabb megoldónak a Gurobi bizonyult, de a képet árnyalja, hogy az ő szoftverük pontosan megkeresi az optimum értékét. Így bár viszonylag hamar megtalál egy optimumhoz nagyon közeli értéket, vagy akár magát az optimumot, a primál feladatból készített duális megoldása sokáig tart neki. Így érdemes lehet befolyásolni a megoldót, hogy ne pontos megoldást keressen, hanem megengedjük egy bizonyos hibaszázalékot.
+
+A TODO táblázat, illetve \refstruc{fig:maxCutQUBO} foglalja össze a különböző módszerekkel kapott futásidőket.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxCutQUBO.png}
+	\caption{Futásidők a max-vágás QUBO megoldására}
+	\label{fig:maxCutQUBO}
+\end{figure}
+
+TODO: a grafikont még alakítom + eredmények elemzése
+Hasonló grafikonokat képzelek a max-vágás témaköréhez is.
+
+A diagramcím mindkét helyen szerepeljen?
+
 %----------------------------------------------------------------------------
 \section{Maximális K-vágás (one-hot encoded)}
 %----------------------------------------------------------------------------
@@ -135,7 +172,13 @@ for u in range(K*N):
 			Q[(u*K+i,u*K+j)] += inf
 \end{lstlisting}
 
-A maximális K-vágásra pár futásidőt szemléltetően, egy táblázatot készítettem néhány gráfra. A táblázat első két sorában a $K=2$ eset miatt, az egyszerű maximális vágásnál látott módon oldottam meg, amíg a 3-4. sorban az általános K-vágást alkalmaztam ugyanarra a gráfra. A gráfoknál $p=0.95$ és $q=0.05$ paramétereket használtam, így ezeket nem jelöltem külön.
+Mivel úgy éreztem, hogy a korlátok célfüggvénybe való beleerőltetése nem előnyös akkor, ha a megoldóprogram amúgy támogatja korlátok megadását is, így a Gurobi-t nem csak a nyers QUBO megoldására használtam, hanem felhasználtam a korlátokat külön hozzáadva, és csak a ténylegesen optimalizálandó részeket célfüggvényként megadva. Ezzel várhatóan jobban teljesítsen... TODO
+
+
+TODO: az alábbi szöveget és táblázatot 
+frissíteni az új mérésekre vonatkozólag:
+
+A maximális K-vágásra pár futásidőt szemléltetően, egy táblázatot készítettem néhány gráfra. A táblázat első két sorában a $K=2$ eset miatt, az egyszerű maximális vágásnál látott módon oldottam meg, amíg a 3-4. sorban az általános K-vágást alkalmaztam ugyanarra a gráfra. A gráfoknál $p=0.9$ és $q=0.1$ paramétereket használtam, így ezeket nem jelöltem külön.
 
 A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Mindezért csak közelítőleg másodperces pontosságot használtam.
 
@@ -246,4 +289,34 @@ def xor_gate(Q, in1, in2, out1, out2):
 	
 \end{lstlisting}
 
-A több-bemenetű OR kapura is készítettem egy rövid függvényt, amely elvégzi az OR műveletet az összes bemenetére. Mindezt úgy végzi, hogy közben felépít egy bináris fát OR kapukból, időközben segédváltozókat behozva. Implementációját tekintve "oszd meg és uralkodj" elven működik, vagyis rekurzívan meghívja saját magát a paraméterként átadott tömb első-, illetve második felére, majd a kapott eredményekre alkalmazza az OR műveletet.
+A több-bemenetű OR kapura is készítettem egy rövid függvényt, amely elvégzi az OR műveletet az összes bemenetére. Mindezt úgy teszi, hogy közben felépít egy bináris fát OR kapukból, időközben segédváltozókat bevezetve. Implementációját tekintve "oszd meg és uralkodj" elven működik, vagyis rekurzívan meghívja saját magát a paraméterként átadott tömb első-, illetve második felére, majd a kapott eredményekre alkalmazza az OR műveletet.
+
+\begin{lstlisting}[language=python,caption=Elemi kapuk,label=code:MultipleOrGates]
+	
+def or_gate_list(Q, in1, out):
+	length = len(in1)
+	if (length==1):
+	same(Q, in1[0], out)
+	return
+	
+	half = length // 2
+	out1 = out +"_0-" +str(half)  
+	out2 = out +"_" +str(half) + "-" +str(length)
+	or_gate_list(Q, in1[:half], out1)
+	or_gate_list(Q, in1[half:], out2)
+	or_gate(Q, out1, out2, out)
+	
+\end{lstlisting}
+
+Illetve segédfüggvényként létrehoztam még egy bitenkénti XOR műveletet végző függvényt, mely csak annyit csinál, hogy a bemenetként kapott két listára elempáronként alkalmazza a korábban definiált \verb+xor_gate+ függvényt.
+
+\begin{lstlisting}[language=python,caption=Elemi kapuk,label=code:XorGateList]
+	
+def xor_list(Q, in1, in2, out1, out2):
+	for i in range(len(in1)):
+		xor(Q, in1[i], in2[i], out1[i], out2[i])
+	
+\end{lstlisting}
+
+\subsection{Maximális-K-vágások összehasonlítása}
+
