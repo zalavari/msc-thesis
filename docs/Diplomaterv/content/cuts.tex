@@ -2,7 +2,7 @@
 % !TeX encoding = UTF-8
 
 %----------------------------------------------------------------------------
-\chapter{Problémák formalizálása}
+\chapter{Problémák formalizálása}\label{chap:cuts}
 %----------------------------------------------------------------------------
 
 
@@ -40,12 +40,12 @@ TODO: Az $inf$-et a jövőben inkább kicserélném $P$-re.
 
 
 %----------------------------------------------------------------------------
-\section{Maximális vágás}
+\section{Maximális vágás}\label{sec:theoryMaxCut}
 %----------------------------------------------------------------------------
 
 A maximálás vágás problémája arra keresi a választ, hogy (élsúlyozott) $G$ gráfban miként lehet szétosztani a csúcsokat két halmazra, aszerint, hogy azon élek összsúlya, amelyek végpontjai különböző halmazokba kerültek, maximális legyen. A problémának több változata is ismert és kutatott, ennek a dolgozatnak a keretében a pozitív valós élsúlyokkal ellátott esetet vizsgáljuk, amely kellően általános. Ennek nagyon speciális esete, ha minden élsúly $1$ értékű, hiszen ekkor elég az elvágott élek számára maximalizálni. Ezt a problémát ismerhetjük még maximális páros részgráf néven is, amely, bár az általános problémánál sokkal speciálisabb, még mindig NP-nehéz annak az eldöntése is, hogy adott gráfban létezik-e, $e$ élű páros részgráf.
 
-\subsection{Kombinatorikus megoldás}
+\subsection{Kombinatorikus megoldás}\label{sec:theoryMaxCutComb}
 
 Polinom idejű algoritmust sajnos nem várhatunk, mivel a feladat egy a leghíresebb NP-nehéz problémák közül. Természetesen exponenciális futásidejű algoritmus adható, hiszen a gráf csúcsait összesen $2^{n-1}$ féleképpen lehet szétválasztani két csoportra, egy vágás súlyának kiszámítása, pedig lineáris idejű a bemenet méretének függvényében. Ezzel így adódok egy $O(m 2^n)$ lépésszámú algoritmus.
 
@@ -55,7 +55,7 @@ Viszont az is korábbról ismert tény, hogy (amennyiben $\text{P} \neq \text{NP
 
 A problémának ismert felírása egészértékű- illetve kvadratikus programozással is, melyeket a következő alfejezetekben vizsgálok.
 
-\subsection{Lineáris programozással}
+\subsection{Lineáris programozással}\label{sec:theoryMaxCutLP}
 
 Egész értékű lineáris programozási feladat felírható rá, minden $\{i,j\} \in E(G)$ élre (pontosabban később látjuk majd, hogy minden csúcspárra) vezetünk be egy $d_{ij}$ bináris változót, melynek értéke akkor 1, ha az él benne van a vágásban. Ekkor a célfüggvényben világos, hogy azon élekre adjuk össze a súlyokat, melyek benne vannak a vágásban, és ezt szeretnénk maximalizálni.
 
@@ -75,7 +75,7 @@ Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből
 Ugyanakkor, ahogyan azt is már kiemeltem, a legjobb ismert közelítést mégis pont egy ehhez nagyon hasonló módszer, a szemidefinit programozás adja. TODO: forrás.
 
 
-\subsection{QUBO}
+\subsection{QUBO}\label{sec:theoryMaxCutQUBO}
 
 QUBO-val a feladat természetesen módon felírható. Az élekre (csúcspárokra) felírt változók helyett, azonban csak a csúcsokra definiáljuk a bináris változóinkat, és ezek kvadratikus polinomjaikból állnak majd össze az élekre kikövetkeztetett változók. Tehát az ötlet, hogy minden csúcsot jelöljünk egy $x_i$ bináris változóval, amelynek értéke mutatja, hogy az $i.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk maximalizálni.
 %Csakúgy, mint a minimális vágás QUBO-ként felírt alakjában, annyi különbséggel, hogy ezúttal maximalizálni szeretnénk. Sőt, a helyzetünk ezúttal sokkal könnyebb, hiszen nincsenek elfajuló esetek, melyek esetén beállna a maximum, illetve további korlátok felvételére, így büntető tagok hozzávételére sincs szükség.
@@ -92,16 +92,16 @@ Ugyanez a négyzetes részt kibontva a következőképpen alakul. Ne felejtsük,
 
 
 %----------------------------------------------------------------------------
-\section{Maximális K-vágás}
+\section{Maximális K-vágás}\label{sec:theoryMaxKCut}
 %----------------------------------------------------------------------------
 
 A maximális K-vágás, vagy max-K-vágás problémája arra keresi a választ, hogy miként tudjuk a gráf csúcsait K részre szétosztani, aszerint hogy azon élek összsúlya, melyek a csoportok között mennek, maximális legyen. Ez a probléma nyilvánvalóan egy általánosítása a sima maximális vágásénak, hiszen a $K=2$ speciális esetben pontosan egyenértékű a két feladat. Ezáltal az is világos, hogy mivel már a $K=2$ speciális eset is NP-nehéz, ezért az általános eset is legalább ennyire bonyolult.
 A probléma ismert még más neveken is, egy másik elterjedt megnevezés, a minimum K-partíció, mely azt fejezi ki, hogy a részeken belül futó élek összsúlya legyen minimális. Ezt természetesen pontosan akkor fog előfordulni, amikor a partíciók között lévő élek súlya maximális.
 
-\subsection{Kombinatorikus megoldás}
+\subsection{Kombinatorikus megoldás}\label{sec:theoryMaxKCutComb}
 TODO: ???
 
-\subsection{Lineáris programozással}
+\subsection{Lineáris programozással}\label{sec:theoryMaxKCutLP}
 
 Az ötlet itt is hasonlít a sima maximális vágáséhoz. Az élekre ezúttal is bevezetünk egy bináris változót, mely azt jelzi, hogy az él két különböző csoport között fut. Vagyis $y_{uv}=1$, akkor és cs
 ak akkor, ha $u, v$ él csoportok között fut. Ezen felül viszont azonosítanunk kell minden egyes csúcsot, hogy ő melyik csoportba fog kerülni. Ezeket szintén binárisan kódoljuk $nK$ db változóban, ahol $x_{vi}$ akkor és csak akkor 1, ha a $v.$ csúcs az $i.$ halmazba kerül. 
@@ -201,7 +201,7 @@ Ha feltesszük, hogy a logikai kapuk által definiált relációk megvalósítha
 
 Valamennyit spórolhatunk, ha a gráf ritka, és ezáltal csak azokat a csúcspárokat hasonlítjuk, melyek között fut él. Ekkor ha az élek száma $m$, akkor $m \, ( \log K + 1 ) + n\log K$ változó szükségeltetik.
 
-\subsection{A két felírás összehasonlítása}
+\subsection{A két felírás összehasonlítása}\label{sec:theoryonehotVSbinary}
 
 A bináris elkódolás módszerével kapott változószám első közelítésre mindenképpen rosszabb, mint a másik felírásban kapott $nK$, hiszen $n$ legalább akkora, de tipikusan jóval nagyobb, mint $K$, így az $\binom{n}{2}$ tényező (vagy az $m$) várhatóan önmagában is nagyobb lesz, mint $nK$.
 
@@ -262,7 +262,7 @@ A két felírás különbségeit a változók gráfján a \refstruc{tab:diffMaxK
 
   
 
-\section{Logikai kapuk megvalósítása}
+\section{Logikai kapuk megvalósítása}\label{sec:theoryLogicalGates}
 
 A \refstruc{QUBObinary}ban részproblémaként került elő, hogy bizonyos logikai függvényeket szeretnénk megvalósítani QUBO segítségével. Ez viszont egy jóval általánosabb kérdéskörre vezet, mint ahogyan a konkrét példában alkalmaztuk, így a probléma motivációját nem csak ez a feladat adja. Nagyon egyszerű példa, hogy ha fel tudunk írni tetszőleges logikai kifejezést QUBO segítségével, akkor az választ adhat például a kielégíthetőség kérdésére, amely egy közismert NP-teljes probléma\cite{algoritmusokBook}.
 
@@ -274,7 +274,7 @@ Nyilvánvalóan, ha önmagának ellentmondó kombinációs hálózatot képzünk
 
 Végül még egyszer hangsúlyozom, itt lényegében arról van szó, hogy változók bizonyos konfigurációt szeretnénk csak megengedni, ezért a logikai kapukra is jobb így tekinteni, és nem mint olyan (áramköri/logikai) elemek vagy függvények, melyeknek adott bemenete(i) és arra adott kimenete(i) van.
 
-\subsection{Elemi kapuk}
+\subsection{Elemi kapuk}\label{sec:theoryElementaryGates}
 
 \subsubsection{"Azonos kapu" ($x=y$)}
 
@@ -430,13 +430,13 @@ A NOR kaput megkaphatjuk az OR kapu kimeneti változójának negálásával, azo
 
 \subsubsection{XOR kapu ($x \oplus y = z$)} \label{sec:XORgate}
 
-Ahogyan korábban ez előtérbe került a "két szám bináris felírása különböző-e" kérdéskörben, nagyon hasznos lenne egy KIZÁRÓ VAGY vagy XOR kapu is. Közismert, hogy csupán az AND és a NOT segítségével is felírható bármely Boole függvény, így ezek tetszőleges kombinálásával természetesen a XOR is.
-Ha megpróbáljuk direkt módon, csupán 3 változó segítségével felírni, problémába ütközünk, mivel ez nem lehetséges. Ezt a tényt alább bizonyítom, mely egyben ad egy általános módszert is, hasonló problémák felírására.
+Ahogyan korábban ez előtérbe került a "két szám bináris felírása különböző-e" kérdéskörben a \refstruc{sec:QUBObinary}ban, nagyon hasznos lenne egy KIZÁRÓ VAGY avagy XOR kapu is. Közismert, hogy csupán az AND és a NOT segítségével is felírható bármely Boole-függvény, így ezek tetszőleges kombinálásával természetesen a XOR is.
+Ha megpróbáljuk direkt módon, csupán 3 változó segítségével felírni, problémába ütközünk, mivel ez nem lehetséges. Ezt a tényt alább bizonyítom, mely egyben megad egy általános módszert is hasonló problémák felírására.
 
 Indirekt módon tegyük fel, hogy lehet megfelelő kifejezést alkotni. Legyen ez a kifejezés $A_xx+A_yy+A_zz+A_{xy}xy+A_{xz}xz+A_{yz}yz+C$. Tudjuk, hogy az érvényes változókonfigurációk behelyettesítésére $0$-t, érvénytelen esetben pedig egy $0$-nál nagyobb pozitív számot kell kapjunk. 
 (Tekinthetnénk $0$ helyett egy másik fix számot, de a $C$ taghoz hozzáadva az eltolást ezt korrigálhatjuk, illetve ha minimalizálni szeretnénk, akkor elég a kifejezést $-1$-gyel beszorozni.)
 
-Minden változókonfiguráció behelyettesítésével így kapunk egy egyenletet vagy egyenletet, melyet az együtthatóknak, és a konstans tagnak teljesítenie kell. Az igazságtáblázat 8 sorából keletkező egyenleteket és egyenlőtlenségeket az alábbi táblázat foglalja össze.
+Minden változókonfiguráció behelyettesítésével így kapunk egy egyenletet vagy egyenlőtlenséget, melyet az együtthatóknak és a konstans tagnak teljesítenie kell. Az igazságtáblázat 8 sorából keletkező egyenleteket és egyenlőtlenségeket az alábbi táblázat foglalja össze.
 
 \begin{table}[ht]
 	\footnotesize
@@ -460,7 +460,7 @@ Minden változókonfiguráció behelyettesítésével így kapunk egy egyenletet
 \end{table}
 
 Az első egyenletből látjuk, hogy $C=0$, így a továbbiakban ezt mindenhova behelyettesíthetjük. A 4. 6. és 7. sorokból tudhatjuk, hogy $A_{yz}=-A_y-A_z$, $A_{xz}=-A_x-A_z$ és $A_{xy}=-A_x-A_y$. Ezeket behelyettesítve a 8. sorba, az azonos tagok összevonása után azt kapjuk, hogy $-A_x-A_y-A_z>0$.
-Azonban a 2. 3. és 5. sorokból azt tudjuk, hogy $A_x$, $A_y$ és $A_z$ pozitív számok. Tehet ellentettjeik összege csakis negatív lehet, nem pedig pozitív. Ez ellentmondás, tehát nem létezhet ilyen kifejezés sem, mellyel a bizonyítás teljes.
+Azonban a 2. 3. és 5. sorokból azt tudjuk, hogy $A_x$, $A_y$ és $A_z$ pozitív számok. Tehát ellentettjeik összege csakis negatív lehet, nem pedig pozitív. Ez ellentmondás, tehát nem létezhet ilyen kifejezés sem, mellyel a bizonyítás teljes.
 
 Segédváltozók használatával azonban megoldható a probléma, például az alábbi módon. Elég egyetlen segédváltozót bevezetni, ráadásul ennek a változónak mellékesen szemantikusan is adhatunk értelmet, így mondhatjuk a $t$ segédváltozó jelentése legyen $x \wedge y$.
 Ekkor a kifejezésünket megkonstruálhatjuk, hogy már a korábban látott módon megkötjük, hogy $t = x \wedge y$, az $xy-2(x+y)z+3z$ kifejezéssel, ezt a kifejezést aztán egy megfelelően nagy számmal beszorozzuk, hogy amikor a további együtthatókat határozzuk meg, biztosan ne romoljon majd el ez az összefüggés. $-2xy-2(x+y)t+(x+y)+t+4zt$ kifejezés minden esetben $0$-t ad a megfelelő konfigurációkra, és egy pozitív számot a helytelenekre, amennyiben csak azokat az eseteket nézzük, ahol $t = x \wedge  y$ teljesül. Amennyiben a feltétel nem adott, akár $-3$-at is kaphatunk eredményül. Ezért tehát a $t = x \wedge  y$-t kikényszerítő feltételt legalább 4-gyel meg kell szorozzuk, ezáltal a büntető tag értéke minden esetben nagyobb lesz $0$-nál, ha a konfiguráció helytelen. Tehát a végleges kifejezésünk:

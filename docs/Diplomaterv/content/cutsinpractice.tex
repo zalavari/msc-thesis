@@ -2,7 +2,7 @@
 % !TeX encoding = UTF-8
 
 %----------------------------------------------------------------------------
-\chapter{Gyakorlati eredmények}
+\chapter{Gyakorlati eredmények}\label{chap:practice}
 %----------------------------------------------------------------------------
 Ebben a fejezetben alkalmazom a korábbiakban megismert elméleti módszereket, megvizsgálom milyen futásidőt érnek el különböző megoldóprogramok használatával.
 %, illetve összevetem az így kapott eredményeket a kombinatorikus algoritmusok hatékonyságával.
@@ -13,27 +13,37 @@ A teszteléshez generált gráfok előállításához és reprezentálásához a
 
 \section{QUBO-k megoldása}
 
+A QUBO-k optimalizálásra több különböző módszert alkalmazok. A legtöbb megoldó a D-Wave által publikált könyvtárban található, de felhasználok tőlük független szoftvert is, ezzel erősítve a mezőnyt. 
+
+\subsection{D-Wave}\label{sec:practiceDwave}
+
 A D-Wave Ocean nevű programcsomagja több lehetőséget kínál QUBO formák megoldására. Van egzakt megoldója, ez azonban nagyon kicsi bemenetekre is használhatatlan a gyakorlatban, hiszen működési elvét tekintve, minden lehetőséget kipróbál. Ezen kívül van lehetőség kvantum számítás szimulálására, vagy egy valós kvantumgépnek is elküldhetjük a problémát a megfelelő API használatával \cite{DWaveOcean}.
 
-Lényeges észrevétel, hogy a D-Wave megoldója - az energiaminimumra törekvés elve alapján - csak minimalizálni tud, ezért a korábban bemutatott QUBO-kat is ilyen alakra kell hozni. Ez szerencsére könnyen megy, mert ha eredetileg maximalizálni szerettünk volna, egyszerűen minden tagot $-1$-gyel kell megszoroznunk, és az így kapott függvényt minimalizálni.
+Lényeges észrevétel, hogy a D-Wave megoldója - a \refstruc{sec:QUBOform}ban leírtak szerint, az energiaminimumra törekvés elve alapján - csak minimalizálni tud, ezért a korábban bemutatott QUBO-kat is ilyen alakra kell hozni. Ez szerencsére könnyen megy, mert ha eredetileg maximalizálni szerettünk volna, egyszerűen minden tagot $-1$-gyel kell megszoroznunk, és az így kapott függvényt minimalizálni.
 
 A helyes konfiguráció után van lehetőségünk a korábban bemutatott QUBO modellek tényleges próbájára.
 
+A D-Wave rendszer esetén a QUBO megadására a Python collections könyvtárának defaultdict osztályát használom, ahol kulcsként adom meg a változópárt, amelyen a kapcsolatban állnak, értékként pedig a szorzatukhoz tartozó együtthatót. Mivel elsődlegesen a D-Wave-et használom, mint megoldószoftvert, így a példakódokban is így konstruálom meg a QUBO-t, azaz, egy Q defaultdict osztályt használok.
+
 A szimulált kvantumgépen való megoldás mellett két fő iránya van a D-Wave számítógépek használatának. Ebből az egyik a direkt módon beágyazása a problémának kvantumszámítógépre, a mások pedig egy hibrid megoldót használ, mely klasszikus optimalizációkat is végez.
 
-A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú volt a beágyazás, és időnként túl sokat kellett kvantum erőforrásra is várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.\\
 
-A D-Wave rendszer esetén a QUBO megadására a Python collections könyvtárának defaultdict osztályát használom, ahol kulcsként adom meg a változópárt, amelyen a kapcsolatban állnak, értékként pedig a szorzatukhoz tartozó együtthatót. Mivel elsődlegesen a D-Wave-et használom, mint megoldószoftvert, így a példakódokban is így konstruálom meg a QUBO-t, azaz, egy Q defaultdict osztályt használok.
+A direkt QPU-t (Quantum processing unit) használatával sajnos probléma ütköztünk, ahogy nőtt a probléma mérete, nem túl nagy, vagyis pár száz csúcsot tartalmazó gráfokra is túl hosszú volt a beágyazás, és időnként túl sokat kellett kvantum erőforrásra is várni. Sajnos nem is teljesen sikerült kideríteni, hogy ennek miért van köze a probléma méretéhez, de nagyobb bemenetek esetén jellemzőbb volt ez a viselkedés. Azért is érdekes, mert a probléma megoldása a QPU-n hamar elkészül (amennyiben eljut odáig), amely kiderül a jelentésekből. Az erőforrásra várakozás azért tűnik valószínűnek, mert a kliens, ahonnan a hívást végzem többször egy \verb+get_solvers+ nevű függvény belsejében várakozik. Ugyanakkor viszont nem ez tűnik az egyetlen oknak, hiszen kisebb problémák megoldásánál nem jelentkezik ez a probléma, így azt is sejtjük, hogy a probléma beágyazása valamiért nem történik meg hatékonyan.
+További probléma a direkt beágyazással, hogy a fizikai qubitek száma rendkívül korlátos. Az egyszerű maximális vágás párszáz csúcs, így logikai qubit leképezése még nem reménytelen, de a maximális K-vágásnál, mivel a változók száma rendkívüli módon kezd növekedni, és sok klikk is kialakul közben, ez már nem bizonyult használható megoldásnak. Kimondottan a dokumentációban is megtalálható egy rész, amely a óvatosságra int, ha sok változót szeretnénk használni, ahol példaként 100 csúcs gráfot hoz, amely ezek szerint a kvantum világban már sok változónak számít. (Persze ennek ellenére szomorúan szembesültünk azzal, hogy a D-Wave API semmilyen hibaüzenet vagy figyelmeztetés formájában nem adja ezt tudtunkra, hanem probléma nélkül lefut, majd gyakorlatilag egy random vágást ad vissza eredményül.
+
+
+Így a D-Wave-nél alapvetően maradt a hibrid megoldó használata. Ebből kétfélét tekintek, egyik egy beépített Hybrid megoldó, mely kevés módot ad paraméterezhetőségre, illetve lehetőség van HybridWorkflowt definiálni, ahol renget beállítás segítségével tudjuk finomhangolni az algoritmusunkat.
 
 
 A QUBO-kat, és általánosságban a kvadratikus programozási feladatokat persze más, klasszikus megoldóprogramokkal is megoldathatjuk. A D-Wave maga is publikál egy qbsolv nevű csomagot, melyen kvantum erőforrások használata nélkül is lehetőség van a QUBO megoldására. A dokumentáció szerint ez képes megtalálni nagy QUBO problémák optimumát, a probléma részproblémákká bontásával, miközben egy klasszikus megoldót használ, amely a tabu algoritmust futtatja \cite{DWaveOceanQbsolv}. 
 
+\subsection{Gurobi}\label{sec:Gurobi}
+
 Egy kereskedelmi forgalomban lévő, egyik piacvezető lineáris programozás megoldó szoftver a Gurobi, melynek bár nem fő iránya a kvadratikus programok megoldása, ezeket is támogatja \cite{gurobi}. 
 
-Sajnos az eredmények viszont itt sem voltak biztatóak, viszonylag kevés változószámnál is reménytelennek tűnt egy általános QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. Az akadémia licenc igénylése kutatási célokra ugyan egyszerűen működik, ezek a licencek nem kompatibilisek konténerizált környezetekel, így a Colaboratory-ban sem használhatók. Egy viszonylag új licencelési módszer a Web License Service (WLS) használata, azonban bár a konfiguráció egyszerű, megfelelő dokumentáció hiányában, napok munkája volt ezt megfelelően elvégezni.
+Sajnos az eredmények viszont itt sem voltak biztatóak, viszonylag kevés változószámnál is reménytelennek tűnt egy általános QUBO megoldása, illetve nem sokkal később az ingyenes licenc korlátaiba ütköztünk, amennyiben túl sok változót szerettünk volna hozzáadni a modellhez. Az akadémia licenc igénylése kutatási célokra ugyan egyszerűen működik, ezek a licencek nem kompatibilisek konténerizált környezetekel, így a Colaboratory-ban sem használhatók. Egy viszonylag új licencelési módszer a Web License Service (WLS) használata\cite{gurobiWLS}, azonban bár a konfiguráció egyszerű, megfelelő dokumentáció hiányában, napok munkája volt ezt megfelelően elvégezni\cite{gurobiAcademicColab}.
 
-Ha mindent jól beállítottunk, akkor például a korábban elkészített Q szótárat is átkonvertálhatjuk Gurobi modellé, és megoldhatjuk a problémát, így kapva egy QUBO megoldót. Persze, érdemes észben tartani, hogy a Gurobi nem fő profilja a kvadratikus optimalizálás, és ha lehet, akkor érdemes korlátként hozzávenni a kényszereket, ahelyett, hogy azokat a büntetőtagokként a célfüggvénybe fogalmaznánk bele. Alább látható egy példakód, amellyel a már felépített QUBO-t tudjuk megoldani, végeredményként ugyanolyan típúsú look-up-table (lut)-t kapva, amelyet a D-Wawe válaszából is ki tudunk nyerni. Azaz a lut i. eleme megmondja, hogy az i. változó értéke 0 vagy 1.
-
+Ha mindent jól beállítottunk, akkor például a korábban elkészített Q szótárat is átkonvertálhatjuk Gurobi modellé, és megoldhatjuk a problémát, így kapva egy QUBO megoldót. A \ref{code:solveQUBOWithGurobi}.~kódrészlet bemutatja, hogy miként tudunk egy már felépített QUBO-t tudjuk megoldani, végeredményként ugyanolyan típúsú look-up-table (lut)-t kapva, amelyet a D-Wawe válaszából is ki tudunk nyerni. Azaz a lut i. eleme megmondja, hogy az i. változó értéke 0 vagy 1.
 
 \begin{lstlisting}[language=python,caption=Max-cut QUBO,label=code:solveQUBOWithGurobi]	
 def solveQUBOWithGurobi(Q):
@@ -55,16 +65,28 @@ def solveQUBOWithGurobi(Q):
 	
 \end{lstlisting}
 
+Persze, érdemes észben tartani, hogy a Gurobinak nem fő profilja a kvadratikus optimalizálás, és ha lehet, akkor érdemes korlátként hozzávenni a kényszereket, ahelyett, hogy azokat a büntetőtagokként a célfüggvénybe fogalmaznánk bele. Mivel a maximális vágásnál nem voltak kényszerek, így a direkt megfogalmazás teljesen egyenértékű volt a QUBO-ból átkonvertált modellel, tehát ott semmi különbség nincs.
 
-\section{Gráf generálása}
+Viszont például \refstruc{sec:practiceOneHot}ban vizsgált maximális K-vágásnál valóban azt tapasztaltam, hogy a nyers QUBO megoldása reménytelen feladatnak tűnik a Gurobi számára, már 50-es csúcsszámnál is. Viszont amennyiben a követelményeket, hogy minden csúcs pontosan egy csoportba kerüljön, korlátként adom hozzá a modellhez, kivárható időn belül teljesít, ahogy a TODO táblázat mutatja.
+
+A Gurobi által produkált eredmények, bár pontosak, a futásidő még mindig messze elmarad a többi optimalizálótól. Azt a gyakorlati megfigyelést sikerült tennem, hogy a modell optimalizálása során viszonylag hamar megtaláljuk az optimumot, de annak belátása, hogy ez valóban az optimum, nagyon sokáig tart. 
+Valójában arról van szó, hogy például egy maximalizálási folyamat során hamar megtaláljuk a primál feladat maximumát, de a duál feladat minimuma még jóval nagyobb, akár többszöröse az optimumnak, és ez csak nagyon lassan konvergál az optimum felé. Így érdemes lehet befolyásolni a megoldót, hogy ne pontos megoldást keressen, hanem megengedjük egy bizonyos hibaszázalékot. Azt a trükköt alkalmaztam, hogy egy paraméter beállításával jeleztem a megoldó felé, hogy amennyiben egy bizonyos számértéknél jobb megoldást talál, akkor termináljon a folyamat\cite{gurobiBestObjStop}. Ennek az értékét a várható optimum 0.9-szeresére állítottam be. Ezt szerencsére meg tudtam tenni, mert a gráfot úgy generáltam (\refstruc{sec:graphGeneration}), hogy előre ismerjem a várható optimumot. Ez persze egy való életbeli problémánál nem lenne megtehető, azonban akkor a D-Wave által adott eredményekre sem lenne garanciánk, hogy optimális megoldást adnak, illetve ezzel a módszerrel megkapható egy becslés, hogy mennyi ideig kell futtatni az adott algoritmust, hogy valószínűsítsük, a megoldásunk közel optimális.
+
+\subsection{Egyéb megoldók}\label{sec:practiceOthers}
+
+Más megoldó szoftverek kipróbálását is tervben van, de sajnos, mint kiderült lehetőségeink rendkívül limitáltak. Szóba jött például a BiqCrunch, de mivel ennek nincs Python-os API-ja, így egyelőre félretettük. Ígéretesnek tűnt a qpsolvers, amely egységes interfészt kínál több megoldóprogramhoz is, azonban nem támogatja az egészértékűségi kényszerek hozzáadását. További utánajárást igényel a CVXPY és a quadprog, melyek akár alkalmasak lehetnek QUBO-k megoldására, eddig ezt mégsem sikerült elérni. TODO: források mindegyikhez
+
+\section{Gráf generálása}\label{sec:graphGeneration}
 Az alkalmazások ellenőrzésére speciális gráfokat generáltam, melyen így előre meg tudtam határozni a várható minimális, illetve maximális vágásokat.
 A generált gráf rendelkezik négy különböző paraméterrel, ezek $N$, $K$, $p$ és $q$.
 A gráfot ezek után jelöljük $G(N,K,p,q)$-val.
 Az ötlet csupán annyi, hogy előre meghatározunk $K$ darab diszjunkt halmazt, hogy mindegyik csoportban pontosan $N$ darab csúcs legyen. Ezután minden élről egyénileg döntünk, hogy őt hozzávesszük-e a gráfhoz. Amennyiben egy él egy csúcs $N$-esen belül fut, ez a valószínűség legyen $q$, amennyiben két különböző csúcs $N$-es között fut, akkor legyen ez a valószínűség $p$. Világos, hogy ha $p$ kicsi, $q$ pedig nagy, akkor $K$ klasztert kapunk, ahol az élek sűrűek, a csoportok között viszont ritkák. Ellenkező esetben $K$ darab egymástól majdnem független ponthalmazt kapunk, ahol a halmazok között viszont sok él hozzá van adva a gráfhoz. Az előbbivel egy minimális vágás várhatóan a $K$ klasztert szétválasztó vágás lesz, utóbbi esetben pedig ugyanígy a maximális vágásra lesz egy jó becslésünk.
 
-Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcs teljes gráfot kapunk. $G(N,K,1,0)$ esetén pedig ennek a komplementerét kapjuk. 
+Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcs teljes gráfot kapunk. $G(N,K,1,0)$ esetén pedig ennek a komplementerét kapjuk. A dolgozat keretein belül, minden közölt eredménynél egységesen a $p=0.9$ és $q=0.1$ paramétereket alkalmaztam.
 
-Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre, a példákban mindenhol 0 és 1 közötti egyenletes eloszlással, holott ez a példakódban paraméter segítségével állíthatóan oldottam meg.
+Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre. A gráf generáló függvényt úgy oldottam meg, hogy képes legyen bármilyen véletlenszám generátort paraméterként átvenni, de a példákban mindenhol 0 és 1 közötti egyenletes eloszlással.
+
+
 
 Érdemes észben tartani, hogy $n=|V|=N \cdot K$, tehát a kicsi $n$ és nagy $N$ nem keverendő.
 
@@ -101,7 +123,7 @@ TODO: Néhány példakód
 %\end{lstlisting}
 
 %----------------------------------------------------------------------------
-\section{Maximális vágás}
+\section{Maximális vágás}\label{sec:practiceMaxCut}
 %----------------------------------------------------------------------------
 
 A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetjük.
@@ -117,9 +139,11 @@ A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetj�
 \end{lstlisting}
 
 
-Az egyszerű maximális vágásra felírt QUBO-t szinte minden megoldó szoftver jól kezelte. Nagy bemenetekre is általában pontos eredményt kaptunk vissza. A leglassabb megoldónak a Gurobi bizonyult, de a képet árnyalja, hogy az ő szoftverük pontosan megkeresi az optimum értékét. Így bár viszonylag hamar megtalál egy optimumhoz nagyon közeli értéket, vagy akár magát az optimumot, a primál feladatból készített duális megoldása sokáig tart neki. Így érdemes lehet befolyásolni a megoldót, hogy ne pontos megoldást keressen, hanem megengedjük egy bizonyos hibaszázalékot.
+Az egyszerű maximális vágásra felírt QUBO-t szinte minden megoldó szoftver jól kezelte. Nagy bemenetekre is általában pontos eredményt kaptunk vissza. A leglassabb megoldónak a Gurobi bizonyult, de a képet árnyalja, hogy az ő szoftverük pontosan megkeresi az optimum értékét. Ahogyan a \refstruc{sec:Gurobi}ban már leírtam, a folyamat jelentősen gyorsítható a BestObjStop beállításával, melyet a táblázatokban és a grafikonokon \verb+Gurobi0.9+-del jelöltem.
 
-A TODO táblázat, illetve \refstruc{fig:maxCutQUBO} foglalja össze a különböző módszerekkel kapott futásidőket.
+A TODO táblázat, illetve \refstruc{fig:maxCutQUBO} foglalja össze a különböző módszerekkel kapott futásidőket. A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Mindezért csak közelítőleg másodperces pontosságot használtam.
+
+
 
 \begin{figure}[!ht]
 	\centering
@@ -134,7 +158,7 @@ Hasonló grafikonokat képzelek a max-vágás témaköréhez is.
 A diagramcím mindkét helyen szerepeljen?
 
 %----------------------------------------------------------------------------
-\section{Maximális K-vágás (one-hot encoded)}
+\section{Maximális K-vágás (one-hot encoded)}\label{sec:practiceOneHot}
 %----------------------------------------------------------------------------
 
 A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis amíg az $x_{ui}$ változót kettő indexszel indexeltük, az elméleti felírásban, most egy indexszel kell megadnunk egyértelműen, hogy a mátrixos formába leképezhető legyen.
@@ -172,8 +196,14 @@ for u in range(K*N):
 			Q[(u*K+i,u*K+j)] += inf
 \end{lstlisting}
 
-Mivel úgy éreztem, hogy a korlátok célfüggvénybe való beleerőltetése nem előnyös akkor, ha a megoldóprogram amúgy támogatja korlátok megadását is, így a Gurobi-t nem csak a nyers QUBO megoldására használtam, hanem felhasználtam a korlátokat külön hozzáadva, és csak a ténylegesen optimalizálandó részeket célfüggvényként megadva. Ezzel várhatóan jobban teljesítsen... TODO
+A Gurobi használata során figyelembe vettem, hogy a korlátok célfüggvénybe való beleerőltetése nem előnyös (\refstruc{sec:Gurobi}) ezért a Gurobit nem csak a nyers QUBO megoldására használtam, hanem felhasználtam a korlátokat külön hozzáadva, és csak a ténylegesen optimalizálandó részeket célfüggvényként megadva (TODO: kódrészlet). Mérések is igazolják (TODO: grafikon), hogy ez a módszer sokkal jobban teljesít, mint az egyszerű QUBO megoldása.
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K2.png}
+	\caption{Futásidők a max-K-vágás QUBO megoldására (K=2)}
+	\label{fig:maxKCutQUBO_K2}
+\end{figure}
 
 TODO: az alábbi szöveget és táblázatot 
 frissíteni az új mérésekre vonatkozólag:
@@ -182,7 +212,7 @@ A maximális K-vágásra pár futásidőt szemléltetően, egy táblázatot kés
 
 A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Mindezért csak közelítőleg másodperces pontosságot használtam.
 
-A vágások várható optimumát is feltüntettem  ezresekre kerekítve. Ez egyrészt kijön a saját méréseimből, másrészről, ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a $\binom{K}{2} \cdot N^2 \cdot E(W)$, képlettel, ahol $E(W)$ az élsúlyok várható értéke.
+A vágások várható optimumát is nagyságrendileg feltüntettem ezresekre kerekítve. Ez egyrészt kijön a saját méréseimből, másrészről, ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a $\binom{K}{2} \, N^2 \, E(W)$, képlettel, ahol $E(W)$ az élsúlyok várható értéke.
 
 $inf$ értékére egységes mindenhol $10000$ használtam.
 
@@ -207,14 +237,18 @@ $inf$ értékére egységes mindenhol $10000$ használtam.
 	\label{tab:TabularExample}
 \end{table}
 
-Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. $K=2$ esetre minden esetben megtaláltuk az optimumot, bármely elkódolást is használjuk.
-Sajnos $K>2$ esetre viszont elképesztően rossz vágásokat kaptunk vissza. Például az utolsó esetben a 30000 körüli vágásérték helyett a szimulált kvantum esetén 23000 körüli értéket kaptunk. Amely nem csak, hogy az optimumtól nagyon távol esik, (több mint $20\%$), hanem ha végig gondoljuk, egy véletlenszerű vágás, amikor a $K$ csoport mindegyikébe minden eredeti csoport $K$-ad részét tesszük, akkor is várhatón ilyen körüli vágást kell kapjunk. Ugyanis ha $p=1, q=0$, akkor $K \cdot \frac{N}{K} \cdot (N-\frac{N}{K}) \cdot \binom{K}{2}$ adja az élek számát, amelyet még szorozni kell az élsúlyozás várható értékével. Ez az utolsó példára $22500$-at ad. A kapott felosztáson továbbá "szemmel végignézve" is úgy tűnik, mintha véletlen felosztásról lenne szó.
-Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a felosztás megvizsgálásánál is olykor látszik, hogy a csúcsok mintha lassan elkezdenének megfelelően csoportokba tömörülni, azonban még mindig alig kapunk jobbat egy véletlenszerű vágásnál.
+Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. Amíg az egyszerű maximális vágásnál (\refstruc{sec:practiceMaxCut}) mindig közel jó eredményt kaptunk, és inkább a futásidő volt a szűkös erőforrás, addig a K-vágásnál gyakran kaptunk viszonylag rossz közelítéseket is, ezért a táblázatban mindig feltüntettem a talált, és a várt optimum arányát. Amennyiben ez a szám $1.0$, az azt jelenti, hogy a keresett vágást pontosan megtaláltuk. 
 
-Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az is elképzelhető, hogy az általam adott elkódolásban van a hiba, viszont ekkor érdekes, hogy $K=2$ esetre mindkét módszer hibátlanul működik.  Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
+$K=2$ esetre minden esetben megtaláltuk az optimumot, bármely elkódolást is használjuk.
+Sajnos $K>2$ esetre viszont elképesztően rossz vágásokat kaptunk vissza.
+
+%Például az utolsó esetben a 30000 körüli vágásérték helyett a szimulált kvantum esetén 23000 körüli értéket kaptunk. Amely nem csak, hogy az optimumtól nagyon távol esik, (több mint $20\%$), hanem ha végig gondoljuk, egy véletlenszerű vágás, amikor a $K$ csoport mindegyikébe minden eredeti csoport $K$-ad részét tesszük, akkor is várhatón ilyen körüli vágást kell kapjunk. Ugyanis ha $p=1, q=0$, akkor $K \cdot \frac{N}{K} \cdot (N-\frac{N}{K}) \cdot \binom{K}{2}$ adja az élek számát, amelyet még szorozni kell az élsúlyozás várható értékével. Ez az utolsó példára $22500$-at ad. A kapott felosztáson továbbá "szemmel végignézve" is úgy tűnik, mintha véletlen felosztásról lenne szó.
+%Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a felosztás megvizsgálásánál is olykor látszik, hogy a csúcsok mintha lassan elkezdenének megfelelően csoportokba tömörülni, azonban még mindig alig kapunk jobbat egy véletlenszerű vágásnál.
+%
+%Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az is elképzelhető, hogy az általam adott elkódolásban van a hiba, viszont ekkor érdekes, hogy $K=2$ esetre mindkét módszer hibátlanul működik.  Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
 
 %----------------------------------------------------------------------------
-\section{Maximális K-vágás (binary encoded)}
+\section{Maximális K-vágás (binary encoded)}\label{sec:practiceBinary}
 %----------------------------------------------------------------------------
 
 Mivel a korábban bemutatott elmélet alapján rengeteg segédváltozó bejön, így nehéz lett volna a természetes számok halmazára leképezni az összes változót, és így felírni a mátrixot. Ezért a QUBO definiálásánál kihasználtam, hogy a defaultdict kulcsainak nemcsak egész számokat, hanem akár stringeket (pontosabban string párokat) is megadhatunk, így string-ként kezelve a változóneveket kicsit követhetőbb a folyamat. Ezáltal a kódban a csoportokat elkódoló változókat \verb+x_u_i+-vel jelöltem, melynek jelentése továbbra is, az $u$ csúcs csoportját elkódoló szám i. bitje. \verb+d_u_v_i+-vel jelöltem, hogy az $u$ és $v$ csoportját elkódoló számok i. bitje különbözik-e, illetve \verb+dtemp_u_v_i+-vel a XOR kapu használatánál szükséges segédváltozót. Ennek mintájára \verb+D_u_v+ jelöli az $u$ és $v$ különböző csoportba kerülését. Ezen kívül további változók jönnek majd be az \verb+or_gate_list+ meghívásánál, ott a függvényen belül adom hozzá a Q-hoz az új változókat, úgy hogy azok nevükben egyediek legyenek, méghozzá a kimeneti változónév mögé mindig hozzákonkatenálom, hogy a lista mely indexű elemeit állítja OR kapcsolatba.
