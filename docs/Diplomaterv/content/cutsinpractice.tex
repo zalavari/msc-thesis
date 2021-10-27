@@ -74,7 +74,7 @@ Valójában arról van szó, hogy például egy maximalizálási folyamat során
 
 \subsection{Egyéb megoldók}\label{sec:practiceOthers}
 
-Más megoldó szoftverek kipróbálását is tervben van, de sajnos, mint kiderült lehetőségeink rendkívül limitáltak. Szóba jött például a BiqCrunch, de mivel ennek nincs Python-os API-ja, így egyelőre félretettük. Ígéretesnek tűnt a qpsolvers, amely egységes interfészt kínál több megoldóprogramhoz is, azonban nem támogatja az egészértékűségi kényszerek hozzáadását. További utánajárást igényel a CVXPY és a quadprog, melyek akár alkalmasak lehetnek QUBO-k megoldására, eddig ezt mégsem sikerült elérni. TODO: források mindegyikhez
+Más megoldó szoftverek kipróbálását is tervben van, de sajnos, mint kiderült lehetőségeink rendkívül limitáltak. Szóba jött például a BiqCrunch, de mivel ennek nincs Python-os API-ja, így egyelőre félretettük \cite{biqcrunch}. Ígéretesnek tűnt a qpsolvers\cite{qpsolvers}, amely egységes interfészt kínál több megoldóprogramhoz is, azonban nem támogatja az egészértékűségi kényszerek hozzáadását. További utánajárást igényel a CVXPY\cite{cvxpy} és a quadprog\cite{quadprog}, melyek akár alkalmasak lehetnek QUBO-k megoldására, eddig ezt mégsem sikerült elérni.
 
 \section{Gráf generálása}\label{sec:graphGeneration}
 Az alkalmazások ellenőrzésére speciális gráfokat generáltam, melyen így előre meg tudtam határozni a várható minimális, illetve maximális vágásokat.
@@ -212,7 +212,7 @@ A maximális K-vágásra pár futásidőt szemléltetően, egy táblázatot kés
 
 A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Mindezért csak közelítőleg másodperces pontosságot használtam.
 
-A vágások várható optimumát is nagyságrendileg feltüntettem ezresekre kerekítve. Ez egyrészt kijön a saját méréseimből, másrészről, ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a $\binom{K}{2} \, N^2 \, E(W)$, képlettel, ahol $E(W)$ az élsúlyok várható értéke.
+
 
 $inf$ értékére egységes mindenhol $10000$ használtam.
 
@@ -237,15 +237,45 @@ $inf$ értékére egységes mindenhol $10000$ használtam.
 	\label{tab:TabularExample}
 \end{table}
 
-Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. Amíg az egyszerű maximális vágásnál (\refstruc{sec:practiceMaxCut}) mindig közel jó eredményt kaptunk, és inkább a futásidő volt a szűkös erőforrás, addig a K-vágásnál gyakran kaptunk viszonylag rossz közelítéseket is, ezért a táblázatban mindig feltüntettem a talált, és a várt optimum arányát. Amennyiben ez a szám $1.0$, az azt jelenti, hogy a keresett vágást pontosan megtaláltuk. 
+Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. Amíg az egyszerű maximális vágásnál (\refstruc{:practiceMaxCut}) mindig közel jó eredményt kaptunk, és inkább a futásidő volt a szűkös erőforrás, addig a K-vágásnál gyakran kaptunk viszonylag rossz közelítéseket is, ezért a táblázatban mindig feltüntettem a talált, és a várt optimum arányát, melyre továbbiakban approximációs faktorként is hivatkozok. Amennyiben ez a szám $1.0$, az azt jelenti, hogy a keresett vágást pontosan megtaláltuk.
+
+
+A vágások várható optimumát könnyen megmondhatjuk a generált gráfok alapján, de nagyságrendileg is érdemes kiszámolni. Ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a \ref{goodcut} képlettel, ahol $E(W)$ az élsúlyok várható értéke.
+
+\begin{align}
+	\begin{split}
+		\binom{K}{2} \, N^2 \, E(W) \label{goodcut}		
+	\end{split}
+\end{align}
+
+Érdemes utánagondolni, hogy mekkora az a közelítés, amely jónak mondható, vagy másképpen, mennyi legyen legalább az a megtalált megoldás, hogy az egyértelműen jobbnak titulálható legyen, mint egy teljesen véletlen vágás. Erre persze a válasz nem egyértelmű, de a nagyságrendek elhelyezését megkönnyítendő, érdemes kiszámolni egy teljesen véletlen vágás approximációs faktorát. Egy véletlenszerű vágás, amikor a $K$ csoport mindegyikébe, minden eredeti csoport $K$-ad részét tesszük. Ekkor ha ismét a $p=1, q=0$ közelítést használjuk akkor kiszámolhatjuk az élek számát, amelyet még szorozni kell az élsúlyozás várható értékével, így kapjuk a \ref{badcut} szerinti formulát. 
+
+\begin{align}
+	\begin{split}
+		K \, \frac{N}{K} \, \left( N-\frac{N}{K} \right) \, \binom{K}{2} \, E(W) = \label{badcut} \\
+		 N^2 \, \left( 1 -\frac{1}{K} \right) \,\binom{K}{2} \, E(W)
+	\end{split}
+\end{align}
+
+A \ref{badcut} formulát osztva a \ref{goodcut} kifejezéssel, megkapjuk a \ref{approxcut}-ot, mint várható legrosszabb approximációs faktort.
+
+\begin{align}
+	\begin{split}
+		\left( 1 -\frac{1}{K} \right) \label{approxcut}
+	\end{split}
+\end{align}
+
+Vagyis $K=2$ esetben legalább $0.5$ felett lesz az arányszám, amíg például $K=4$ esetben legalább $0.75$. Ezt fontos szem előtt tartani, hiszen ez azt jelenti, hogy $K=4$ esetben egy $0.8$ approximációt elérő algoritmus egyáltalán nem nevezhető jónak, hiszen alig jobb, mintha a gráfnak egy random felosztását adnánk vissza eredményül.
 
 $K=2$ esetre minden esetben megtaláltuk az optimumot, bármely elkódolást is használjuk.
 Sajnos $K>2$ esetre viszont elképesztően rossz vágásokat kaptunk vissza.
 
-%Például az utolsó esetben a 30000 körüli vágásérték helyett a szimulált kvantum esetén 23000 körüli értéket kaptunk. Amely nem csak, hogy az optimumtól nagyon távol esik, (több mint $20\%$), hanem ha végig gondoljuk, egy véletlenszerű vágás, amikor a $K$ csoport mindegyikébe minden eredeti csoport $K$-ad részét tesszük, akkor is várhatón ilyen körüli vágást kell kapjunk. Ugyanis ha $p=1, q=0$, akkor $K \cdot \frac{N}{K} \cdot (N-\frac{N}{K}) \cdot \binom{K}{2}$ adja az élek számát, amelyet még szorozni kell az élsúlyozás várható értékével. Ez az utolsó példára $22500$-at ad. A kapott felosztáson továbbá "szemmel végignézve" is úgy tűnik, mintha véletlen felosztásról lenne szó.
-%Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a felosztás megvizsgálásánál is olykor látszik, hogy a csúcsok mintha lassan elkezdenének megfelelően csoportokba tömörülni, azonban még mindig alig kapunk jobbat egy véletlenszerű vágásnál.
-%
-%Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az is elképzelhető, hogy az általam adott elkódolásban van a hiba, viszont ekkor érdekes, hogy $K=2$ esetre mindkét módszer hibátlanul működik.  Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
+A kapott felosztáson továbbá ,,szemmel végignézve" is úgy tűnik, mintha véletlen felosztásról lenne szó.
+
+Hibrid számításnál általában valamivel jobb a eredményeket kapunk, és a felosztás megvizsgálásánál is olykor látszik, hogy a csúcsok mintha lassan elkezdenének megfelelően csoportokba tömörülni, azonban még mindig alig kapunk jobbat egy véletlenszerű vágásnál.
+
+
+Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne ez az eredmény, de egyelőre, a viszonylag kicsi felhasználóbázis és elérhető dokumentáció miatt nem sikerült ezt kideríteni. Az viszont sajnos kiderült, hogy ebben a formájában a megoldó nem alkalmazható, hiszen mint láttuk, viszonylag kicsi (néhány száz csúcsból álló) gráfokra sem ad még jó közelítést sem.
 
 %----------------------------------------------------------------------------
 \section{Maximális K-vágás (binary encoded)}\label{sec:practiceBinary}

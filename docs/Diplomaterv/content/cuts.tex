@@ -276,10 +276,10 @@ Végül még egyszer hangsúlyozom, itt lényegében arról van szó, hogy vált
 
 \subsection{Elemi kapuk}\label{sec:theoryElementaryGates}
 
-\subsubsection{"Azonos kapu" ($x=y$)}
+\subsubsection{,,Azonos kapu" ($x=y$)}
 
 
-Első ilyen "kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonosság. (Nem mint eldöntendő logikai kifejezés, hanem mint értékadás.) Igazából nem is kapu, hanem a fizikai interpretációja a vezeték vagy a buffer volna. Azt már láttuk korábban, hogy két bináris változóról hogyan lehet eldönteni, hogy ők különbözőek-e, ehhez csak a különbségük négyzetösszege kell. Természetesen itt is elég ennyi, ekkor a megfelelő büntetőtagot ezzel a kifejezéssel szorozhatjuk. Tehát amennyiben azt szeretnénk elérni, hogy $x$ és $y$ változóink azonos értékkel bírjanak, a következő kifejezést kell használnunk a célfüggvényben. Ne felejtsük, hogy mivel változóink binárisak, ezért bármely változó azonos saját maga négyzetével. ($x \in \mathbb{B} \Rightarrow x = x^2$)
+Első ilyen ,,kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonosság. (Nem mint eldöntendő logikai kifejezés, hanem mint értékadás.) Igazából nem is kapu, hanem a fizikai interpretációja a vezeték vagy a buffer volna. Azt már láttuk korábban, hogy két bináris változóról hogyan lehet eldönteni, hogy ők különbözőek-e, ehhez csak a különbségük négyzetösszege kell. Természetesen itt is elég ennyi, ekkor a megfelelő büntetőtagot ezzel a kifejezéssel szorozhatjuk. Tehát amennyiben azt szeretnénk elérni, hogy $x$ és $y$ változóink azonos értékkel bírjanak, a következő kifejezést kell használnunk a célfüggvényben. Ne felejtsük, hogy mivel változóink binárisak, ezért bármely változó azonos saját maga négyzetével. ($x \in \mathbb{B} \Rightarrow x = x^2$)
 
 \begin{align}
 	(x-y)^2=-2xy+x+y
@@ -298,15 +298,13 @@ Első ilyen "kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonoss
 		1 & 1 & 0 \\		
 		\bottomrule
 	\end{tabular}
-	\caption{"Azonos" kapu}
+	\caption{,,Azonos kapu"}
 	\label{tab:SAMEgate}
 \end{table}
 
 \subsubsection{NOT kapu ($x= \neg y$)}
 
 A következő hasonlóan egyszerű eset a nem-egyenlőség esete. Ha azt szeretnénk leírni, hogy az $x$ bináris változó nem egyenlő az $y$ értékével, ez könnyen megkapható az előző esetből, hiszen akkor 1 értéket kaptunk a rossz, és 0-t a jó esetekben, így csak ezt kell logikailag negálnunk. Vagyis a konstans 1-ből kivonni az így kapott kifejezésünket.
-
-
 
 \begin{align}
 	1-(x-y)^2=1+2xy-x-y
@@ -371,9 +369,11 @@ Fontos megfigyelni azt a korábban kiemelt tényt, hogy itt is lényeges, hogy a
 
 Az AND kapu mellett a másik alapvető logikai kapu az OR kapu. Ez persze a De Morgan azonosság szerint felírható csupán az AND és a NOT kapu használatával, azonban ez plusz változókat hozna be. Az OR kaput direkt módon is fel tudjuk írni a következő kifejezéssel: 
 
-\begin{align}
+\begin{align}	
+\begin{split}
 	(x+y)+z-2(x+y)z+xy = \\
-	x+y+z-2xz-2yz+xy
+	x+y+z-2xz-2yz+xy	
+\end{split}
 \end{align}
 
 \begin{table}[ht]
@@ -403,8 +403,10 @@ A NOR kaput megkaphatjuk az OR kapu kimeneti változójának negálásával, azo
 
 
 \begin{align}
+\begin{split}
 	1-(x+y)-z+2(x+y)z+xy = \\
 	 1-x-y-z+2xz+2yz+xy
+\end{split}
 \end{align}
 
 \begin{table}[ht]
@@ -468,9 +470,11 @@ Ekkor a kifejezésünket megkonstruálhatjuk, hogy már a korábban látott mód
 
 
 \begin{align}
+\begin{split}
 	4(xy-2(x+y)z+3z)+(-2xy-2(x+y)t+(x+y)+t+4zt) = \\
     = 4xy-8z(x+y)+12z-2xy-2(x+y)t+(x+y)+t+4zt = \\
-	= (x+y)+t+12z+2xy-2(x+y)t+4zt-8z(x+y)
+	= (x+y)+t+12z+2xy-2(x+y)t+4zt-8z(x+y)	
+\end{split}
 \end{align}
 
 \begin{table}[ht]

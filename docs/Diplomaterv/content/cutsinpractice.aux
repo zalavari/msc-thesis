@@ -16,6 +16,10 @@
 \@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.1.2}Gurobi}{26}{subsection.4.1.2}\protected@file@percent }
 \newlabel{sec:Gurobi}{{4.1.2}{26}{Gurobi}{subsection.4.1.2}{}}
 \citation{gurobiBestObjStop}
+\citation{biqcrunch}
+\citation{qpsolvers}
+\citation{cvxpy}
+\citation{quadprog}
 \newlabel{code:solveQUBOWithGurobi}{{4.1}{27}{Max-cut QUBO}{lstlisting.4.1}{}}
 \@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.1}Max-cut QUBO}{27}{lstlisting.4.1}\protected@file@percent }
 \@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.1.3}Egyéb megoldók}{28}{subsection.4.1.3}\protected@file@percent }
@@ -38,21 +42,24 @@
 \newlabel{fig:maxKCutQUBO_K2}{{4.2}{31}{Futásidők a max-K-vágás QUBO megoldására (K=2)\relax }{figure.caption.14}{}}
 \@writefile{lot}{\select@language{magyar} \contentsline {table}{\numberline {4.1.}{\ignorespaces Futásidők különböző gráfokra\relax }}{32}{table.caption.15}\protected@file@percent }
 \newlabel{tab:TabularExample}{{4.1}{32}{Futásidők különböző gráfokra\relax }{table.caption.15}{}}
-\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.5}Maximális K-vágás (binary encoded)}{32}{section.4.5}\protected@file@percent }
-\newlabel{sec:practiceBinary}{{4.5}{32}{Maximális K-vágás (binary encoded)}{section.4.5}{}}
-\newlabel{code:maxKCutQUBOBinary}{{4.5}{32}{Max-K-cut QUBO (bináris kódolás)}{lstlisting.4.5}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.5}Max-K-cut QUBO (bináris kódolás)}{32}{lstlisting.4.5}\protected@file@percent }
+\newlabel{goodcut}{{4.1}{32}{Maximális K-vágás (one-hot encoded)}{equation.4.1}{}}
+\newlabel{badcut}{{4.2}{32}{Maximális K-vágás (one-hot encoded)}{equation.4.2}{}}
+\newlabel{approxcut}{{4.3}{32}{Maximális K-vágás (one-hot encoded)}{equation.4.3}{}}
+\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.5}Maximális K-vágás (binary encoded)}{33}{section.4.5}\protected@file@percent }
+\newlabel{sec:practiceBinary}{{4.5}{33}{Maximális K-vágás (binary encoded)}{section.4.5}{}}
+\newlabel{code:maxKCutQUBOBinary}{{4.5}{33}{Max-K-cut QUBO (bináris kódolás)}{lstlisting.4.5}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.5}Max-K-cut QUBO (bináris kódolás)}{33}{lstlisting.4.5}\protected@file@percent }
 \@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.1}Logikai kapuk megvalósítása}{33}{subsection.4.5.1}\protected@file@percent }
-\newlabel{code:ElementaryGates}{{4.6}{33}{Elemi kapuk}{lstlisting.4.6}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.6}Elemi kapuk}{33}{lstlisting.4.6}\protected@file@percent }
-\newlabel{code:MultipleOrGates}{{4.7}{33}{Elemi kapuk}{lstlisting.4.7}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.7}Elemi kapuk}{33}{lstlisting.4.7}\protected@file@percent }
+\newlabel{code:ElementaryGates}{{4.6}{34}{Elemi kapuk}{lstlisting.4.6}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.6}Elemi kapuk}{34}{lstlisting.4.6}\protected@file@percent }
+\newlabel{code:MultipleOrGates}{{4.7}{34}{Elemi kapuk}{lstlisting.4.7}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.7}Elemi kapuk}{34}{lstlisting.4.7}\protected@file@percent }
 \newlabel{code:XorGateList}{{4.8}{34}{Elemi kapuk}{lstlisting.4.8}{}}
 \@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.8}Elemi kapuk}{34}{lstlisting.4.8}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.2}Maximális-K-vágások összehasonlítása}{34}{subsection.4.5.2}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.2}Maximális-K-vágások összehasonlítása}{35}{subsection.4.5.2}\protected@file@percent }
 \@setckpt{content/cutsinpractice}{
-\setcounter{page}{35}
-\setcounter{equation}{0}
+\setcounter{page}{36}
+\setcounter{equation}{3}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
@@ -76,7 +83,7 @@
 \setcounter{Hy@AnnotLevel}{0}
 \setcounter{bookmark@seq@number}{40}
 \setcounter{lstnumber}{6}
-\setcounter{endNonectr}{33}
+\setcounter{endNonectr}{36}
 \setcounter{currNonectr}{0}
 \setcounter{caption@flags}{0}
 \setcounter{continuedfloat}{0}
