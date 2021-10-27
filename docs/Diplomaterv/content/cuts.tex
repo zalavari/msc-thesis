@@ -10,9 +10,8 @@ Ebben a fejezetben különböző vágási problémákat tekintek, különös tek
 
 Ha máshogy nem jelzem, a továbbiak $G=(V,E)$ jelöljön egy gráfot, ahol szokásos módon $n=|V|$ és $m=|E|$. A gráf élei legyenek súlyozva nem negatív valós számokkal, ahol az $uv \in E$ súlya $w_{uv}$.
 
-Jelölje továbbá $[k]$ az 1-től $k$-ig tartó egészek halmazát. $inf$ pedig egy elegendően nagy számkonstanst jelöljön.
+Jelölje továbbá $[k]$ az 1-től $k$-ig tartó egészek halmazát. $P$ pedig egy elegendően nagy számkonstanst jelöljön, amelyet büntetőszorzóként fogok használni.
 
-TODO: Az $inf$-et a jövőben inkább kicserélném $P$-re.
 
 %%----------------------------------------------------------------------------
 %\section{Minimális vágás}
@@ -35,7 +34,7 @@ TODO: Az $inf$-et a jövőben inkább kicserélném $P$-re.
 %Ha $s$ és $t$ külön csoportba kell kerüljön, akkor feltehetjük, hogy $x_s=0$ és $x_t=1$. Vezessünk be büntető tagokat a célfüggvénybe, hogy ezt mindenképpen kikényszerítsük. (Megjegyzés: lényegtelen, hogy a változókra direkt módon, vagy a változók négyzetére szabjuk a büntetést.)
 %
 %\begin{align}
-%	\min_{x} \left\{ \sum_ {\{i,j\}\in E(G)}{w_{ij}\cdot(x_i-x_j)^2} + x_s\cdot inf + (1-x_t)\cdot inf \right\}
+%	\min_{x} \left\{ \sum_ {\{i,j\}\in E(G)}{w_{ij}\cdot(x_i-x_j)^2} + x_s\cdot P + (1-x_t)\cdot P \right\}
 %\end{align}
 
 
@@ -51,7 +50,7 @@ Polinom idejű algoritmust sajnos nem várhatunk, mivel a feladat egy a leghíre
 
 Ha gyors algoritmust szeretnénk, akkor a pontos optimum helyett egy közel optimális megoldást célszerű keresni. Szerencsére ilyen létezik is. 2-approximációt viszonylag gyors és egyszerű algoritmus segítségével lehet már adni, például úgy, hogy a csúcsokat egyesével kiválasztva döntünk, hogy melyik csoportba osszuk be őket, aszerint, hogy az aktuálisan kiválasztott csúcsból kiinduló élek összsúlyának nagyobb része menjen a másik csoportba. Ezzel elértük, hogy minden bekerülő csúcsnál legalább annyi élsúly lesz a két csoport között, mint a csoportokon belül. Mivel tudjuk, hogy az optimum legfeljebb az élek összsúlya lehet, és ez a megoldás legalább az összsúly felét kiválasztja, ezért ez egy (legrosszabb esetben is) 2-approximáció\footnote{Itt nem bizonyítjuk, de valójában létezik rá éles példa, így az approximációs faktora nem jobb 2-nél.}.
 
-Viszont az is korábbról ismert tény, hogy (amennyiben $\text{P} \neq \text{NP}$) nem létezik rá polinomiális approximációs séma. A legjobb eddig ismert közelítés approximációs faktora körülbelül $1.139$, amely egyébként a dolgozatom témájához is közel eső szemidefinit programozással lett először elérhető, sőt amennyiben a Unique Games sejtés igaz, bizonyított, hogy ennél jobb nem is létezik. TODO: forrás
+Viszont az is korábbról ismert tény, hogy (amennyiben $\text{P} \neq \text{NP}$) nem létezik rá polinomiális approximációs séma. A legjobb eddig ismert közelítés approximációs faktora körülbelül $1.139$, amely egyébként a dolgozatom témájához is közel eső szemidefinit programozással lett először elérhető, sőt amennyiben a Unique Games sejtés igaz, bizonyított, hogy ennél jobb nem is létezik \cite{10.1145/227683.227684, wiki:Maximum_cut}.
 
 A problémának ismert felírása egészértékű- illetve kvadratikus programozással is, melyeket a következő alfejezetekben vizsgálok.
 
@@ -64,7 +63,7 @@ Egész értékű lineáris programozási feladat felírható rá, minden $\{i,j\
 \end{align}
 
 További korlátokat is fel kell vegyünk, különben a maximum akkor áll elő, ha a változók azonosan 1 értéket vesznek fel.
-Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből pontosan nulla vagy kettő él lehet benne a vágásban. Ez nyilvánvalóan egy szükséges feltétele egy helyes vágásnak, viszont az elégségesség is következik, ha a gráf teljes. Ehhez viszont nem létező éleket kell hozzávegyünk a gráfhoz (és így a változók száma is $\binom{n}{2}$ -re növekszik.) Az élsúlyokat ekkor persze úgy kell megválasszuk, hogy ne zavarják a maximális vágást, (például ha az élsúlyok nemnegatívak, akkor az azonos 0 választás megfelelő) de általában még az sem probléma, ha nem rendelünk az új élekhez explicit súlyokat, hiszen elég ha a célfüggvényben csak az eredeti élekre összegezzük a súlyokat.
+Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből pontosan nulla vagy kettő él lehet benne a vágásban. Ez nyilvánvalóan egy szükséges feltétele egy helyes vágásnak, viszont az elégségesség is következik, ha a gráf teljes. Ehhez viszont nem létező éleket kell hozzávegyünk a gráfhoz (és így a változók száma is $\binom{n}{2}$ -re növekszik.) Az élsúlyokat ekkor persze úgy kell megválasszuk, hogy ne zavarják a maximális vágást, (például ha az élsúlyok nem negatívak, akkor az azonos 0 választás megfelelő) de általában még az sem probléma, ha nem rendelünk az új élekhez explicit súlyokat, hiszen elég ha a célfüggvényben csak az eredeti élekre összegezzük a súlyokat.
 
 \begin{align}
  d_{ij} \leq d_{ik}+d_{kj}  \\
@@ -72,7 +71,7 @@ Amit ki szeretnénk fejezni további korlátokkal, hogy bármely háromszögből
 \end{align}
 
 Érdemes pár szót ejteni a relaxált, azaz az egészértékűségi kényszerek elhagyása után kapott feladatról. Ekkor egy lineáris programot kapunk, amely hatékonyabban megoldható, viszont a változók értékeit a végén még kerekíteni kell, hogy egészértékű megoldást kapjunk. Ezzel a módszerrel ismét egy 2-közelítő algoritmust kapunk. Ez persze egyáltalán nem biztos, hogy gyakorlatban is hasznos, hiszen ahogyan korábban említettem, egyszerű mohó algoritmussal is elérhető a 2-approximáció \cite{10.5555/1283383.1283390, POLJAK1994191}.
-Ugyanakkor, ahogyan azt is már kiemeltem, a legjobb ismert közelítést mégis pont egy ehhez nagyon hasonló módszer, a szemidefinit programozás adja. TODO: forrás.
+Ugyanakkor, ahogyan azt is már kiemeltem, a legjobb ismert közelítést mégis pont egy ehhez nagyon hasonló módszer, a szemidefinit programozás adja \cite{10.1145/227683.227684}.
 
 
 \subsection{QUBO}\label{sec:theoryMaxCutQUBO}
@@ -98,8 +97,8 @@ Ugyanez a négyzetes részt kibontva a következőképpen alakul. Ne felejtsük,
 A maximális K-vágás, vagy max-K-vágás problémája arra keresi a választ, hogy miként tudjuk a gráf csúcsait K részre szétosztani, aszerint hogy azon élek összsúlya, melyek a csoportok között mennek, maximális legyen. Ez a probléma nyilvánvalóan egy általánosítása a sima maximális vágásénak, hiszen a $K=2$ speciális esetben pontosan egyenértékű a két feladat. Ezáltal az is világos, hogy mivel már a $K=2$ speciális eset is NP-nehéz, ezért az általános eset is legalább ennyire bonyolult.
 A probléma ismert még más neveken is, egy másik elterjedt megnevezés, a minimum K-partíció, mely azt fejezi ki, hogy a részeken belül futó élek összsúlya legyen minimális. Ezt természetesen pontosan akkor fog előfordulni, amikor a partíciók között lévő élek súlya maximális.
 
-\subsection{Kombinatorikus megoldás}\label{sec:theoryMaxKCutComb}
-TODO: ???
+A feladat felírható egészértékű lineáris programmal, mely bemutatása után két különböző QUBO felírást mutatok be rá, melyek különböző megközelítés mentén készültek el.
+% \subsection{Kombinatorikus megoldás}\label{sec:theoryMaxKCutComb}
 
 \subsection{Lineáris programozással}\label{sec:theoryMaxKCutLP}
 
@@ -120,7 +119,7 @@ A további korlátok (\ref{MaxKCutLP1} - \ref{MaxKCutLP3}) pedig azt biztosítj�
 \begin{align}&x_{vi} \in \{{0,1}\} ,&v \in V, \ i\in [K],\end{align}
 \begin{align}&y_{uv} \in \{{0,1}\} ,&\{{u,v}\} \in E, \label{MaxKCutLP5} \end{align}
 
-Egy ehhez nagyon hasonló (több korlátot igénylő) probléma felírása megtalálható az interneten, részletes indoklással \cite{Hojny2021}, így a dolgozatban nem . 
+Egy ehhez nagyon hasonló (több korlátot igénylő) probléma felírása megtalálható az interneten, részletes indoklással \cite{Hojny2021}, így a dolgozatban nem részletezem ennek a felírásában ennél mélyebben. 
 
 \subsection{QUBO-val (One-hot encoding)}\label{sec:QUBOonehot}
 
@@ -143,7 +142,7 @@ A korlátokat viszont szeretnénk kiiktatni a felírásból, így azokat valamil
 Ezt a módszert is alkalmazhatnánk $k=1$ helyettesítéssel, azonban most egy másik, bár lényegét tekintve hasonló megoldást mutatok. Hiszen azt is mondhatnánk, hogy egy $v$ csúcs pontosan akkor kerül bele két különböző csoportba, ha $x_{vi} \, x_{vj}$ szorzat értéke $1$ valamilyen $i \neq j$-re. Így ezeket az eseteket büntetve a célfüggvényünk kiegészül még \aref{QUBOOnehotonlyone} taggal. 
 
 \begin{align}
-	\sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-inf) \, x_{vi} \, x_{vj} \label{QUBOOnehotonlyone}
+	\sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-P) \, x_{vi} \, x_{vj} \label{QUBOOnehotonlyone}
 \end{align}
 
 Fontos megjegyezni, hogy a korábban vázolt általános módszerhez képest, elég a nagyobb esetet büntetni, vagyis amikor legalább 2 változó értéke is 1-es. Hiszen az optimumnál impliciten teljesül, hogy az egy csúcshoz tartozó bináris változók közül legalább az egyik $1$ értéket vesz fel. Mivel ha lenne egy változóbehelyettesítés, melynél egy csúcs nem kerülne bele egyetlen csoportba sem, a belőle kimenő élek nem kerülnének bele a vágásba. Így bármelyik csoportba is kerüljön bele, a célfüggvény értéke biztosan nőni fog.
@@ -151,7 +150,7 @@ Fontos megjegyezni, hogy a korábban vázolt általános módszerhez képest, el
 Így a végső QUBO forma:
 
 \begin{align} 
-	\max_{x} & \left\{ \sum _{\{{u,v}\} \in E}  \sum _{\{{i,j}\} \in [K]} w_{uv}(x_{vi}  x_{uj}) + \sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-inf) \, x_{vi} \, x_{vj}\right\} 
+	\max_{x} & \left\{ \sum _{\{{u,v}\} \in E}  \sum _{\{{i,j}\} \in [K]} w_{uv}(x_{vi}  x_{uj}) + \sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-P) \, x_{vi} \, x_{vj}\right\} 
 \end{align}
 
 
@@ -182,7 +181,7 @@ A $D_{uv}$ meghatározása azonban problémákat vet fel. Első körben megprób
 
 Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \cdot \log K$ is lehet a változók összes kitevője egy tagban. Sőt, ha végiggondoljuk majdnem minden lehetséges változókombináció megjelenik, ha elvégezzük a szorzásokat. (Csak annyi a szabály, hogy ha $x_{ui}$ megjelenik, akkor az vagy a négyzeten szerepel, vagy meg van szorozva $x_{vi}$-vel.)
 
-Kellő számú változó bevezetésével, és azok behelyettesítésével természetesen a formula kvadratikus alakra hozható, ahogyan azt már láttuk a \refstruc{QUBOform}ban, de ez a konkrét esetben nem könnyű feladat. Bár mechanikusan elvégezhető, de nem ismert jó módszer erre a feladatra, amely az újonnan bevezetett változókra és a keletkező kvadratikus tagokra minimalizálna. Így a továbbiakban, bár az eredményként lényegében az előzővel azonos, egy másik szemléletet fogok alkalmazni, amely természetesebben adja, hogy hol és mennyi változó bevezetése szükséges.
+Kellő számú változó bevezetésével, és azok behelyettesítésével természetesen a formula kvadratikus alakra hozható, ahogyan azt már láttuk a \refstruc{sec:QUBOform}ban, de ez a konkrét esetben nem könnyű feladat. Bár mechanikusan elvégezhető, de nem ismert jó módszer erre a feladatra, amely az újonnan bevezetett változókra és a keletkező kvadratikus tagokra minimalizálna. Így a továbbiakban, bár az eredményként lényegében az előzővel azonos, egy másik szemléletet fogok alkalmazni, amely természetesebben adja, hogy hol és mennyi változó bevezetése szükséges.
 
 
 Annak jelölésére, hogy az $u$ és $v$ csúcsok különböző csoportokba kerülnek-e, használjuk továbbra is a $D_{uv}$ bináris változót. Két egyedi bit összehasonlítására pedig a $d_{uvi}$ változót definiáljuk, melynek jelentése, hogy az $x_u$ és $x_v$ számok $i.$ bitje különböző. $d_{uvi}$ így a XOR műveletének eredménye $x_{ui}$ és  $x_{vi}$-re alkalmazva.
@@ -208,7 +207,7 @@ A bináris elkódolás módszerével kapott változószám első közelítésre 
 A valóságban ráadásul sajnos még ennél is több segédváltozó szükségeltetik. Mint ahogyan a \refstruc{sec:XORgate}ban látni fogjuk a XOR kapu megvalósításához egy további segédváltozót igénybe kell venni, és $\log K$ darab bitre alkalmazott OR művelet sem megy egy lépésben, amely kiderül a \refstruc{sec:MORgate}ban. Ez utóbbinál például egymás után láncolt, vagy bináris fában felépített OR kapukkal érhető el a kívánt eredmény, amely további $\log K -1$ változót igényel, bár ebben már benne van maga a $D_{uv}$ is. Ez így minden csúcspárnál $3\log K - 1$ változót jelent, vagyis összesen $\binom{n}{2} \, (3\log K -  1 ) + n \log K$ változóra van szükség.
  
 Térjünk át a \refstruc{sec:QUBOform}ban definiált változók gráfjára, és vizsgáljuk a továbbiakban azt.
-Itt a maximum fokszám szempontjából is érdemes lehet elemezni az eredményt, azaz egy változó legfeljebb hány másik változóval van kapcsolatban. A segédváltozók fokszáma többnyire kicsi, hiszen csak néhány másikkal állnak kapcsolatban, viszont a csoportot elkódoló változókra ez már nem igaz, hiszen egy $x_{ui}$ változó kapcsolatban lesz a $d_{uvi}$ és $x_{vi}$,  változókkal, minden $v \neq u$-ra. Így ezen változók fokszáma az eredeti gráf csúcsszámának kétszeresével egyenlő. (Valójában ennél még rosszabb a helyzet, mert ahogyan korábban említettem, a XOR kapu implementálásánál bejön még egy segédváltozó, amely miatt a csúcsszám háromszorosa lesz a maximum fokszám.)
+Itt a maximum fokszám szempontjából is érdemes lehet elemezni az eredményt, azaz egy változó legfeljebb hány másik változóval van kapcsolatban. A segédváltozók fokszáma többnyire kicsi, hiszen csak néhány másikkal állnak kapcsolatban, viszont a csoportot elkódoló változókra ez már nem igaz, hiszen egy $x_{ui}$ változó kapcsolatban lesz a $d_{uvi}$ és $x_{vi}$ változókkal, minden $v \neq u$-ra. Így ezen változók fokszáma az eredeti gráf csúcsszámának közel kétszeresével egyenlő. Sőt, valójában ennél még rosszabb a helyzet, mert ahogyan korábban említettem, a XOR kapu implementálásánál bejön még egy segédváltozó, amely miatt a csúcsszám majdnem háromszorosa lesz a maximum fokszám.
 
 %1\\
 %\refstruc{QUBOform}
@@ -236,7 +235,7 @@ Itt a maximum fokszám szempontjából is érdemes lehet elemezni az eredményt,
 
 
  
-Az eredeti, \refstruc{sec:QUBOonehot}ban látott felírásnál, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így ott a változók gráfja, egy $nK$ csúcsú teljes gráf, tehát a maximum fokszám  $nK -1$. Ez bár rosszabb, mint a \refstruc{sec:QUBObinary}ban bináris felírással adott megoldás, ugyanakkor előbbinél egy nagy teljes gráfról beszélhetünk, amíg utóbbinál, megjelennek $n$-nel arányos méretű teljes részgráfok, hiszen minden $x_ui$ kapcsolatban van minden $x_{vi}$-vel, $d_{uvi}$-vel, és még további segédváltozókkal. Ezekből az egymástól független klikkekből $\log K$ darab van, hiszen minden helyiértékre 1 darab ilyen klikk található. Ezek a klikkek ráadásul valami bonyolultabb struktúrán keresztül közvetetten kapcsolódnak egymáshoz, hiszen a $D_uv$ változók összekapcsolják az $u$ illetve $v$ csúcsokhoz tartozó változókat.
+Az eredeti, \refstruc{sec:QUBOonehot}ban látott felírásnál, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így ott a változók gráfja, egy $nK$ csúcsú teljes gráf, tehát a maximum fokszám  $nK -1$. Ez bár rosszabb, mint a \refstruc{sec:QUBObinary}ban bináris felírással adott megoldás, ugyanakkor előbbinél egy nagy teljes gráfról beszélhetünk, amíg utóbbinál, csupán $n$ méretű teljes részgráfok jelennek meg, hiszen minden $x_ui$ kapcsolatban van minden $x_{vi}$-vel. Ezekből az egymástól független klikkekből $\log K$ darab van, hiszen minden helyiértékre 1 darab ilyen klikk található. Ezek a klikkek viszont a segédváltozók segítségével valami bonyolultabb struktúrán keresztül közvetetten kapcsolódnak egymáshoz, hiszen a $D_uv$ változók összekapcsolják az $u$ illetve $v$ csúcsokhoz tartozó változókat.
 
 Ahogyan a \refstruc{sec:QUBOform}ban röviden bemutattam, egy teljes gráf beágyazásához nagyon sok qubitre van szükségünk, így az a szerencsés, ha a gráf klikkszáma minél kisebb. Bár a klikkszám illetve a maximális fokszám az új felírásunkban valóban kisebb, a rengeteg újonnan bejövő változó, és bonyolult struktúra miatt nem sejtjük, hogy ezzel valóban egyszerűbb lett a probléma gyakorlati szempontból, különösképpen, hogy a klikkszámnál a különbség csak nagy $K$ értékekre lenne megfigyelhető.
 
@@ -251,9 +250,9 @@ A két felírás különbségeit a változók gráfján a \refstruc{tab:diffMaxK
 		  & one-hot encoded & binary encoded \\
 		\midrule
 		Csúcsok száma  & $n K$     & $\binom{n}{2} \, ( \log K + 1 ) + n \log K$ \\
-		Élek száma & TODO & TODO \\
+%		Élek száma & $mK^2+nK^2$ & $\frac{3}{2}(n-1)n \log K+\binom{n}{2} \, ( \log K - 2 ) $ \\
 		Max-fokszám    & $n K - 1 $ & $3(n-1)$ \\
-		Max-klikk      & $n K$     & $3n-2$ \\		
+		Max-klikk      & $n K$     & $n$ \\		
 		\bottomrule
 	\end{tabular}
 	\caption{Max-K-vágás QUBO alakjai}
@@ -264,7 +263,7 @@ A két felírás különbségeit a változók gráfján a \refstruc{tab:diffMaxK
 
 \section{Logikai kapuk megvalósítása}\label{sec:theoryLogicalGates}
 
-A \refstruc{QUBObinary}ban részproblémaként került elő, hogy bizonyos logikai függvényeket szeretnénk megvalósítani QUBO segítségével. Ez viszont egy jóval általánosabb kérdéskörre vezet, mint ahogyan a konkrét példában alkalmaztuk, így a probléma motivációját nem csak ez a feladat adja. Nagyon egyszerű példa, hogy ha fel tudunk írni tetszőleges logikai kifejezést QUBO segítségével, akkor az választ adhat például a kielégíthetőség kérdésére, amely egy közismert NP-teljes probléma\cite{algoritmusokBook}.
+A \refstruc{sec:QUBObinary}ban részproblémaként került elő, hogy bizonyos logikai függvényeket szeretnénk megvalósítani QUBO segítségével. Ez viszont egy jóval általánosabb kérdéskörre vezet, mint ahogyan a konkrét példában alkalmaztuk, így a probléma motivációját nem csak ez a feladat adja. Nagyon egyszerű példa, hogy ha fel tudunk írni tetszőleges logikai kifejezést QUBO segítségével, akkor az választ adhat például a kielégíthetőség kérdésére, amely egy közismert NP-teljes probléma\cite{algoritmusokBook}.
 
 Ennek tudatában, a következő részben szeretném áttekinteni a leggyakrabban előforduló logikai kapukat, és hogy azok miként valósíthatók meg QUBO-val. Valójában logikai kapu alatt jelen esetben csupán azt értjük, hogy változók közötti valamilyen reláció mindig teljesüljön. Tehát pl. ha az AND kapu bemenete $x$ és $y$, kimenete pedig $z$, akkor elvárható, hogy az $x \wedge y = z$ logikai kifejezés mindig teljesüljön. Így általános elv, hogy a logikai kapuk megvalósításánál igazából arra törekszünk, hogy a változók helyes konfigurációi mellett egy adott értékű, praktikusan 0-t adó kifejezést konstruáljunk, amíg minden más, nem megengedett változóbehelyettesítés mellett a kifejezés értéke ennél nagyobb legyen. Ekkor minimalizálás esetén biztosak lehetünk, hogy a minimumhely ott van, ahol minden logikai kapunak megfelelő változóbehelyettesítést kapunk. A kifejezést természetes megszorozhatjuk egy kellően nagyra választott konstanssal, így biztosak lehetünk, hogy a büntetés értéke elég nagy lesz.
 
@@ -509,6 +508,8 @@ Ekkor a kifejezésünket megkonstruálhatjuk, hogy már a korábban látott mód
 Ezáltal minden alapvető logikai kaput le tudunk írni QUBO alakkal, és a XOR kapu 3 változóval történő felírásának bizonyításánál egy általános módszert is kaptunk további, összetettebb kapuk implementálására, amellett, hogy természetesen az alapszintű kapukból is megkonstruálhatunk tetszőleges kombinációs hálózatot.
 
 \subsection{Összetett kapuk}
+
+Összetett logikai kapuk közül most csak a több-bementű OR kaput fogom vizsgálni. Valószínűleg a legtöbb hasonló kapura, mint például a sokbemenetű AND kapura is, az alábbiak analóg módon átvihetők.
 
 \subsubsection{Sokbemenetű OR kapu ($x \vee y \vee z = t$)} \label{sec:MORgate}
 

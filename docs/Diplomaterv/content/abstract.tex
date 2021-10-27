@@ -33,7 +33,19 @@ A munka jelentős részét tette ki számos tapasztalat gyűjtése a D-Wave-es p
 %----------------------------------------------------------------------------
 \chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
 
-Kell angol fordítás?
+Quadratic programming is a more general process than the linear programming, since we are allowed to use a quadratic function as the objective function. This extends the possible applications, but solving the general problem becomes much more complex.
+
+One of the reasons this kind of optimization technique can gain interest, is because if we restrict the variables to be binary and do not use any constraint functions, then for solving the problem we can utilize a computer using quantum states, thus hopefully drastically reduce the time needed for optimization. The literature simply calls this formula QUBO (Quadratic Unconstrained Binary Optimization).
+
+Finding a maximum cut in a graph is a well-known NP-hard problem, but at the same time, it is a very significant question in practical sense, because typical clustering problems can be described this way, if we convert the data into graph representation.
+
+I present multiple different formulas related to maximum cut, which I compare from a theoretical and practical point of view. I analyze the formulas by different metrics, such as the number of used variables, which is one of the simplest example.
+
+For optimizing the QUBOs I use the D-Wave Ocean tools, which provide multiple methods for solving the formulas. Besides the classical solvers, there is possibility to utilize real quantum machines issued by D-Wave System or combining classical and quantum approaches in a hybrid way. 
+
+I compare the different methods based on their effectiveness and efficiency. Naturally I juxtapose the results with using other classical heuristic solvers as well.
+
+A significant part of the work consisted of obtaining plenty of experience by using the D-Wave tools, since the available documentation proved to be quite limited, because the field has just newly emerged.
 
 
 \vfill

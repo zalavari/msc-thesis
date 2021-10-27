@@ -12,8 +12,37 @@ Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Tö
 \section{Lineáris optimalizálás}
 %----------------------------------------------------------------------------
 
-TODO: Csak röviden, hasonlóan, mit a következő fejezet
+Egy lineáris optimalizálási probléma (vagy lineáris programozás) azt jelenti, hogy több keresett mennyiség (ún. változók) lineáris függvényének maximumát vagy minimumát kell meghatározni, mindeközben a rendszerre bizonyos mellékfeltételeket (korlátok) szabunk meg, lineáris egyenlőtlenségek vagy egyenletek formájában.
+Belátható, hogy a fenti definíciónak megfelelő minden lineáris optimalizálási feladat leírható az alábbi tömör formájában, ahol $n$ a változók száma.
 
+Paraméterek:
+
+\begin{tabular}{lll}
+	$c$ & $\in \mathbb{R}^n$   & A célfüggvény együtthatói \\
+	$A$ & $\in \mathbb{R}^{m×n}$  & $m × n$-es valós mátrix, a korlátokban szereplő együtthatók \\
+	$b$ & $\in \mathbb{R}^m$   & A korlátokban szereplő konstans tagok \\
+\end{tabular}
+
+Változók:
+
+\begin{tabular}{lll}
+	$x$ & $x \in \mathbb{R}^n$ & változók \\
+\end{tabular}
+
+Célfüggvény:
+
+\begin{align}
+	\min_{x} c^T x 
+\end{align}
+
+Korlátok:
+
+\begin{align}
+	Ax \leq b
+\end{align}
+
+A feladat relatív hatékonyan megoldható, ugyan létezik rá polinom idejű algoritmus is, de a gyakorlatban gyakran inkább a Simplex-módszernek elnevezett eljárás valamilyen változatát használják.
+A helyzet azonban egészen más, ha a változók nem vehetnek fel bármilyen valós értéket, hanem csak egészek lehetnek. Ekkor a probléma már bizonyítottan NP-nehéz.
 
 
 %----------------------------------------------------------------------------
@@ -55,7 +84,7 @@ A felírásnál $Q$ jellemzően egy szimmetrikus mátrix, ekkor a $q_{i,j}$ jele
 
 Említésre méltó megfigyelés még, hogy ha a kvadratikus polinomok helyett tetszőlegesen nagy fokszámú polinomok szerepelhetnek, melyet a QUBO sémájára PUBO-nak (Polinomial Unconstrained Binary Optimization) hívhatunk, a probléma mindig átírható klasszikus kvadratikus alakra, amely folyamatot a továbbiakban hívjuk kvadratizálásnak. Belátható, hogy bármely polinom kvadratizálható. A részletekkel most nem foglalkozunk, de a bizonyítás alapötlete, hogy egyszerűen csak új változókat kell bevezetni, úgy, hogy a fokszámok csökkenjenek. Ezzel persze mind a változók száma, mind a kifejezések hossza rendkívüli módon megnőhet. Ha csak egyszerű mohó módszerrel próbálkozunk, akkor akár exponenciálisan is. Nem ismert, hogy van-e jó stratégia a polinomok fokszámának ilyen módon történő csökkentésének, sőt ez a probléma egy jelenleg is futó kutatás alapkérdése.
 
-A kvadratikus optimalizálásnak több speciális esete is kutatott tématerület. Egyik ilyen egyszerű eset, ha a $Q$ mátrix szimmetrikus pozitív definit. Ekkor a probléma ekvivalens a legkisebb négyzetek megkeresésének problémájával. [forrás?]
+A kvadratikus optimalizálással több rokon optimalizálás fajta is aktívan kutatott tématerület. Ezeknek egyik fő irányvonala a szemidefinit programozás \cite{Ramana1996}. Ugyanakkor a problémának több speciális esete is érdekes lehet. Például tudjuk, hogy ha a $Q$ mátrix szimmetrikus pozitív definit, akkor a probléma ekvivalens a legkisebb négyzetek megkeresésének problémájával, és az optimumot egy lineáris egyenletrendszer megoldásából kaphatjuk \cite{rozsa}.
 
 Ebben a dolgozatban most egy másik speciális esetet fogok elemezni, méghozzá megkötöm, hogy a változók csak és kizárólag binárisak lehetnek, és több korlát nem adható meg. Mivel a szakirodalom egyszerűen csak QUBO (Quadratic Unconstrained Binary Optimization) néven hivatkozik erre a fajta felírásra\cite{enwiki:1020700695}\cite{DWaveOceanBQM}, én is így teszek a továbbiakban.
 
@@ -134,7 +163,7 @@ Ezt a technikát én is felhasználom a megoldásokban, a képletekben és kódm
 
 Ugyanakkor a büntető konstans(ok) megválasztása koránt sem triviális feladat. Bár elméletileg az eredmény ugyanaz, mégis ha túl nagyra választjuk a büntetőtagot, akkor a nem optimális megoldások nagyon messze esnek az optimálistól, ha túl kicsire, akkor pedig túl közel. Egy heurisztikus elven működő optimalizáló szoftvert mind a két szélsőséges eset hátrányosan befolyásolhat. Hiszen ha a helytelen megoldások túl messze vannak az optimumtól, akkor lehet, hogy rossz helyen keresgetünk, és nem találjuk meg a "szűk" kis optimumot, amíg ha túl közel esnek, akkor egy nagyon rossz megoldásra is rámondhatjuk, hogy már "elég jó".
 
-Ráadásul az explicit korlátokat a megoldó programok sokkal jobban tudják kezelni, mintha a célfüggvénybe fogalmaznánk bele mindent, mert ez utóbbi meglehetősen "ködösít" a megoldó szoftver számára, hiszen nem tud lényegi különbséget tenni a különböző funkciójú változók között. Ez persze nem törvényszerű, mert a konkrét megoldó algoritmuson múlik, azonban általánosságban mégis ez várható, és ezt alátámasztja a TODO részben kapott tapasztalat.
+Ráadásul az explicit korlátokat a megoldó programok sokkal jobban tudják kezelni, mintha a célfüggvénybe fogalmaznánk bele mindent, mert ez utóbbi meglehetősen "ködösít" a megoldó szoftver számára, hiszen nem tud lényegi különbséget tenni a különböző funkciójú változók között. Ez persze nem törvényszerű, mert a konkrét megoldó algoritmuson múlik, azonban általánosságban mégis ez várható, és ezt alátámasztja a \refstruc{chap:practice}ben kapott tapasztalat.
 
 \section{QUBO-k formalizálása}\label{sec:QUBOform}
 
@@ -158,8 +187,15 @@ A D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csa
 A számítási modell alapját egy gráfba (jellemzően az úgynevezett kiméra vagy az újabb gépeken az úgynevezett pegazus gráf) rendezett fizikai qubitek adják, melyek  egymással a gráf struktúrája szerint vannak kapcsolatban. A gráf éleit és csúcsait egyaránt súlyokkal láthatjuk el, mely így egy QUBO-t definiál. Végül a megoldás várhatóan a legalacsonyabb energiaszintű állapot lesz, azaz, amikor a qubitek aszerint vesznek fel 0 vagy 1 értéket, hogy az általuk súlyokkal meghatározott kvadratikus függvény értéke vagyis a hozzájuk tartozó QUBO minimális.
 
 Érdemes megkülönböztetni a fizikai qubiteket, melyeken a tényleges optimalizálás történik, illetve a logikai qubiteket, melyek a QUBO-ban felírt változóknak felelnek meg. A kettő között bijektív leképezés lenne a legjobb, azonban sajnos ez általában nem kivitelezhető, hiszen amíg a logikai qubitek között tetszőleges gráfot definiálhatok, (ezt hívtuk a \refstruc{sec:QUBOform}ban a változók gráfjának), addig a fizikai qubitek struktúrája nagyon kötött. Így a logikai qubiteket ügyesen rá kell képezni a fizikai hardware-re, amely folyamatot hívjuk beágyazásnak.
-Például a kiméra gráfban a maximális fokszám 6, és lévén páros gráf, már egy háromszöget sem lehet beágyazni új változó bevezetése nélkül. Ekkor a módszer jellemzően az, hogy a fizikai qubitek gráfjában láncokat alakítunk ki, amely fizikai qubiteket köt össze, és ugyanannak a logikai qubitnek, azaz változónak felelnek meg. Szintén az erősen korlátos fokszámból látható, hogy olyan csúcsok beágyazása, melynek nagy a fokszáma gondokat okoz. A módszer itt is láncok létrehozása, azonban ezek még több fizikai qubitet emésztenek fel. Egy teljes gráf beágyazása a fenti okok miatt pedig kimondottan körülményes, így megoldó hardver szempontjából mindenképpen az volna az előnyös, ha a gráf klikkszáma kicsi lenne.
+Például a kiméra gráfban a maximális fokszám 6, és lévén páros gráf, már egy háromszöget ($K_3$-at) sem lehet beágyazni új változó bevezetése nélkül. Ekkor a módszer jellemzően az, hogy a fizikai qubitek gráfjában láncokat alakítunk ki, amely fizikai qubiteket köt össze, és ugyanannak a logikai qubitnek, azaz változónak felelnek meg. Szintén az erősen korlátos fokszámból látható, hogy olyan csúcsok beágyazása, melynek nagy a fokszáma gondokat okoz. A módszer itt is láncok létrehozása, azonban ezek még több fizikai qubitet emésztenek fel. Egy teljes gráf beágyazása a fenti okok miatt pedig kimondottan körülményes, így megoldó hardver szempontjából mindenképpen az volna az előnyös, ha a gráf klikkszáma kicsi lenne.
 
-TODO: ide jöhetne valami jó kép pl. egy háromszög beágyazásáról.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/embedding_3var4qubits.png}
+	\caption{$K_3$ beágyazása}
+	\label{fig:K3embedding}
+\end{figure}
+
+Mint ahogy a \refstruc{fig:K3embedding} is mutatja, a $K_3$ beágyazása csak úgy lehetséges, ha igénybe veszünk legalább még egy 4. fizikai qubitet, és valamelyik logikai qubit reprezentálásához kettő fizikai qubitet használunk fel, melyek értékét egyenlővé tesszük.
 
 Bár a QUBO problémák beágyazását fizikai hardware-re ennél mélyebben most nem vizsgáljuk, fontos észrevétel, hogy a dolgozat szempontjából van jelentősége a konstruált QUBO formulák elemzésének, a korábbi szempontok alapján.

@@ -5,6 +5,16 @@
 \chapter{Összegzés}
 %----------------------------------------------------------------------------
 
-TODO: Mik történtek, mik a gyakorlati eredmények, mik a tapasztalatok?
+A munka során jelentős irodalomkutatást tettem a kombinatorikus optimalizálás egyes részein, beleértve, hogy alaposan megvizsgáltam a kvadratikus bináris korlátmentes optimalizálás használatát. Ennek elméleti és gyakorlati jelentőségét is megvizsgáltam és megértettem.
 
-A munka során alaposan megvizsgáltam a kvadratikus bináris korlátmentes optimalizálás használatát, azt alkalmaztam 
+Tetszőleges feladatok megfogalmazása bármilyen optimalizálási problémaként úgy gondolom, hogy nem magától értetődő feladat, de ezen a területen is sikerült sok tapasztalatot gyűjtenem, ismét különös tekintettel a QUBO-k formalizálására.
+
+A munka nagy részét tette ki a D-Wave programcsomagjával való ismerkedés, példakódok és dokumentáció olvasása. A D-Wave gépek működési elvét is meg kellett értenem a további feladatokhoz, noha a dolgozat keretein belül igyekeztem a ,,matematikai letisztultságra" és az empirikus gyakorlatra fektetni a hangsúlyt.
+
+Számomra a Python, mint programozási nyelv is újdonság volt, csakúgy, mint rengeteg más időközben felhasznált technológia. A munkát tovább nehezítette, hogy az elérhető dokumentációk mennyisége és minősége is erősen korlátozott volt.
+
+Minden nehézség ellenére úgy gondolom, hogy az alkotott munka értelmes és egész, miközben betekintést nyújt a QUBO-k világába, és több általam konstruált példával (\ref{sec:QUBOonehot}, \ref{sec:QUBObinary}) gazdagítom a szakirodalmat is. Külön eredmény például a logikai kapuk megvalósításánál leírt és bizonyított állítások, melyek a XOR kapura (\ref{sec:XORgate}) és a több bemenetű OR kapura vonatkoznak (\ref{sec:MORgate}).
+
+A kutatás a továbbiakban sokféle irányba folytatható. Például természetesen adja magát, hogy a maximális K-vágást nagyobb bemenetekre is tudjuk kezelni. Ehhez akár a meglévő, már felkonfigurált optimalizálókat finomítani, vagy újakat behozni (\ref{sec:practiceOthers}). A repertoárt is tovább bővíthetjük további, akár nem feltétlen csak vágással kapcsolatos feladatokkal. Akár ide bekapcsolódhat a logikai kapuk implementálása (\ref{sec:theoryLogicalGates}), mely egy matematikailag letisztultabb, ugyanakkor gyakorlatilag is érdekesnek ígérkező témakör.
+
+Természetesen ezeken kívül is rengeteg szál maradt elvarratlanul. Például a fizikai hardware-re való beágyazás éppen csak említésre került, vagy ahogy korábban volt szó a kvadratizálásról, azaz amikor egy tetszőleges fokszámú polinomból kvadratikus polinomot hozunk létre új változók bevezetésével (\ref{sec:QUBOform}). A feladat bár egyszerűen megfogalmazható, mégsem világos, hogy mi lenne az optimális módszer erre, sőt, még az is vita tárgya lehet, hogy egyáltalán milyen metrikára nézve legyen a kapott polinom ,,optimális".
