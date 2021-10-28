@@ -163,26 +163,25 @@ A továbbiakban az egyszerű szemléltetés kedvéért feltesszük, hogy a kész
 
 A megoldáshoz elsősorban minden csúcshoz definiálunk kell az ő csoportját tartalmazó változókat. Az $u.$ csúcs csoportját jelölje $x_u$, illetve ennek bináris felírását tekintve, az $x_u$ $i.$ bitjét jelölje $x_{ui}$.
 
-Amire szükségünk van, az egy bináris függvény, amely megmondja, hogy két csúcs különböző csoportba esik-e. Ha igen, akkor természetesen a köztük lévő él súlya hozzá kell adódjon a maximalizálandó célfüggvényhez. Ellenkező esetben viszont figyelmen kívül kell hagyni ezt a súlyt.
+Amire szükségünk van, az egy bináris függvény, amely megmondja, hogy két csúcs különböző csoportba esik-e. Jelölje ezt $D_{uv}$ a \refstruc{eq:D_uv_def} szerint. Ha igen, akkor természetesen a köztük lévő él súlya hozzá kell adódjon a maximalizálandó célfüggvényhez. Ellenkező esetben viszont figyelmen kívül kell hagyni ezt a súlyt (\ref{D_uv_qubo} kifejezés).
 
-\begin{align}
+\begin{align}\label{eq:D_uv_def}
 D_{uv} = \text{isDifferent}(x_u,x_v)
 \end{align}
 
-\begin{align} 
+\begin{align} \label{D_uv_qubo}
 	\max_{x} & \left\{\sum _{\{u,v\} \in E } D_{uv} \, w_{uv} \right\} 
 \end{align}
 
-A $D_{uv}$ meghatározása azonban problémákat vet fel. Első körben megpróbálhatjuk, hogy a korábban látott formulák szerint pontosan meghatározható egyes bitek különbsége, hiszen csak a különbségük négyzetét kell venni. A négyzetek, mint tagok összeadása természetesen adja magát, azonban ekkor egy olyan számot kapunk, amely pontosan meghatározza, hogy hány bitben különbözik a két szám, vagyis a Hamming-távolságot. Nekünk elegendő, ha bármely helyiértéken van különbség, akkor szeretnénk végeredményben $1$-et kapni. Erre a módszer, hogy minden négyzetkülönbséget binárisan negálunk, azaz kivonjuk az értékét $1$-ből. Az így kapott kifejezéseket összeszorozzuk, így ha bárhol volt különbség a szorzat valamely tényezője 0, így természetesen maga a szorzat is 0. Amennyiben sehol nincs különbség, a szorzat minden tagja 1, így a szorzat is. Mivel a $D_{uv}$ definíciója szerint akkor 1, ha a két kettes számrendszerben felírt szám különbözik, ezért még a végén egy plusz negálást kell elvégezni.
+A $D_{uv}$ meghatározása azonban problémákat vet fel. Első körben megpróbálhatjuk, hogy a korábban látott formulák szerint pontosan meghatározható egyes bitek különbsége, hiszen csak a különbségük négyzetét kell venni. A négyzetek, mint tagok összeadása természetesen adja magát, azonban ekkor egy olyan számot kapunk, amely pontosan meghatározza, hogy hány bitben különbözik a két szám, vagyis a Hamming-távolságot. Nekünk elegendő, ha bármely helyiértéken van különbség, akkor szeretnénk végeredményben $1$-et kapni. Erre a módszer, hogy minden négyzetkülönbséget binárisan negálunk, azaz kivonjuk az értékét $1$-ből. Az így kapott kifejezéseket összeszorozzuk, így ha bárhol volt különbség a szorzat valamely tényezője 0, így természetesen maga a szorzat is 0. Amennyiben sehol nincs különbség, a szorzat minden tagja 1, így a szorzat is. Mivel a $D_{uv}$ definíciója szerint akkor 1, ha a két kettes számrendszerben felírt szám különbözik, ezért még a végén egy plusz negálást kell elvégezni (\refstruc{eq:D_uv_poli}).
 
-\begin{align}	
+\begin{align}\label{eq:D_uv_poli}
 	D_{uv} = 1-  \left( 1-(x_{u1}-x_{v1})^2 \right) \cdot \left( 1-(x_{u2}-x_{v2})^2 \right) \cdot ...  \cdot \left( 1-(x_{u\log K}-x_{v \log K})^2 \right) 
 \end{align}
 
-Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \cdot \log K$ is lehet a változók összes kitevője egy tagban. Sőt, ha végiggondoljuk majdnem minden lehetséges változókombináció megjelenik, ha elvégezzük a szorzásokat. (Csak annyi a szabály, hogy ha $x_{ui}$ megjelenik, akkor az vagy a négyzeten szerepel, vagy meg van szorozva $x_{vi}$-vel.)
+Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \log K$ is lehet a változók összes kitevője egy tagban. Sőt, ha végiggondoljuk majdnem minden lehetséges változókombináció megjelenik, ha elvégezzük a szorzásokat. (Csak annyi a szabály, hogy ha $x_{ui}$ megjelenik, akkor az vagy a négyzeten szerepel, vagy meg van szorozva $x_{vi}$-vel.)
 
 Kellő számú változó bevezetésével, és azok behelyettesítésével természetesen a formula kvadratikus alakra hozható, ahogyan azt már láttuk a \refstruc{sec:QUBOform}ban, de ez a konkrét esetben nem könnyű feladat. Bár mechanikusan elvégezhető, de nem ismert jó módszer erre a feladatra, amely az újonnan bevezetett változókra és a keletkező kvadratikus tagokra minimalizálna. Így a továbbiakban, bár az eredményként lényegében az előzővel azonos, egy másik szemléletet fogok alkalmazni, amely természetesebben adja, hogy hol és mennyi változó bevezetése szükséges.
-
 
 Annak jelölésére, hogy az $u$ és $v$ csúcsok különböző csoportokba kerülnek-e, használjuk továbbra is a $D_{uv}$ bináris változót. Két egyedi bit összehasonlítására pedig a $d_{uvi}$ változót definiáljuk, melynek jelentése, hogy az $x_u$ és $x_v$ számok $i.$ bitje különböző. $d_{uvi}$ így a XOR műveletének eredménye $x_{ui}$ és  $x_{vi}$-re alkalmazva.
 
