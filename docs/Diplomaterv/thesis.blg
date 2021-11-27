@@ -3,8 +3,10 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: thesis.aux
 Reallocating 'name_of_file' (item size: 1) to 8 items.
 The style file: huplain.bst
-Reallocating 'name_of_file' (item size: 1) to 22 items.
-A level-1 auxiliary file: include/titlepage.aux
+Reallocating 'name_of_file' (item size: 1) to 26 items.
+A level-1 auxiliary file: include/titlepage-tdk.aux
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+A level-1 auxiliary file: content/abstract.aux
 Reallocating 'name_of_file' (item size: 1) to 25 items.
 A level-1 auxiliary file: content/introduction.aux
 Reallocating 'name_of_file' (item size: 1) to 27 items.
@@ -13,6 +15,8 @@ Reallocating 'name_of_file' (item size: 1) to 17 items.
 A level-1 auxiliary file: content/cuts.aux
 Reallocating 'name_of_file' (item size: 1) to 27 items.
 A level-1 auxiliary file: content/cutsinpractice.aux
+Reallocating 'name_of_file' (item size: 1) to 20 items.
+A level-1 auxiliary file: content/summary.aux
 Reallocating 'name_of_file' (item size: 1) to 10 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
@@ -26,46 +30,46 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-Warning--empty journal in fuchs2020efficient
-You've used 9 entries,
+Warning--can't use both author and editor fields in Ramana1996
+You've used 26 entries,
             4991 wiz_defined-function locations,
-            1186 strings with 13221 characters,
-and the built_in function-call counts, 33405 in all, are:
-= -- 6234
-> -- 376
-< -- 12
-+ -- 2163
-- -- 450
-* -- 436
-:= -- 976
-add.period$ -- 38
-call.type$ -- 9
-change.case$ -- 45
+            1284 strings with 16020 characters,
+and the built_in function-call counts, 86640 in all, are:
+= -- 16195
+> -- 1025
+< -- 17
++ -- 5521
+- -- 1276
+* -- 913
+:= -- 2551
+add.period$ -- 90
+call.type$ -- 26
+change.case$ -- 116
 chr.to.int$ -- 0
-cite$ -- 10
-duplicate$ -- 5908
-empty$ -- 451
-format.name$ -- 38
-if$ -- 6920
+cite$ -- 27
+duplicate$ -- 15623
+empty$ -- 1223
+format.name$ -- 81
+if$ -- 18039
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 5
-newline$ -- 155
-num.names$ -- 18
-pop$ -- 1114
+int.to.str$ -- 26
+missing$ -- 16
+newline$ -- 262
+num.names$ -- 52
+pop$ -- 2931
 preamble$ -- 1
-purify$ -- 36
+purify$ -- 92
 quote$ -- 23
-skip$ -- 388
+skip$ -- 1090
 stack$ -- 0
-substring$ -- 3455
-swap$ -- 3732
-text.length$ -- 12
+substring$ -- 8826
+swap$ -- 9692
+text.length$ -- 17
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 47
+type$ -- 126
 warning$ -- 1
-while$ -- 124
-width$ -- 10
-write$ -- 209
+while$ -- 320
+width$ -- 28
+write$ -- 414
 (There was 1 warning)

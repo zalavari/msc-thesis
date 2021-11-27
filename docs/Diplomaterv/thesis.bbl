@@ -93,6 +93,42 @@
 \def\bibInSelf#1{In u\H{o}: }
 \csname bibOverride\endcsname
 
+\bibitem{biqcrunch}
+{BiqCrunch developers}:
+\bibNewBlock Biqcrunch -- a semidefinite branch-and-bound method for solving
+  binary quadratic problems, 2021.
+\bibNewBlock
+\bibUrll{URL} >https://biqcrunch.lipn.univ-paris13.fr/BiqCrunch/>.
+\bibNewBlock [Online; accessed 27-Sep-2021].
+
+\bibitem{qpsolvers}
+Stephane Caron:
+\bibNewBlock {qpsolvers}: Quadratic programming solvers in python with a
+  unified api.
+\bibNewBlock
+\bibUrll{URL} >https://github.com/stephane-caron/qpsolvers>.
+\bibNewBlock [Online; accessed 7-Oct-2021].
+
+\bibitem{DWaveOceanBQM}
+{D-Wave Systems}:
+\bibNewBlock {D-Wave Concepts BQM}.
+\bibNewBlock \url{https://docs.ocean.dwavesys.com/en/stable/concepts/bqm.html}.
+
+\bibitem{DWaveOceanQbsolv}
+{D-Wave Systems}:
+\bibNewBlock {D-Wave Ocean qbsolv documentation}.
+\bibNewBlock \url{https://docs.ocean.dwavesys.com/projects/qbsolv}.
+
+\bibitem{DWaveOcean}
+{D-Wave Systems}:
+\bibNewBlock {D-Wave Ocean Software Documentation}.
+\bibNewBlock \url{https://docs.ocean.dwavesys.com/}.
+
+\bibitem{DWaveSystem}
+{D-Wave Systems}:
+\bibNewBlock {D-Wave Systems | The Practical Quantum Computing Company}.
+\bibNewBlock \url{https://www.dwavesys.com/}.
+
 \bibitem{10.5555/1283383.1283390}
 Wenceslas~Fernandez de~la Vega\bibAnd 1Claire Kenyon-Mathieu:
 \bibNewBlock Linear programming relaxations of maxcut.
@@ -103,12 +139,21 @@ Wenceslas~Fernandez de~la Vega\bibAnd 1Claire Kenyon-Mathieu:
 \bibNewBlock ISBN 9780898716245.
 \bibNewBlock 9~p.
 
+\bibitem{cvxpy}
+Steven Diamond\bibAnd 1Stephen Boyd:
+\bibNewBlock {CVXPY}: A {P}ython-embedded modeling language for convex
+  optimization.
+\bibNewBlock {\em Journal of Machine Learning Research}, 2016.
+\bibNewBlock
+\bibUrll{URL} >http://stanford.edu/~boyd/papers/pdf/cvxpy_paper.pdf>.
+\bibNewBlock To appear.
+
 \bibitem{fuchs2020efficient}
 Franz~Georg Fuchs\bibAnd 0Herman Øie Kolden\bibAnd 0Niels~Henrik Aase\bibAnd
   2Giorgio Sartor:
 \bibNewBlock Efficient encoding of the weighted max k-cut on a quantum computer
   using {QAOA}.
-\bibNewBlock 2. \'evf. (2021.\ 01) 2. sz., 1--14.~p.
+\bibNewBlock {\em SN Computer Science}, 2. \'evf. (2021) 2. sz., 1--14.~p.
 
 \bibitem{DBLP:journals/corr/abs-1811-11538}
 Fred~W. Glover\bibAnd 1Gary~A. Kochenberger:
@@ -117,19 +162,51 @@ Fred~W. Glover\bibAnd 1Gary~A. Kochenberger:
 \bibNewBlock
 \bibUrll{URL} >http://arxiv.org/abs/1811.11538>.
 
+\bibitem{10.1145/227683.227684}
+Michel~X. Goemans\bibAnd 1David~P. Williamson:
+\bibNewBlock Improved approximation algorithms for maximum cut and
+  satisfiability problems using semidefinite programming.
+\bibNewBlock {\em J. ACM}, 42. \'evf. (1995.\ no{\-}vem{\-}ber) 6. sz.,
+  1115–1145.~p.
+\bibNewBlock ISSN 0004-5411.
+\bibNewBlock
+\bibUrll{URL} >https://doi.org/10.1145/227683.227684>.
+\bibNewBlock 31~p.
+
+\bibitem{gurobiAcademicColab}
+{Gurobi Community}:
+\bibNewBlock How to install academic license in google colab, 2021.
+\bibNewBlock
+\bibUrll{URL}
+  >https://support.gurobi.com/hc/en-us/community/posts/4403075622929-How-
+  To-Install-Academic-License-in-Google-Colab>.
+
+\bibitem{gurobiBestObjStop}
+{Gurobi Optimization, LLC}:
+\bibNewBlock Bestobjstop, 2021.
+\bibNewBlock
+\bibUrll{URL} >https://www.gurobi.com/documentation/9.1/refman/bestobjstop.
+  html#parameter:BestObjStop>.
+
 \bibitem{gurobi}
-LLC Gurobi~Optimization:
+{Gurobi Optimization, LLC}:
 \bibNewBlock Gurobi optimizer reference manual, 2021.
 \bibNewBlock
 \bibUrll{URL} >http://www.gurobi.com>.
+
+\bibitem{gurobiWLS}
+{Gurobi Optimization, LLC}:
+\bibNewBlock Web license service - gurobi, 2021.
+\bibNewBlock
+\bibUrll{URL} >http://www.gurobi.com/web-license-service/>.
 
 \bibitem{Hojny2021}
 Christopher Hojny\bibAnd 0Imke Joormann\bibAnd 0Hendrik L\"uthen\bibAnd 2Martin
   Schmidt:
 \bibNewBlock Mixed-integer programming techniques for the connected max-k-cut
   problem.
-\bibNewBlock {\em Mathematical Programming Computation}, 13. \'evf. (2021.\
-  Mar) 1. sz., 75--132.~p.
+\bibNewBlock {\em Mathematical Programming Computation}, 13. \'evf. (2021) 1.
+  sz., 75--132.~p.
 \bibNewBlock ISSN 1867-2957.
 \bibNewBlock
 \bibUrll{URL} >https://doi.org/10.1007/s12532-020-00186-3>.
@@ -150,32 +227,53 @@ Svatopluk Poljak\bibAnd 1Zsolt Tuza:
 \bibUrll{URL}
   >https://www.sciencedirect.com/science/article/pii/016763779490068X>.
 
+\bibitem{quadprog}
+preeyan:
+\bibNewBlock quadprog: Quadratic programming solver (python).
+\bibNewBlock
+\bibUrll{URL} >https://github.com/quadprog/quadprog>.
+\bibNewBlock [Online; accessed 7-Oct-2021].
+
+\bibitem{Ramana1996}
+Motakuri~V. Ramana\bibAnd 1Panos~M. Pardalos:
+\bibNewBlock {\em Semidefinite Programming}.
+\bibNewBlock Boston, MA, 1996, Springer US, 369--398.~p.
+\bibNewBlock ISBN 978-1-4613-3449-1.
+\bibNewBlock
+\bibUrll{URL} >https://doi.org/10.1007/978-1-4613-3449-1_9>.
+
 \bibitem{algoritmusokBook}
 Lajos Rónyai\bibAnd 0Gábor Ivanyos\bibAnd 2Réka Szabó:
 \bibNewBlock {\em Algoritmusok}.
 \bibNewBlock 2008, Typotex.
 
-\bibitem{DWaveOceanBQM}
-D-Wave Systems:
-\bibNewBlock {D-Wave Concepts BQM}.
-\bibNewBlock \url{https://docs.ocean.dwavesys.com/en/stable/concepts/bqm.html}.
-
-\bibitem{DWaveOceanQbsolv}
-D-Wave Systems:
-\bibNewBlock {D-Wave Ocean qbsolv documentation}.
-\bibNewBlock \url{https://docs.ocean.dwavesys.com/projects/qbsolv}.
-
-\bibitem{DWaveOcean}
-D-Wave Systems:
-\bibNewBlock {D-Wave Ocean Software Documentation}.
-\bibNewBlock \url{https://docs.ocean.dwavesys.com/}.
+\bibitem{rozsa}
+Pál Rózsa:
+\bibNewBlock {\em Lineáris algebra és alkalmazásai}.
+\bibNewBlock 1991, Tankönyvkiadó, Budapest.
 
 \bibitem{Szabo}
 Dániel Szabó:
 \bibNewBlock Kvantuminformatika és gépi tanulás.
+\bibNewBlock Szakdolgozat (BME - VIK).
+\bibNewBlock 2018.
+
+\bibitem{wiki:Maximum_cut}
+Wikipedia:
+\bibNewBlock {Maximum cut} --- {W}ikipedia{,} the free encyclopedia.
 \bibNewBlock
-  \url{https://diplomaterv.vik.bme.hu/hu/Theses/Kvantuminformatika-es-gepi-tanulas},
-  2018.\ 12.
+  \url{http://en.wikipedia.org/w/index.php?title=Maximum\%20cut&oldid=1050440984},
+  2021.
+\bibNewBlock [Online; accessed 27-October-2021].
+
+\bibitem{wiki:VLSI}
+Wikipedia:
+\bibNewBlock {Very Large Scale Integration} --- {W}ikipedia{,} the free
+  encyclopedia.
+\bibNewBlock
+  \url{http://en.wikipedia.org/w/index.php?title=Very\%20Large\%20Scale\%20Integration&oldid=1038382230},
+  2021.
+\bibNewBlock [Online; accessed 27-October-2021].
 
 \bibitem{enwiki:1020700695}
 {Wikipedia contributors}:
