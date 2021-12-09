@@ -835,7 +835,7 @@ FUNCTION {format.chapter.pages}
     { chapter
       type empty$ { "fejezet" } {
       type "subsection" = { "alszakasz" } {
-      type "subsubsection" = { "alalszakasz" } {
+      type "subsubsection" = { "alszakasz" } {
       type "chapter" = { "fejezet" } {
       type "section" = { "szakasz" } {
       type "part" = { "r{\'e}sz" } {

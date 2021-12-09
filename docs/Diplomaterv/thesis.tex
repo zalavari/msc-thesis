@@ -23,8 +23,8 @@
 \newcommand{\vikkonzulensCVezeteknev}{}
 \newcommand{\vikkonzulensCKeresztnev}{}
 
-%\newcommand{\vikcim}{Módszerek közel optimális vágások keresésére} % Cím
-\newcommand{\vikcim}{Kvadratikus optimalizálás kvantum alapú számítógéppel} % Cím
+\newcommand{\vikcim}{Módszerek közel optimális vágások keresésére} % Cím
+%\newcommand{\vikcim}{Kvadratikus optimalizálás kvantum alapú számítógéppel} % Cím
 \newcommand{\viktanszek}{\bmeszit} % Tanszék
 \newcommand{\vikdoktipus}{\msc} % Dokumentum típusa (\bsc vagy \msc)
 \newcommand{\vikmunkatipusat}{diplomatervet} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
@@ -52,8 +52,8 @@
 \selectthesislanguage
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%\include{include/titlepage}		   % Szakdolgozat/Diplomaterv címlap
-\include{include/titlepage-tdk}	% TDK címlap
+\include{include/titlepage}		   % Szakdolgozat/Diplomaterv címlap
+%\include{include/titlepage-tdk}	% TDK címlap
 %\include{include/titlepage-otdk}   % OTDK címlap
 
 
@@ -61,18 +61,19 @@
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \tableofcontents\vfill
 
-\pagenumbering{arabic}
+%\pagenumbering{arabic}
+%\setcounter{page}{3}
 
 
 % Declaration and Abstract
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%\include{include/declaration}
+\include{include/declaration}
 \include{content/abstract}
 
 
 % The main part of the thesis
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+%\pagenumbering{arabic}
 
 %TODO import your own content
 \include{content/introduction}

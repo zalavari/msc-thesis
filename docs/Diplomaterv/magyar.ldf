@@ -3690,12 +3690,12 @@
 \def\@@magyar@strucname@part{r\'esz\@@magyar@toldas{4}}% SUXX: may not contain \-; !! résszel (vs. részszel)
 \def\@@magyar@strucname@chapter{fejezet\@@magyar@toldas{9}}% !! fejezettel
 \def\@@magyar@strucname@appendix{f\"ug\-gel\'ek\@@magyar@toldas{4}}% !! fuggelekkel
-\def\@@magyar@strucname@section{szakasz\@@magyar@toldas{20}}%
-\def\@@magyar@strucname@subsection{al\-sza\-kasz\@@magyar@toldas{20}}%
-\def\@@magyar@strucname@subsubsection{al\-al\-szakasz\@@magyar@toldas{20}}%
-\def\@@magyar@strucname@subsubsubsection{al\-al\-al\-szakasz\@@magyar@toldas{20}}%
-\def\@@magyar@strucname@paragraph{bekezd\'es\@@magyar@toldas{4}}%
-\def\@@magyar@strucname@subparagraph{albekezd\'es\@@magyar@toldas{4}}%
+\def\@@magyar@strucname@section{sza\-kasz\@@magyar@toldas{20}}%
+\def\@@magyar@strucname@subsection{sza\-kasz\@@magyar@toldas{20}}%
+\def\@@magyar@strucname@subsubsection{al\-szakasz\@@magyar@toldas{20}}%
+\def\@@magyar@strucname@subsubsubsection{al\-szakasz\@@magyar@toldas{20}}%
+\def\@@magyar@strucname@paragraph{be\-kezd\'es\@@magyar@toldas{4}}%
+\def\@@magyar@strucname@subparagraph{al\-be\-kezd\'es\@@magyar@toldas{4}}%
 \def\@@magyar@strucname@subsubparagraph{alalbekezd\'es\@@magyar@toldas{4}}%
 \def\@@magyar@strucname@figure{\'ab\-ra\@@magyar@toldas{4}}% !! ábrában etc.
 \def\@@magyar@strucname@table{t\'ab\-l\'azat\@@magyar@toldas{6}}%
@@ -3703,7 +3703,10 @@
 \def\@@magyar@strucname@footnote{l\'ab\-jegy\-zet\@@magyar@toldas{7}}%
 \def\@@magyar@strucname@item{elem\@@magyar@toldas{4}}% !! elemmel etc.
 \def\@@magyar@strucname@FancyVerbLine{sor\@@magyar@toldas{8}}% !! sorral
-\def\@@magyar@strucname@theorem{t\'e-tel\@@magyar@toldas{4}}% !! tétellel
+\def\@@magyar@strucname@theorem{t\'e\-tel\@@magyar@toldas{4}}% !! tétellel
+\def\@@magyar@strucname@allitas{\'al\-l\'i\-t\'as\@@magyar@toldas{8}}
+\def\@@magyar@strucname@definition{de\-fi\-n\'i\-ci\-\'o\@@magyar@toldas{8}}
+\def\@@magyar@strucname@lstlisting{k\'od\-r\'eszlet\@@magyar@toldas{8}}
 
 %** Must be expandable.
 %** @param #1 `section' etc.

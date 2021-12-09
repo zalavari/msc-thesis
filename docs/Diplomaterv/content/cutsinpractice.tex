@@ -77,14 +77,12 @@ Valójában arról van szó, hogy például egy maximalizálási folyamat során
 Más megoldó szoftverek kipróbálását is tervben van, de sajnos, mint kiderült lehetőségeink rendkívül limitáltak. Szóba jött például a BiqCrunch, de mivel ennek nincs Python-os API-ja, így egyelőre félretettük \cite{biqcrunch}. Ígéretesnek tűnt a qpsolvers\cite{qpsolvers}, amely egységes interfészt kínál több megoldóprogramhoz is, azonban nem támogatja az egészértékűségi kényszerek hozzáadását. További utánajárást igényel a CVXPY\cite{cvxpy} és a quadprog\cite{quadprog}, melyek akár alkalmasak lehetnek QUBO-k megoldására, eddig ezt mégsem sikerült elérni.
 
 \section{Gráf generálása}\label{sec:graphGeneration}
-Az alkalmazások ellenőrzésére speciális gráfokat generáltam, melyen így előre meg tudtam határozni a várható minimális, illetve maximális vágásokat.
-A generált gráf rendelkezik négy különböző paraméterrel, ezek $N$, $K$, $p$ és $q$.
-A gráfot ezek után jelöljük $G(N,K,p,q)$-val.
-Az ötlet csupán annyi, hogy előre meghatározunk $K$ darab diszjunkt halmazt, hogy mindegyik csoportban pontosan $N$ darab csúcs legyen. Ezután minden élről egyénileg döntünk, hogy őt hozzávesszük-e a gráfhoz. Amennyiben egy él egy csúcs $N$-esen belül fut, ez a valószínűség legyen $q$, amennyiben két különböző csúcs $N$-es között fut, akkor legyen ez a valószínűség $p$. Világos, hogy ha $p$ kicsi, $q$ pedig nagy, akkor $K$ klasztert kapunk, ahol az élek sűrűek, a csoportok között viszont ritkák. Ellenkező esetben $K$ darab egymástól majdnem független ponthalmazt kapunk, ahol a halmazok között viszont sok él hozzá van adva a gráfhoz. Az előbbivel egy minimális vágás várhatóan a $K$ klasztert szétválasztó vágás lesz, utóbbi esetben pedig ugyanígy a maximális vágásra lesz egy jó becslésünk (\ref{code:graphGeneration}.~kódrészlet). 
+Az alkalmazások ellenőrzésére speciális gráfokat generáltam, melyeken előre meg tudtam határozni a várható minimális, illetve maximális vágásokat. A generált gráf rendelkezik négy különböző paraméterrel, ezek $N$, $K$, $p$ és $q$. A gráfot ennek megfelelően jelöljük $G(N,K,p,q)$-val.
+Az ötlet csupán annyi, hogy előre meghatározunk $K$ darab diszjunkt halmazt, hogy mindegyik csoportban pontosan $N$ darab csúcs legyen. Ezután minden élről egyénileg döntünk, hogy őt hozzávesszük-e a gráfhoz. Amennyiben egy él egy csúcs $N$-esen belül fut, ez a valószínűség legyen $q$, amennyiben két különböző csúcs $N$-es között fut, akkor legyen ez a valószínűség $p$. Világos, hogy ha $p$ kicsi, $q$ pedig nagy, akkor $K$ klasztert kapunk, ahol a klaszteren belül az élek sűrűek, a csoportok között viszont ritkák. Ellenkező esetben $K$ darab egymástól majdnem független ponthalmazt kapunk, ahol a halmazok között viszont sok él hozzá van adva a gráfhoz. Az előbbivel egy minimális K-vágás várhatóan a $K$ klasztert szétválasztó vágás lesz, utóbbi esetben pedig ugyanígy a maximális K-vágásra lesz egy jó becslésünk (\ref{code:graphGeneration}.~kódrészlet). 
 
-Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcs teljes gráfot kapunk. $G(N,K,1,0)$ esetén pedig ennek a komplementerét kapjuk. A dolgozat keretein belül, minden közölt eredménynél egységesen a $p=0.9$ és $q=0.1$ paramétereket alkalmaztam.
+Érdemes megvizsgálni az elfajuló eseteket. $G(N,K,0,1)$ esetén $K$ darab különálló egyenként $N$ csúcsú teljes gráfot kapunk, $G(N,K,1,0)$ esetén pedig ennek a komplementerét. A dolgozat keretein belül,maximális vágások esetén minden közölt eredménynél egységesen a $p=0.9$ és $q=0.1$ paramétereket alkalmaztam.
 
-Az élsúlyokat pedig egy véletlenszámmal generáltam minden élre. A gráf generáló függvényt úgy oldottam meg, hogy képes legyen bármilyen véletlenszám generátort paraméterként átvenni, de a példákban mindenhol 0 és 1 közötti egyenletes eloszlással (\ref{code:graphAddWeights}.~kódrészlet).
+Az élsúlyokat pedig egy véletlenszám generátorral készítettem minden élre. Ezt, a véletlen súlyokat elkészítő függvényt úgy oldottam meg, hogy képes legyen bármilyen véletlenszám generátort paraméterként (lambda függvényként) átvenni, de a példákban mindenhol 0 és 1 közötti egyenletes eloszlást biztosító generátort használtam (\ref{code:graphAddWeights}.~kódrészlet).
 
 Érdemes észben tartani, hogy $n=|V|=N \cdot K$, tehát a kicsi $n$ és nagy $N$ nem keverendő.
 
@@ -132,45 +130,45 @@ def addWeightsToGraphWithRandom(G, randAcross = random.random, randWithin = rand
 	
 \end{lstlisting}
 
-%%----------------------------------------------------------------------------
-%\section{Minimális vágás}
-%%----------------------------------------------------------------------------
-%
-%
-%\subsection{Klasszikus}
-%
-%A probléma klasszikusan is megoldható, például folyamalgoritmus segítségével. Referenciaként a NetworkX-ben ilyen módon implementált \verb+minimum_cut+ függvényt fogom használni.
-%
-%\begin{lstlisting}[language=Python,caption=Min-cut flow,label=code:minCutFlow]
-%	cut_value, partition = nx.minimum_cut(G, s, t, 'weight')
-%\end{lstlisting}
-%
-%
-%\subsection{QUBO}
-%Egy $n$ változós bináris kvadratikus kifejezést megadhatunk tömören mátrixos formában is, ahol a $Q$ mátrix $q_{ij}$ eleme az $x_i x_j$ együtthatója. Mivel ezt a formát képes kezelni a legtöbb a megoldó, (vagy ha nem, akkor könnyen átalakítható olyan formára) ezért a továbbiakban ilyen formában adjuk meg.
-%
-%A minimális vágás problémája könnyen felírható QUBO-ként, ahogyan azt korábban is láttuk. Az egyetlen "trükk", hogy két speciális pontot ki kell jelölni, amelyeknek külön csoportba kell kerülniük. Mivel azonban ez a klasszikus folyamalgoritmusnál is így működik, ezért ilyen tekintetben ez a megoldás sem alsóbbrendűbb.
-%
-%\begin{lstlisting}[language=python,caption=Min-cut QUBO,label=code:minCutQUBO]
-%	for u, v in G.edges:
-%		w=G.edges[u,v]['weight']
-%		Q[(u,u)]+= 1*w
-%		Q[(v,v)]+= 1*w
-%		Q[(u,v)]+= -2*w
-%	
-%	Q[(s,s)]+=P
-%	Q[(t,t)]-=P
-%\end{lstlisting}
+%----------------------------------------------------------------------------
+\section{Minimális vágás}
+%----------------------------------------------------------------------------
+
+
+\subsection{Klasszikus}
+
+A probléma klasszikusan is megoldható, például folyamalgoritmus segítségével. Referenciaként a NetworkX-ben ilyen módon implementált \verb+minimum_cut+ függvényt fogom használni.
+
+\begin{lstlisting}[language=Python,caption=Minimális vágás folyamalgoritmussal,label=code:minCutFlow]
+	cut_value, partition = nx.minimum_cut(G, s, t, 'weight')
+\end{lstlisting}
+
+
+\subsection{QUBO}
+Egy $n$ változós bináris kvadratikus kifejezést megadhatunk tömören mátrixos formában is, ahol a $Q$ mátrix $q_{ij}$ eleme az $x_i x_j$ együtthatója. Mivel ezt a formát képes kezelni a legtöbb megoldó, (vagy ha nem, akkor ebből könnyen átalakítható a neki megfelelő formára) ezért a továbbiakban ezt az alakot használom megadásra.
+
+A minimális vágás problémája könnyen felírható QUBO-ként, ahogyan azt \az+\refstruc{sec:MinCutQUBO+ben} láttuk. Az egyetlen amire figyelni kell, hogy két speciális pontot ki kell jelölni, amelyeknek külön csoportba kell kerülniük. Mivel azonban ez a klasszikus folyamalgoritmusnál is így működik, ezért ilyen tekintetben ez a megoldás sem alsórendűbb ahhoz képest.
+
+\begin{lstlisting}[language=python,caption=Minimális vágás QUBO előállítása,label=code:minCutQUBO]
+	for u, v in G.edges:
+		w=G.edges[u,v]['weight']
+		Q[(u,u)]+= 1*w
+		Q[(v,v)]+= 1*w
+		Q[(u,v)]+= -2*w
+	
+	Q[(s,s)]+=P
+	Q[(t,t)]-=P
+\end{lstlisting}
 
 %----------------------------------------------------------------------------
 \section{Maximális vágás}\label{sec:practiceMaxCut}
 %----------------------------------------------------------------------------
 
 A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetjük.
-%Éppen úgy működik, mint a minimális vágás, de nem szükségesek a büntető tagok.
+Éppen úgy működik, mint a minimális vágás esetében, de nem szükségesek a büntető tagok, hiszen nem lesz elfajuló optimális megoldás.
 Érdemes megfigyelni, hogy a változók száma pontosan $|V|=n$.
 
-\begin{lstlisting}[language=python,caption=Max-cut QUBO,label=code:maxCutQUBO]
+\begin{lstlisting}[language=python,caption=Maximális vágás QUBO előállítása,label=code:maxCutQUBO]
 	for u, v in G.edges:
 		w=G.edges[u,v]['weight']
 		Q[(u,u)]+= -1*w
@@ -179,18 +177,18 @@ A maximális vágás klasszikus példája a QUBO-nak, ezt könnyen elintézhetj�
 \end{lstlisting}
 
 
-Az egyszerű maximális vágásra felírt QUBO-t szinte minden megoldó szoftver jól kezelte. Nagy bemenetekre is általában pontos eredményt kaptunk vissza. A leglassabb megoldónak a Gurobi bizonyult, de a képet árnyalja, hogy az ő szoftverük pontosan megkeresi az optimum értékét. Ahogyan a \refstruc{sec:Gurobi}ban már leírtam, a folyamat jelentősen gyorsítható a BestObjStop beállításával, melyet a táblázatokban és a grafikonokon \verb+Gurobi0.9+-del jelöltem.
+Az egyszerű maximális vágásra felírt QUBO-t szinte minden megoldó szoftver jól kezelte. Nagy bemenetekre is általában pontos eredményt kaptunk vissza. A leglassabb megoldónak a Gurobi bizonyult, de a képet árnyalja, hogy az ő szoftverük pontosan megkeresi az optimum értékét. Ahogyan \az+\refstruc{sec:Gurobi+ban} már leírtam, a folyamat jelentősen gyorsítható a BestObjStop beállításával, melyet a táblázatokban és a grafikonokon \verb+Gurobi0.9+-del jelöltem.
 
-A \refstruc{fig:maxCutQUBO} foglalja össze a különböző módszerekkel kapott futásidőket. (A tengelyeken logaritmikus skálát alkalmazok.) A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Kimondottan a Hybrid esetnél fordult elő többször az is, hogy időnként a futásidő kiugróan magas 1-2 perces időtartamú volt, ugyanakkora bemenetre, amelyre máskor 10-20 másodperc alatt lefutott.
+\Az+\refstruc{fig:maxCutQUBO} foglalja össze a különböző módszerekkel kapott futásidőket. (A tengelyeken logaritmikus skálát alkalmazok.) A futásidőknél sokszor jellemzőek voltak akár 1-2 másodperces eltérések is ugyanarra a bemenetre, a sok külső befolyásoló tényező miatt. (Kezdve csak azzal, hogy a Hibrid esetnél interneten keresztüli kommunikációval oldjuk meg a problémát, ezért csak a hálózati kommunikáció egy elég jelentős állandón változó tényező.) Kimondottan a Hybrid esetnél fordult elő többször az is, hogy időnként a futásidő kiugróan magas 1-2 perces időtartamú volt, ugyanakkora bemenetre, amelyre máskor 10-20 másodperc alatt lefutott.
 
-Ami a \refstruc{fig:maxCutQUBO} ábrán nagyon jól látszik, hogy a sima Gurobis megoldás nagyon sok időt igénybe vett $N=1000$-nél, ami 2000 csúcsú gráfnak felel meg, már közel 1000 másodpercig tartott a lefutás. A Gurobi módosított verziója viszont a kis bemenetek $N \leq 100$ esetében a leggyorsabb volt. Ráadásul, bár csak azt írjuk elő, hogy a megoldás az optimum 90\%-ánál nagyobb legyen, így is általában megtaláljuk a pontos optimumot. (Egyedüli kivétel érdekes módon az $N=20$ esetnél fordult elő, amikor az átlagos approximációs faktor 0.93 volt.)
+Ami \az+\ref{fig:maxCutQUBO} ábrán nagyon jól látszik, hogy a sima Gurobis megoldás nagyon sok időt igénybe vett $N=1000$-nél, ami 2000 csúcsú gráfnak felel meg, már közel 1000 másodpercig tartott a lefutás. A Gurobi módosított verziója viszont a kis bemenetek $N \leq 100$ esetében a leggyorsabb volt. Ráadásul, bár csak azt írjuk elő, hogy a megoldás az optimum 90\%-ánál nagyobb legyen, így is általában megtaláljuk a pontos optimumot. (Egyedüli kivétel érdekes módon az $N=20$ esetnél fordult elő, amikor az átlagos approximációs faktor 0.93 volt.)
 A bemenetek növekedésével viszont úgy tűnik, hogy a Gurobi elveszíti a versenyt, és a leggyorsabb algoritmusként a szimulált kvantumgép megoldás, és a klasszikus heurisztikus megoldó szerepel. Bár igaz, hogy ezek az algoritmusok a lokális környezeten futnak, így nincs szükség hálózati kommunikációra vagy erőforrásra várakozásra, ez akkor is meglepő eredmény. Ráadásul a grafikon alapján nem úgy tűnik, hogy ez a konstans overhead szép lassan eltűnne a bemenet méretének növekedése mellett.
 
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxCutQUBO.png}
-	\caption{Futásidők a max-vágás QUBO alakjához}
+	\caption{Futásidők a maximális vágás QUBO alakjához}
 	\label{fig:maxCutQUBO}
 \end{figure}
 
@@ -200,13 +198,13 @@ A bemenetek növekedésével viszont úgy tűnik, hogy a Gurobi elveszíti a ver
 
 \subsection{Megvalósítás}
 
-A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt már csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis amíg az $x_{ui}$ változót kettő indexszel indexeltük, az elméleti felírásban, most egy indexszel kell megadnunk egyértelműen, hogy a mátrixos formába leképezhető legyen.
-\footnote{Igazából ez nem szükségszerű, mert a mátrix felírásához, a Python dict típusa miatt, akár sztringeket is használhatunk kulcsként, vagyis a sor-oszlop koordináták azonosítására. Ezt a következő példában ki is használom, de ennél a feladatnál még könnyen kezelhetőek az indexek leképezése is.}
+A maximális K-vágásnál több trükköt is be kellett vetnünk. Az elméleti megfontolásokon felül, itt csupán annyit kell még kezelni, hogy a változókat jól osszuk ki. Vagyis amíg az $x_{ui}$ változót kettő indexszel indexeltük, az elméleti felírásban, most egy indexszel kell megadnunk egyértelműen, hogy a mátrixos formába leképezhető legyen.
+\footnote{Igazából ez nem szükségszerű, mert a mátrix felírásához, a Python dict típusa miatt, akár sztringeket is használhatunk kulcsként, vagyis a sor-oszlop koordináták azonosítására. Ezt a következő példában ki is használom, de ennél a feladatnál még könnyen kezelhető az indexek leképezése is.}
 Ezt pedig úgy oldjuk meg, hogy a változókat sorba rakva blokkonként következnek az egy csúcshoz tartozó változók, azaz $x_{ui}$ az $(uK+i)$. változó lesz. Ennek megfelelően használjuk tehát az indexeket.
 
 Ebből következik továbbá az a korábbi, de fontos megfigyelés is, hogy a változók száma itt $n \cdot K = N \cdot K^2$.
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (szimmetrikus mátrix), label=code:maxKCutQUBOSymmetric]
+\begin{lstlisting}[language=python,caption=Maximális K-vágás QUBO (szimmetrikus mátrix), label=code:maxKCutQUBOSymmetric]
 for u, v in G.edges:
 	for i in range(K):
 		for j in range(K):
@@ -221,7 +219,7 @@ for u in range(K*N):
 				Q[(u*K+i,u*K+j)] += P 
 \end{lstlisting}
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (háromszög mátrix),label=code:maxKCutQUBOTriangle]
+\begin{lstlisting}[language=python,caption=Maximális K-vágás QUBO (háromszög mátrix),label=code:maxKCutQUBOTriangle]
 for u, v in G.edges:
 	for i in range(K):
 		for j in range(i+1, K):
@@ -238,7 +236,7 @@ for u in range(K*N):
 
 A Gurobi használata során figyelembe vettem, hogy a korlátok célfüggvénybe való beleerőltetése nem előnyös (\refstruc{sec:Gurobi}) ezért a Gurobit nem csak a nyers QUBO megoldására használtam, hanem felhasználtam a korlátokat külön hozzáadva, és csak a ténylegesen optimalizálandó részeket célfüggvényként megadva (\ref{code:maxKCutGurobi} kódrészlet). Több mérés is azt igazolja, hogy ez a módszer sokkal jobban teljesít, mint az egyszerű QUBO megoldása (\refstruc{fig:maxKCutQUBO_K2}).
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (háromszög mátrix),label=code:maxKCutGurobi]
+\begin{lstlisting}[language=python,caption=Maximális K-vágás Gurobival ,label=code:maxKCutGurobi]
   model = gp.Model('MaxKCut', env=gurobiEnv)
 
 	X = model.addVars(len(G)*K, vtype=GRB.BINARY, name="Set")
@@ -264,25 +262,25 @@ A Gurobi használata során figyelembe vettem, hogy a korlátok célfüggvénybe
 \subsection{Eredmények}
 
 
-A maximális K-vágásra a futásidőket szemlélteti a \ref{fig:maxKCutQUBO_K2} és a \refstruc{fig:maxKCutQUBO_K4}. Előbbhez $K=2$, utóbbihoz $K=4$ van beállítva paraméterként. Általános tapasztalat a grafikonoknál, hogy a Gurobi mellett -- amelyet immár nem is klasszikus értelemben QUBO megoldásra használok, mert hozzáadok változókat is a modellhez --, a \refstruc{sec:practiceMaxCut}hoz hasonlóan lokálisan futó algoritmusok futnak le gyorsabban.
+A maximális K-vágásra a futásidőket szemlélteti a \ref{fig:maxKCutQUBO_K2} és \az+\refstruc{fig:maxKCutQUBO_K4}. Előbbihez $K=2$, utóbbihoz $K=4$ van beállítva paraméterként. Általános tapasztalat a grafikonoknál, hogy a Gurobi mellett -- amelyet immár nem is klasszikus értelemben QUBO megoldásra használok, mert hozzáadok korlátokat is a modellhez --, a \refstruc{sec:practiceMaxCut}hoz hasonlóan lokálisan futó algoritmusok futnak le gyorsabban.
 
 A \ref{fig:maxKCutQUBO_K4} grafikonon kimondottan érdekesnek tűnik, hogy a Gurobival történő megoldás hamar belassul, így összehasonlíthatatlanul rossz lesz a többi solver-hez képest. Az eredmények valóban összehasonlíthatatlanok, de sajnos más okból kifolyólag.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K2.png}
-	\caption{Futásidők a max-K-vágás QUBO megoldására (K=2)}
+	\caption{Futásidők a maximális K-vágás QUBO megoldására (K=2)}
 	\label{fig:maxKCutQUBO_K2}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K4.png}
-	\caption{Futásidők a max-K-vágás QUBO megoldására (K=4)}
+	\caption{Futásidők a maximális K-vágás QUBO megoldására (K=4)}
 	\label{fig:maxKCutQUBO_K4}
 \end{figure}
 
-Sajnos a futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. Amíg az egyszerű maximális vágásnál (\refstruc{sec:practiceMaxCut}) mindig közel jó eredményt kaptunk, és inkább a futásidő volt a szűkös erőforrás, addig a K-vágásnál gyakran kaptunk viszonylag rossz közelítéseket is, ezért érdemes mindig figyelni a talált megoldás és a várt optimum arányát, melyre továbbiakban approximációs faktorként is hivatkozok. Amennyiben ez a szám $1.0$, az azt jelenti, hogy a keresett vágást pontosan megtaláltuk.
+A futási idők elemzése önmagában nem elég, fontos megvizsgálni, hogy valóban jó (közelítő) eredményeket kaptunk-e. Amíg az egyszerű maximális vágásnál (\refstruc{sec:practiceMaxCut}) mindig közel jó eredményt kaptunk, és inkább a futásidő volt a szűkös erőforrás, addig a K-vágásnál gyakran kaptunk viszonylag rossz közelítéseket is, ezért érdemes mindig figyelni a talált megoldás és a várt optimum arányát, melyre továbbiakban approximációs faktorként is hivatkozok. Amennyiben ez a szám $1.0$, az azt jelenti, hogy a keresett vágást pontosan megtaláltuk.
 
 A vágások várható optimumát könnyen megmondhatjuk a generált gráfok alapján, de nagyságrendileg is érdemes kiszámolni. Ha $p=1, q=0$ közelítést használjuk, akkor $N \approx (N-1)$ miatt, expliciten kiszámolható a \ref{goodcut} képlettel, ahol $E(W)$ az élsúlyok várható értéke.
 
@@ -311,19 +309,19 @@ A \ref{badcut} formulát osztva a \ref{goodcut} kifejezéssel, megkapjuk a \ref{
 
 Vagyis $K=2$ esetben legalább $0.5$ felett lesz az arányszám, amíg például $K=4$ esetben legalább $0.75$. Ezt fontos szem előtt tartani, hiszen ez azt jelenti, hogy $K=4$ esetben egy $0.8$ approximációt elérő algoritmus egyáltalán nem nevezhető jónak, hiszen alig jobb, mintha a gráfnak egy random felosztását adnánk vissza eredményül.
 
-A \refstruc{fig:maxKCutQUBO_K2approx} és \refstruc{fig:maxKCutQUBO_K4approx} szemlélteti a megoldások pontosságát. Láthatjuk, hogy $K=2, N \leq 200$ esetre minden esetben megtaláltuk az optimumot, bármely optimalizálót is használjuk. Sajnos viszont $N=500$, illetve $K=4$ esetben már gyakorlatilag használhatatlanul rossz vágásokat kapunk vissza. A problémával nagyon sokat foglalkoztam, így a hibakeresés során a kapott felosztáson ,,szemmel végignézve" is konstatálhattam, hogy valóban, mintha véletlen felosztásról lenne szó.
+\Az+\refstruc{fig:maxKCutQUBO_K2approx} és \refstruc{fig:maxKCutQUBO_K4approx} szemlélteti a megoldások pontosságát. Láthatjuk, hogy $K=2, N \leq 200$ esetre minden esetben megtaláltuk az optimumot, bármely optimalizálót is használjuk. Sajnos viszont $N=500$, illetve $K=4$ esetben már gyakorlatilag használhatatlanul rossz vágásokat kapunk vissza. A problémával nagyon sokat foglalkoztam, így a hibakeresés során a kapott felosztáson ,,szemmel végignézve" is konstatálhattam, hogy valóban, mintha véletlen felosztásról lenne szó.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K2approx.png}
-	\caption{Approximációs faktorok a max-K-vágás QUBO megoldására (K=2)}
+	\caption{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=2$)}
 	\label{fig:maxKCutQUBO_K2approx}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K4approx.png}
-	\caption{Approximációs faktorok a max-K-vágás QUBO megoldására (K=4)}
+	\caption{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=4$)}
 	\label{fig:maxKCutQUBO_K4approx}
 \end{figure}
 
@@ -337,9 +335,9 @@ Azt sejtjük hogy valamilyen paraméterek konfigurálásával javítható lenne 
 
 Mivel a korábban bemutatott elmélet alapján rengeteg segédváltozó bejön, így nehéz lett volna a természetes számok halmazára leképezni az összes változót, és így felírni a mátrixot. Ezért a QUBO definiálásánál kihasználtam, hogy a defaultdict kulcsainak nemcsak egész számokat, hanem akár stringeket (pontosabban string párokat) is megadhatunk, így string-ként kezelve a változóneveket kicsit követhetőbb a folyamat. Ezáltal a kódban a csoportokat elkódoló változókat \verb+x_u_i+-vel jelöltem, melynek jelentése továbbra is, az $u$ csúcs csoportját elkódoló szám i. bitje. \verb+d_u_v_i+-vel jelöltem, hogy az $u$ és $v$ csoportját elkódoló számok i. bitje különbözik-e, illetve \verb+dtemp_u_v_i+-vel a XOR kapu használatánál szükséges segédváltozót. Ennek mintájára \verb+D_u_v+ jelöli az $u$ és $v$ különböző csoportba kerülését. Ezen kívül további változók jönnek majd be az \verb+or_gate_list+ meghívásánál, ott a függvényen belül adom hozzá a Q-hoz az új változókat, úgy hogy azok nevükben egyediek legyenek, méghozzá a kimeneti változónév mögé mindig hozzákonkatenálom, hogy a lista mely indexű elemeit állítja OR kapcsolatba.
 
-A kód egyébként két nagyobb részből áll, egyrészt a \verb+D_u_v+ változók előállítása, másrészt a  \verb+D_u_v+ változókat össze kell szorozni a megfelelő súlyokkal(\ref{code:maxKCutQUBOBinary}.~kódrészlet).
+A kód egyébként két nagyobb részből áll, egyrészt a \verb+D_u_v+ változók előállítása, másrészt a  \verb+D_u_v+ változókat össze kell szorozni a megfelelő súlyokkal (\refstruc{code:maxKCutQUBOBinary}).
 
-\begin{lstlisting}[language=python,caption=Max-K-cut QUBO (bináris kódolás),label=code:maxKCutQUBOBinary]
+\begin{lstlisting}[language=python,caption=Maximális K-vágás QUBO (bináris kódolás),label=code:maxKCutQUBOBinary]
 
 import math
 
@@ -370,7 +368,7 @@ for u, v in G.edges:
 \subsection{Logikai kapuk megvalósítása}
 
 A fenti módszer működéséhez azonban implementálni kell a logikai kapukat is.
-Ezek az elemi kapuk esetében nem okoznak különösebb problémát, hiszen a korábbi fejezetben már megadtuk, hogy milyen együtthatókat kell használni, így az implementálásnál elég egyszerűen paraméterként átvenni egy Q objektumot, melybe a változók együtthatói elmentésre kerülnek, és magukat a változókat azonosító neveket, melyekre a logikai összefüggést alkalmazni akarjuk. A Q mátrix megfelelő mezőihez hozzáadjuk a korábban kiszámolt együtthatókat, és ezzel kész is vagyunk (\ref{code:ElementaryGates}.~kódrészlet).
+Ezek az elemi kapuk esetében nem okoznak különösebb problémát, hiszen a korábbi fejezetben már megadtuk, hogy milyen együtthatókat kell használni, így az implementálásnál elég egyszerűen paraméterként átvenni egy Q objektumot, melybe a változók együtthatói elmentésre kerülnek, és magukat a változókat azonosító neveket, melyekre a logikai összefüggést alkalmazni akarjuk. A Q mátrix megfelelő mezőihez hozzáadjuk a korábban kiszámolt együtthatókat, és ezzel kész is vagyunk (\refstruc{code:ElementaryGates}).
 
 \begin{lstlisting}[language=python,caption=Elemi kapuk,label=code:ElementaryGates]
 	
@@ -407,15 +405,15 @@ def xor_gate(Q, in1, in2, out1, out2):
 	
 \end{lstlisting}
 
-A több-bemenetű OR kapura is készítettem egy rövid függvényt, amely elvégzi az OR műveletet az összes bemenetére. Mindezt úgy teszi, hogy közben felépít egy bináris fát OR kapukból, időközben segédváltozókat bevezetve. Implementációját tekintve "oszd meg és uralkodj" elven működik, vagyis rekurzívan meghívja saját magát a paraméterként átadott tömb első-, illetve második felére, majd a kapott eredményekre alkalmazza az OR műveletet (\ref{code:MultipleOrGates}.~kódrészlet).
+A több-bemenetű OR kapura is készítettem egy rövid függvényt, amely elvégzi az OR műveletet az összes bemenetére. Mindezt úgy teszi, hogy közben felépít egy bináris fát OR kapukból, időközben segédváltozókat bevezetve. Implementációját tekintve ,,oszd meg és uralkodj" elven működik, vagyis rekurzívan meghívja saját magát a paraméterként átadott tömb első-, illetve második felére, majd a kapott eredményekre alkalmazza az OR műveletet (\refstruc{code:MultipleOrGates}).
 
 \begin{lstlisting}[language=python,caption=Sokbemenetes OR kapu,label=code:MultipleOrGates]
 	
 def or_gate_list(Q, in1, out):
 	length = len(in1)
 	if (length==1):
-	same(Q, in1[0], out)
-	return
+		same(Q, in1[0], out)
+		return
 	
 	half = length // 2
 	out1 = out +"_0-" +str(half)  
@@ -426,7 +424,7 @@ def or_gate_list(Q, in1, out):
 	
 \end{lstlisting}
 
-Illetve segédfüggvényként létrehoztam még egy bitenkénti XOR műveletet végző függvényt, mely csak annyit csinál, hogy a bemenetként kapott két listára elempáronként alkalmazza a korábban definiált \verb+xor_gate+ függvényt (\ref{code:XorGateList}.~kódrészlet).
+Illetve segédfüggvényként létrehoztam még egy bitenkénti XOR műveletet végző függvényt, mely csak annyit csinál, hogy a bemenetként kapott két listára elempáronként alkalmazza a korábban definiált \verb+xor_gate+ függvényt (\refstruc{code:XorGateList}).
 
 \begin{lstlisting}[language=python,caption=Bitenkénti XOR művelet,label=code:XorGateList]
 	
@@ -443,27 +441,27 @@ Az eredmények nagyon hasonlóan alakultak, mint a \refstruc{sec:practiceBinary}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K2approx_bin.png}
-	\caption{Approximációs faktorok a max-K-vágás QUBO megoldására (bináris felírás, K=2)}
+	\caption{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)}
 	\label{fig:maxKCutQUBO_K2approx_bin}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K4approx_bin.png}
-	\caption{Approximációs faktorok a max-K-vágás QUBO megoldására (bináris felírás, K=4)}
+	\caption{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)}
 	\label{fig:maxKCutQUBO_K4approx_bin}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K2_bin.png}
-	\caption{Futásidők a max-K-vágás QUBO megoldására (bináris felírás, K=2)}
+	\caption{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)}
 	\label{fig:maxKCutQUBO_K2_bin}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/diagrams/maxKCutQUBO_K4_bin.png}
-	\caption{Futásidők a max-K-vágás QUBO megoldására (bináris felírás, K=4)}
+	\caption{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)}
 	\label{fig:maxKCutQUBO_K4_bin}
 \end{figure}
