@@ -211,6 +211,11 @@ Christopher Hojny\bibAnd 0Imke Joormann\bibAnd 0Hendrik L\"uthen\bibAnd 2Martin
 \bibNewBlock
 \bibUrll{URL} >https://doi.org/10.1007/s12532-020-00186-3>.
 
+\bibitem{NetworkXFloat}
+{NetworkX community}:
+\bibNewBlock {Issue in minimum cut}.
+\bibNewBlock \url{https://github.com/networkx/networkx/issues/4592}.
+
 \bibitem{NetworkX}
 {NetworkX developers}:
 \bibNewBlock {NetworkX}.

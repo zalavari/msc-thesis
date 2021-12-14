@@ -16,8 +16,8 @@
 \@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.1.2}Gurobi}{30}{subsection.4.1.2}\protected@file@percent }
 \newlabel{sec:Gurobi}{{4.1.2}{30}{Gurobi}{subsection.4.1.2}{}}
 \citation{gurobiBestObjStop}
-\newlabel{code:solveQUBOWithGurobi}{{4.1}{31}{Max-cut QUBO}{lstlisting.4.1}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.1}Max-cut QUBO}{31}{lstlisting.4.1}\protected@file@percent }
+\newlabel{code:solveQUBOWithGurobi}{{4.1}{31}{QUBO megoldása Gurobival}{lstlisting.4.1}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.1}QUBO megoldása Gurobival}{31}{lstlisting.4.1}\protected@file@percent }
 \citation{biqcrunch}
 \citation{qpsolvers}
 \citation{cvxpy}
@@ -34,58 +34,66 @@
 \@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.3.1}Klasszikus}{33}{subsection.4.3.1}\protected@file@percent }
 \newlabel{code:minCutFlow}{{4.4}{33}{Minimális vágás folyamalgoritmussal}{lstlisting.4.4}{}}
 \@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.4}Minimális vágás folyamalgoritmussal}{33}{lstlisting.4.4}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.3.2}QUBO}{33}{subsection.4.3.2}\protected@file@percent }
-\newlabel{code:minCutQUBO}{{4.5}{33}{Minimális vágás QUBO előállítása}{lstlisting.4.5}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.5}Minimális vágás QUBO előállítása}{33}{lstlisting.4.5}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.4}Maximális vágás}{34}{section.4.4}\protected@file@percent }
-\newlabel{sec:practiceMaxCut}{{4.4}{34}{Maximális vágás}{section.4.4}{}}
-\newlabel{code:maxCutQUBO}{{4.6}{34}{Maximális vágás QUBO előállítása}{lstlisting.4.6}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.6}Maximális vágás QUBO előállítása}{34}{lstlisting.4.6}\protected@file@percent }
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.1.}{\ignorespaces Futásidők a maximális vágás QUBO alakjához\relax }}{35}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:maxCutQUBO}{{4.1}{35}{Futásidők a maximális vágás QUBO alakjához\relax }{figure.caption.14}{}}
-\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.5}Maximális K-vágás (one-hot encoded)}{35}{section.4.5}\protected@file@percent }
-\newlabel{sec:practiceOneHot}{{4.5}{35}{Maximális K-vágás (one-hot encoded)}{section.4.5}{}}
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.1}Megvalósítás}{35}{subsection.4.5.1}\protected@file@percent }
-\newlabel{code:maxKCutQUBOSymmetric}{{4.7}{35}{Maximális K-vágás QUBO (szimmetrikus mátrix)}{lstlisting.4.7}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.7}Maximális K-vágás QUBO (szimmetrikus mátrix)}{35}{lstlisting.4.7}\protected@file@percent }
-\newlabel{code:maxKCutQUBOTriangle}{{4.8}{36}{Maximális K-vágás QUBO (háromszög mátrix)}{lstlisting.4.8}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.8}Maximális K-vágás QUBO (háromszög mátrix)}{36}{lstlisting.4.8}\protected@file@percent }
-\newlabel{code:maxKCutGurobi}{{4.9}{36}{Maximális K-vágás Gurobival}{lstlisting.4.9}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.9}Maximális K-vágás Gurobival}{36}{lstlisting.4.9}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.2}Eredmények}{36}{subsection.4.5.2}\protected@file@percent }
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.2.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (K=2)\relax }}{37}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K2}{{4.2}{37}{Futásidők a maximális K-vágás QUBO megoldására (K=2)\relax }{figure.caption.15}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.3.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (K=4)\relax }}{38}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K4}{{4.3}{38}{Futásidők a maximális K-vágás QUBO megoldására (K=4)\relax }{figure.caption.16}{}}
-\newlabel{goodcut}{{4.1}{38}{Eredmények}{equation.4.1}{}}
-\newlabel{badcut}{{4.2}{39}{Eredmények}{equation.4.2}{}}
-\newlabel{approxcut}{{4.3}{39}{Eredmények}{equation.4.3}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.4.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=2$)\relax }}{39}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K2approx}{{4.4}{39}{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=2$)\relax }{figure.caption.17}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.5.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=4$)\relax }}{40}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K4approx}{{4.5}{40}{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=4$)\relax }{figure.caption.18}{}}
-\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.6}Maximális K-vágás (binary encoded)}{40}{section.4.6}\protected@file@percent }
-\newlabel{sec:practiceBinary}{{4.6}{40}{Maximális K-vágás (binary encoded)}{section.4.6}{}}
-\newlabel{code:maxKCutQUBOBinary}{{4.10}{40}{Maximális K-vágás QUBO (bináris kódolás)}{lstlisting.4.10}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.10}Maximális K-vágás QUBO (bináris kódolás)}{40}{lstlisting.4.10}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.6.1}Logikai kapuk megvalósítása}{41}{subsection.4.6.1}\protected@file@percent }
-\newlabel{code:ElementaryGates}{{4.11}{41}{Elemi kapuk}{lstlisting.4.11}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.11}Elemi kapuk}{41}{lstlisting.4.11}\protected@file@percent }
-\newlabel{code:MultipleOrGates}{{4.12}{42}{Sokbemenetes OR kapu}{lstlisting.4.12}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.12}Sokbemenetes OR kapu}{42}{lstlisting.4.12}\protected@file@percent }
-\newlabel{code:XorGateList}{{4.13}{42}{Bitenkénti XOR művelet}{lstlisting.4.13}{}}
-\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.13}Bitenkénti XOR művelet}{42}{lstlisting.4.13}\protected@file@percent }
-\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.6.2}Eredmények}{42}{subsection.4.6.2}\protected@file@percent }
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.6.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }}{43}{figure.caption.19}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K2approx_bin}{{4.6}{43}{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }{figure.caption.19}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.7.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }}{43}{figure.caption.20}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K4approx_bin}{{4.7}{43}{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }{figure.caption.20}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.8.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }}{44}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K2_bin}{{4.8}{44}{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }{figure.caption.21}{}}
-\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.9.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }}{45}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:maxKCutQUBO_K4_bin}{{4.9}{45}{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }{figure.caption.22}{}}
+\citation{NetworkXFloat}
+\newlabel{code:minCutFlowFloat}{{4.5}{34}{Súlyok egésszé konvertálása}{lstlisting.4.5}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.5}Súlyok egésszé konvertálása}{34}{lstlisting.4.5}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.3.2}QUBO}{34}{subsection.4.3.2}\protected@file@percent }
+\newlabel{code:minCutQUBO}{{4.6}{34}{Minimális vágás QUBO előállítása}{lstlisting.4.6}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.6}Minimális vágás QUBO előállítása}{34}{lstlisting.4.6}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.3.3}Eredmények}{34}{subsection.4.3.3}\protected@file@percent }
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.1.}{\ignorespaces Futásidők a minimális vágás megoldására\relax }}{35}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:minCutRuntimes}{{4.1}{35}{Futásidők a minimális vágás megoldására\relax }{figure.caption.14}{}}
+\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.4}Maximális vágás}{35}{section.4.4}\protected@file@percent }
+\newlabel{sec:practiceMaxCut}{{4.4}{35}{Maximális vágás}{section.4.4}{}}
+\newlabel{code:maxCutQUBO}{{4.7}{35}{Maximális vágás QUBO előállítása}{lstlisting.4.7}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.7}Maximális vágás QUBO előállítása}{35}{lstlisting.4.7}\protected@file@percent }
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.2.}{\ignorespaces Futásidők a maximális vágás QUBO megoldására\relax }}{36}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:maxCutQUBO}{{4.2}{36}{Futásidők a maximális vágás QUBO megoldására\relax }{figure.caption.15}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.3.}{\ignorespaces Futásidők a maximális vágás megoldására Gurobival\relax }}{37}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:maxCutGurobiRuntimes}{{4.3}{37}{Futásidők a maximális vágás megoldására Gurobival\relax }{figure.caption.16}{}}
+\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.5}Maximális K-vágás (,,one-hot" kódolással)}{37}{section.4.5}\protected@file@percent }
+\newlabel{sec:practiceOneHot}{{4.5}{37}{Maximális K-vágás (,,one-hot" kódolással)}{section.4.5}{}}
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.1}Megvalósítás}{37}{subsection.4.5.1}\protected@file@percent }
+\newlabel{code:maxKCutQUBOSymmetric}{{4.8}{37}{Maximális K-vágás QUBO (szimmetrikus mátrix)}{lstlisting.4.8}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.8}Maximális K-vágás QUBO (szimmetrikus mátrix)}{37}{lstlisting.4.8}\protected@file@percent }
+\newlabel{code:maxKCutQUBOTriangle}{{4.9}{38}{Maximális K-vágás QUBO (háromszög mátrix)}{lstlisting.4.9}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.9}Maximális K-vágás QUBO (háromszög mátrix)}{38}{lstlisting.4.9}\protected@file@percent }
+\newlabel{code:maxKCutGurobi}{{4.10}{38}{Maximális K-vágás Gurobival}{lstlisting.4.10}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.10}Maximális K-vágás Gurobival}{38}{lstlisting.4.10}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.5.2}Eredmények}{38}{subsection.4.5.2}\protected@file@percent }
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.4.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására ($K=2$)\relax }}{39}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K2}{{4.4}{39}{Futásidők a maximális K-vágás QUBO megoldására ($K=2$)\relax }{figure.caption.17}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.5.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására ($K=4$)\relax }}{39}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K4}{{4.5}{39}{Futásidők a maximális K-vágás QUBO megoldására ($K=4$)\relax }{figure.caption.18}{}}
+\newlabel{goodcut}{{4.1}{40}{Eredmények}{equation.4.1}{}}
+\newlabel{badcut}{{4.2}{40}{Eredmények}{equation.4.2}{}}
+\newlabel{approxcut}{{4.3}{40}{Eredmények}{equation.4.3}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.6.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=2$)\relax }}{41}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K2approx}{{4.6}{41}{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=2$)\relax }{figure.caption.19}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.7.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=4$)\relax }}{41}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K4approx}{{4.7}{41}{Approximációs faktorok a maximális K-vágás QUBO megoldására ($K=4$)\relax }{figure.caption.20}{}}
+\@writefile{toc}{\select@language{magyar} \contentsline {section}{\numberline {4.6}Maximális K-vágás (bináris kódolással)}{42}{section.4.6}\protected@file@percent }
+\newlabel{sec:practiceBinary}{{4.6}{42}{Maximális K-vágás (bináris kódolással)}{section.4.6}{}}
+\newlabel{code:maxKCutQUBOBinary}{{4.11}{42}{Maximális K-vágás QUBO (bináris kódolás)}{lstlisting.4.11}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.11}Maximális K-vágás QUBO (bináris kódolás)}{42}{lstlisting.4.11}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.6.1}Logikai kapuk megvalósítása}{42}{subsection.4.6.1}\protected@file@percent }
+\newlabel{code:ElementaryGates}{{4.12}{42}{Elemi kapuk}{lstlisting.4.12}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.12}Elemi kapuk}{42}{lstlisting.4.12}\protected@file@percent }
+\newlabel{code:MultipleOrGates}{{4.13}{43}{Sokbemenetes OR kapu}{lstlisting.4.13}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.13}Sokbemenetes OR kapu}{43}{lstlisting.4.13}\protected@file@percent }
+\newlabel{code:XorGateList}{{4.14}{43}{Bitenkénti XOR művelet}{lstlisting.4.14}{}}
+\@writefile{lol}{\select@language{magyar} \contentsline {lstlisting}{\numberline {4.14}Bitenkénti XOR művelet}{43}{lstlisting.4.14}\protected@file@percent }
+\@writefile{toc}{\select@language{magyar} \contentsline {subsection}{\numberline {4.6.2}Eredmények}{44}{subsection.4.6.2}\protected@file@percent }
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.8.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }}{44}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K2approx_bin}{{4.8}{44}{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }{figure.caption.21}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.9.}{\ignorespaces Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }}{44}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K4approx_bin}{{4.9}{44}{Approximációs faktorok a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }{figure.caption.22}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.10.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }}{45}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K2_bin}{{4.10}{45}{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=2$)\relax }{figure.caption.23}{}}
+\@writefile{lof}{\select@language{magyar} \contentsline {figure}{\numberline {4.11.}{\ignorespaces Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }}{46}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:maxKCutQUBO_K4_bin}{{4.11}{46}{Futásidők a maximális K-vágás QUBO megoldására (bináris felírás, $K=4$)\relax }{figure.caption.24}{}}
 \@setckpt{content/cutsinpractice}{
-\setcounter{page}{46}
+\setcounter{page}{47}
 \setcounter{equation}{3}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
@@ -100,7 +108,7 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{9}
+\setcounter{figure}{11}
 \setcounter{table}{0}
 \setcounter{footnote@add}{0}
 \setcounter{footnote@ch}{0}
@@ -108,7 +116,7 @@
 \setcounter{Item}{0}
 \setcounter{Hfootnote}{3}
 \setcounter{Hy@AnnotLevel}{0}
-\setcounter{bookmark@seq@number}{49}
+\setcounter{bookmark@seq@number}{50}
 \setcounter{lstnumber}{6}
 \setcounter{endNonectr}{53}
 \setcounter{currNonectr}{0}
@@ -128,6 +136,6 @@
 \setcounter{endtheoremctr}{0}
 \setcounter{theorem}{2}
 \setcounter{section@level}{2}
-\setcounter{lstlisting}{13}
+\setcounter{lstlisting}{14}
 \setcounter{romanPage}{3}
 }

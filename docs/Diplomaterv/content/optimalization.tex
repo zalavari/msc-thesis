@@ -7,7 +7,7 @@
 Ebben a fejezetben általános optimalizációs technikákat tekintünk át. Történelmi okokból gyakran hívjuk ezeket a technikákat programozásnak, és a felírt formulát programnak, holott természetesen ennek nincs köze ahhoz, amit manapság programozás illetve program alatt értünk. Ezért is a modern szakirodalom preferálja az optimalizálás szó használatát, de még mindig szinonimaként tekintve a programozást is.
 
 %----------------------------------------------------------------------------
-\section{Lineáris optimalizálás}
+\section{Lineáris optimalizálás}\label{sec:LP}
 %----------------------------------------------------------------------------
 
 Egy lineáris optimalizálási probléma (vagy lineáris programozás) azt jelenti, hogy több keresett mennyiség (ún. változók) lineáris függvényének maximumát vagy minimumát kell meghatározni, mindeközben a rendszerre bizonyos mellékfeltételeket (korlátok) szabunk meg, lineáris egyenlőtlenségek vagy egyenletek formájában.
@@ -164,9 +164,9 @@ Figyeljük meg azt is, hogy az állítás csak a bináris változós polinomokra
 
 \section{Korlátolt illetve korlátmentes programozás} \label{sec:constrainedVSunconstrained}
 
-\Az+\refstruc{sec:QUBOform+ban} röviden látni fogjuk, hogy a kvantumszámítógépek segítségével elméletileg hatékonyan megoldhatóak a bináris kvadratikus programozási feladatok, amennyiben nem szabunk további korlátokat.
+\Az+\refstruc{sec:QUBO+ban} már használtuk a korlátmentesség fogalmát, a \az+\refstruc{sec:QUBOform+ban} pedig röviden látni fogjuk, hogy a kvantumszámítógépek segítségével elméletileg hatékonyan megoldhatóak a QUBO feladatok.
 
-Azonban felmerül a kérdés, hogy miként tudjuk mégis használni a gyakorlatban ezt a technikát, nem szorítja meg a kezünket túlságosan az, hogy nem adhatunk meg korlátot, és egy "egyszerű" függvény szélsőértékét keressük? A válasz szerencsére nemleges, mely látszik a következő, röviden bemutatott technikából \cite{DBLP:journals/corr/abs-1811-11538}. 
+Azonban felmerül a kérdés, hogy miként tudjuk mégis használni a gyakorlatban ezt a technikát, nem szorítja meg a kezünket túlságosan az, hogy nem adhatunk meg korlátot, és egy ,,egyszerű" függvény szélsőértékét keressük? A válasz szerencsére nemleges, mely látszik a következő, röviden bemutatott technikából \cite{DBLP:journals/corr/abs-1811-11538}. 
 
 Általánosan elmondható, hogy egy optimalizációs esetben kétféle követelményt állítunk a rendszerrel szemben. Ezek közül az egyik típus a erős (hard) követelmény. Ezek olyan követelmények, melyek teljesülését mindenképpen előírjuk a rendszer számára, mert bármelyiknek a sérülése érvénytelenné tenné az eredményt. Általában ezeket a típusú követelményeket korlátként adjuk hozzá a programozási feladathoz.
 
@@ -206,7 +206,7 @@ Megfigyelhető, hogy amennyiben nem QUBO, hanem PUBO alakban formalizáljuk a fe
 
 A dolgozatnak nem célja bemutatni részletesen, hogy például a D-Wave gépek miként oldják meg a QUBO feladatokat, hiszen sokkal inkább a QUBO-k megfelelő formalizálásán van a hangsúly. Úgy gondolom, hogy mégis elengedhetetlen ennek rövid áttekintése, hiszen csak így van értelme arról beszélni, hogy milyen, és miért ezen metrikákra szeretnénk optimalizálni egy QUBO feladat formalizálása közben.
 
-A D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csak át, hiszen a dolgozat motivációját is lényegében ez adja. A D-Wave Systems egy 1999-ben alapított kanadai cég, mely elsőként hozott kereskedelmi forgalomba kvantumjelenségeket használó számítógépeket. A kvantumgépeik úgynevezett lehűtéses elv alapján működnek, azaz konkrét számolás vagy heurisztika helyett fizikai folyamatok, pontosabban az energiaminimumra törekvés jelenségétől várjuk a megoldást. \cite{Szabo}
+A D-Wave által nyújtott megoldás alapvető, elméleti hátterét tekintem csak át, hiszen a dolgozat motivációját is lényegében ez adja. A D-Wave Systems egy 1999-ben alapított kanadai cég, mely elsőként hozott kereskedelmi forgalomba kvantumjelenségeket használó számítógépeket. A kvantumgépeik úgynevezett lehűtéses elv alapján működnek, azaz konkrét számolás vagy heurisztika helyett fizikai folyamatok, pontosabban az energiaminimumra törekvés jelenségétől várjuk a megoldást \cite{Szabo}. 
 
 A számítási modell alapját egy gráfba (jellemzően az úgynevezett kiméra vagy az újabb gépeken az úgynevezett pegazus gráf) rendezett fizikai qubitek adják, melyek  egymással a gráf struktúrája szerint vannak kapcsolatban. A gráf éleit és csúcsait egyaránt súlyokkal láthatjuk el. Ha visszagondolunk \az+\refstruc{def:valtozokgrafja+ra}, ez pont egy QUBO feladatnak felel meg. Ezután fizikai folyamatok hatására a rendszer beáll várhatóan a legalacsonyabb energiaszintű állapotra, azaz, amikor a qubitek aszerint vesznek fel 0 vagy 1 értéket, hogy az általuk súlyokkal meghatározott kvadratikus függvény értéke vagyis a hozzájuk tartozó QUBO minimális.
 

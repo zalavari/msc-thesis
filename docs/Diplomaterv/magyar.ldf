@@ -3690,7 +3690,7 @@
 \def\@@magyar@strucname@part{r\'esz\@@magyar@toldas{4}}% SUXX: may not contain \-; !! résszel (vs. részszel)
 \def\@@magyar@strucname@chapter{fejezet\@@magyar@toldas{9}}% !! fejezettel
 \def\@@magyar@strucname@appendix{f\"ug\-gel\'ek\@@magyar@toldas{4}}% !! fuggelekkel
-\def\@@magyar@strucname@section{sza\-kasz\@@magyar@toldas{20}}%
+\def\@@magyar@strucname@section{al\-fejezet\@@magyar@toldas{9}}%
 \def\@@magyar@strucname@subsection{sza\-kasz\@@magyar@toldas{20}}%
 \def\@@magyar@strucname@subsubsection{al\-szakasz\@@magyar@toldas{20}}%
 \def\@@magyar@strucname@subsubsubsection{al\-szakasz\@@magyar@toldas{20}}%

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.6) (preloaded format=xelatex 2021.7.12)  9 DEC 2021 11:57
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.6) (preloaded format=xelatex 2021.7.12)  13 DEC 2021 22:36
 entering extended mode
 **./thesis.tex
 (thesis.tex
@@ -927,107 +927,106 @@ File: figures/embedding_3var4qubits.png Graphic file (type bmp)
 
 
 
-] [13] [14] [15] [16] [17] [18] [19] [20]
+] [13] [14] [15] [16] [17] [18] [19] [20] [21]
 Underfull \hbox (badness 10000) in paragraph at lines 283--284
 []\TU/lmr/m/n/10.95 Azt
  []
 
-[21]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 313.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 313.
-
 [22]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 349.
+(hyperref)                removing `math shift' on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\neg' on input line 349.
+(hyperref)                removing `math shift' on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 349.
+(hyperref)                removing `math shift' on input line 353.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 377.
+(hyperref)                removing `\neg' on input line 353.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\wedge' on input line 377.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 377.
+(hyperref)                removing `math shift' on input line 353.
 
 [23]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 415.
+(hyperref)                removing `math shift' on input line 381.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\vee' on input line 415.
+(hyperref)                removing `\wedge' on input line 381.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 415.
+(hyperref)                removing `math shift' on input line 381.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 453.
+(hyperref)                removing `math shift' on input line 419.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\vee' on input line 453.
+(hyperref)                removing `\vee' on input line 419.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\neg' on input line 453.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 453.
+(hyperref)                removing `math shift' on input line 419.
 
 [24]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 489.
+(hyperref)                removing `math shift' on input line 457.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\oplus' on input line 489.
+(hyperref)                removing `\vee' on input line 457.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 489.
+(hyperref)                removing `\neg' on input line 457.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 457.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 493.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\oplus' on input line 493.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 493.
 
 Package hyperref Info: bookmark level for unknown theorem defaults to 0 on inpu
-t line 495.
-[25]
+t line 499.
+[25] [26]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 578.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\vee' on input line 578.
+(hyperref)                removing `math shift' on input line 583.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\vee' on input line 578.
+(hyperref)                removing `\vee' on input line 583.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 578.
+(hyperref)                removing `\vee' on input line 583.
 
-[26] [27]) [28]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 583.
+
+[27]) [28]
 \openout2 = `content/cutsinpractice.aux'.
 
  (content/cutsinpractice.tex
@@ -1043,24 +1042,45 @@ y
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 48.
+nput line 46.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <8> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 49.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 47.
  [31] [32] [33]
+Underfull \hbox (badness 4505) in paragraph at lines 178--180
+[]\TU/lmr/m/n/10.95 Sajnos a megoldószoftverek összehasonlításából a Gurobi ezú
+ttal kimaradt,
+ []
+
+
+Overfull \hbox (1.66016pt too wide) in paragraph at lines 178--180
+[][]\TU/lmtt/m/n/10.95 GurobiError: Web license service only available for cont
+ainer environments[]\TU/lmr/m/n/10.95 .
+ []
+
+[34]
+File: figures/diagrams/minCutRuntimes.png Graphic file (type bmp)
+<figures/diagrams/minCutRuntimes.png>
+ [35]
 File: figures/diagrams/maxCutQUBO.png Graphic file (type bmp)
 <figures/diagrams/maxCutQUBO.png>
- [34] [35]
+ [36]
+File: figures/diagrams/Gurobi_runtimes.png Graphic file (type bmp)
+<figures/diagrams/Gurobi_runtimes.png>
+ [37]
 File: figures/diagrams/maxKCutQUBO_K2.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2.png>
- [36]
 File: figures/diagrams/maxKCutQUBO_K4.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4.png>
- [37] [38]
+ [38]
+
+LaTeX Warning: Text page 39 contains only floats.
+
+[39]
 File: figures/diagrams/maxKCutQUBO_K2approx.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2approx.png>
 File: figures/diagrams/maxKCutQUBO_K4approx.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4approx.png>
- [39] [40] [41]
+ [40] [41] [42] [43]
 File: figures/diagrams/maxKCutQUBO_K2approx_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2approx_bin.png>
 File: figures/diagrams/maxKCutQUBO_K4approx_bin.png Graphic file (type bmp)
@@ -1069,18 +1089,17 @@ File: figures/diagrams/maxKCutQUBO_K2_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2_bin.png>
 File: figures/diagrams/maxKCutQUBO_K4_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4_bin.png>
-) [42] [43] [44]
-[45]
+) [44] [45] [46]
 \openout2 = `content/summary.aux'.
 
  (content/summary.tex
 5. fejezet.
-) [46
+[47
 
 
 
 
-] (thesis.bbl
+]) [48] (thesis.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 177--183
 []\TU/lmr/m/n/10.95 Gurobi Community: How to install academic license in google
  colab,
@@ -1093,7 +1112,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--183
 []
  []
 
-[47
+[49
 
 
 
@@ -1104,25 +1123,25 @@ hmidt: Mixed-
  []
 
 
-Underfull \hbox (badness 6859) in paragraph at lines 262--268
+Underfull \hbox (badness 6859) in paragraph at lines 267--273
 []\TU/lmr/m/n/10.95 Wikipedia: Maximum cut — Wikipedia, the free encyclopedia. 
 [][]$[][][][] [] [] []
  []
 
 
-Underfull \hbox (badness 6876) in paragraph at lines 270--277
+Underfull \hbox (badness 6876) in paragraph at lines 275--282
 []\TU/lmr/m/n/10.95 Wikipedia: Very Large Scale Integration — Wikipedia, the fr
 ee encyc-
  []
 
 
-Underfull \hbox (badness 2103) in paragraph at lines 279--286
+Underfull \hbox (badness 2103) in paragraph at lines 284--291
 \TU/lmr/m/n/10.95 the free encyclopedia, 2021. [] URL  [][]$[][][][][] [] [] []
  [][] [] [][][][][][][][][] [] [][][] [] [] [] [][][][][] [] [][][] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--286
+Underfull \hbox (badness 10000) in paragraph at lines 284--291
 [][][][][] [] [][][][][][][][][] [] [][][][][][][][][][][][][] [] [][][][][][] 
 [] [][][][][][][][][][][][] [] [][][][][] [] [][][][][][][][][][]$[][]\TU/lmr/m
 /n/10.95 .
@@ -1132,19 +1151,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 279--286
 \tf@thm=\write5
 \openout5 = `thesis.thm'.
 
- [48] (thesis.aux (include/titlepage.aux) (include/declaration.aux)
+ [50] (thesis.aux (include/titlepage.aux) (include/declaration.aux)
 (content/abstract.aux) (content/introduction.aux) (content/optimalization.aux)
 (content/cuts.aux) (content/cutsinpractice.aux) (content/summary.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 6FBD1598EBCD300F7D5E7405515FAFC6;7984.
+(rerunfilecheck)             Checksum: 4ACF361EC14997829DB323CC80AE8337;8211.
  ) 
 Here is how much of TeX's memory you used:
- 17370 strings out of 411271
- 312120 string characters out of 2828191
- 1266399 words of memory out of 3000000
- 37501 multiletter control sequences out of 15000+600000
+ 17415 strings out of 411271
+ 313328 string characters out of 2828191
+ 1179951 words of memory out of 3000000
+ 37544 multiletter control sequences out of 15000+600000
  412389 words of font info for 88 fonts, out of 8000000 for 9000
  1352 hyphenation exceptions out of 8191
- 78i,20n,84p,1363b,1862s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 78i,20n,84p,1404b,1860s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.pdf (52 pages).
+Output written on thesis.pdf (54 pages).

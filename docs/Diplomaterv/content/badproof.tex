@@ -1,0 +1,76 @@
+
+Ezt a következő tétel mondja ki, mely \az+\refstruc{3ORnotexist} általánosításaként fogható fel.
+
+\begin{theorem}
+	\label{MORnotexist}
+	Az $x_1 \vee \dots \vee x_i \vee  \dots \vee x_n = t$ kifejezésnek legfeljebb $n-2$ darab ($y_1, \dots y_{n-2}$) segédváltozóval sem létezik kvadratikus függvénye, ha $n \geq 2$.
+	
+	Ismét tegyük fel indirekten, hogy létezik ilyen kifejezés, vagyis léteznek olyan együtthatók, melyre a (\ref{MORSUM}) kifejezés a logikai kapcsolat fennállása esetén $0$-t, ellenkező esetben valamilyen pozitív számot ad behelyettesítés után. A (\ref{MORSUM}) kifejezést úgy érdemes végiggondolni, hogy benne a következő tagok szerepelnek: $x_i$ változók egyedül, párban egymással, párban $t$-vel, $y_i$ változók egyedül, párban egymással, párban $t$-vel, $x_i$ és $y_j$ változók párban egymással, végül $t$ változó egyedül, és a konstans tag.
+	
+	\begin{align} \label{MORSUM}	
+		\begin{split}		
+		\sum_{i \in \left[ n \right] }{A_{i}x_i} + \sum_{\substack{ i,j \in [n] \\  i < j} }{A_{ij}x_i x_j} + \sum_{i \in \left[ n \right] }{A_{it}x_it} +
+		\\
+		\sum_{i \in \left[ n-2 \right] }{B_{i}y_i} + \sum_{\substack{ i,j \in [n-2] \\  i < j} }{B_{ij}y_i y_j} + \sum_{i \in \left[ n-2 \right] }{B_{it}y_it} + 
+		\\
+		  \sum_{\substack{ i \in [n] \\  k \in [n-2]} }{C_{ik}x_i y_k} + D_tt		 + C
+		 \end{split}
+	\end{align}
+
+	A könnyebb jelölés kedvéért a (\ref{MORSUM}) kifejezés középső sorát rövidítsük $(B)$-vel.
+	
+	Hasonlóan \az+\refstruc{3ORnotexist} bizonyításához, mivel $0=0 \vee \dots \vee 0$ igaz, ezért $C=0$, így a továbbiakban ezt a konstans tagot elhagyhatjuk.
+	
+	Mivel ha egyetlen $x_i$ vagy $x_j$ változó igaz csak, akkor $t$ értéke is egyes kell legyen. Hasonló helyzet áll elő, ha $x_i$ és $x_j$ mindketten $1$-es értéket vesznek fel. Ezekből következik az alábbi három egyenlet tetszőleges $i < j$-re.
+	
+	\begin{align}
+		A_i + A_{it} + \sum_{ k \in [n-2]}{C_{ik}y_k} + D_t + (B) =0 \label{MOR1} \\
+		A_j + A_{jt} + \sum_{ k \in [n-2]}{C_{jk}y_k} + D_t + (B) =0 \label{MOR2} \\
+		A_i + A_j + A_{ij} + A_{it} + A_{jt} + \sum_{k \in [n-2]}{C_{ik}y_k} + \sum_{k \in [n-2]}{C_{jk}y_k} + D_t + (B) = 0 \label{MOR3}
+	\end{align}
+	
+	Ha (\ref{MOR1})-t és (\ref{MOR2})-t kivonjuk a (\ref{MOR3})-ből, akkor átrendezés után kapjuk a (\ref{MOR4}) azonosságot (tetszőleges $i \neq j$-re).
+	
+	\begin{align}
+		A_{ij}-D_t-(B)=0 \label{MOR4}
+	\end{align}
+
+	Ha ezután $A_{ij}$ helyére $(D_t+(B))$-t helyettesítünk, akkor általánosan a (\ref{MORSUM2}) alakot kapjuk. 
+	
+	\begin{align} \label{MORSUM2}		
+		\begin{split}		
+			\sum_{i \in \left[ n \right] }{A_{i}x_i} + (D_t+(B))\sum_{\substack{ i,j \in [n] \\  i < j} }{x_i x_j} + \sum_{i \in \left[ n \right] }{A_{it}x_it} +
+			\\
+			+(B)+\sum_{\substack{ i \in [n] \\  k \in [n-2]} }{C_{ik}x_i y_k} + D_tt
+		\end{split}
+	\end{align}
+	
+	Most próbáljuk meg felírni a keletkező egyenletet ahhoz az esethez, amikor $x_i=1$ minden $i$-re, akkor egyszerűsítés után a (\ref{MORSUM3}) kifejezést kapjuk.
+	
+	\begin{align} \label{MORSUM3}		
+	\begin{split}		
+	0=\sum_{i \in \left[ n \right] }{A_{i}} + (D_t+(B))\left( \binom{n}{2}+1 \right)  + \sum_{i \in \left[ n \right] }{A_{it}}
+	+ \sum_{\substack{ i \in [n] \\  k \in [n-2]} }{C_{ik}y_k}
+	\end{split}
+	\end{align}
+
+	Ha \ref{MORSUM2} kifejezésből kivonjuk a \ref{MOR1} -et, minden $1 \leq i \leq n$  esetén, akkor a (\ref{MORSUM4}) kifejezést kapjuk.
+	
+	\begin{align} \label{MORSUM4}		
+	\begin{split}		
+	0=(D_t+(B))\left(\binom{n}{2}+1-n\right)
+	\end{split}
+	\end{align}
+
+	Mivel $\left(\binom{n}{2}+1-n\right)$ valamilyen 0-nál nagyobb egész szám, leoszthatjuk vele az egyenletet, és ekkor azt kaptuk, hogy $(B)=-D_t$. Vagyis mivel $D_t$ egy konstans szám, $(B)$ helyettesítési értéke is mindig konstans. Ha ezt összevetjük a (\ref{MORSUM2}) kifejezéssel, akkor azt általános alakot immár még egyszerűbben írhatjuk, ahogyan a (\ref{MORSUM5}) alakban látható.
+	
+	\begin{align} \label{MORSUM5}		
+		\begin{split}		
+			\sum_{i \in \left[ n \right] }{A_{i}x_i} + \sum_{i \in \left[ n \right] }{A_{it}x_it} +	\sum_{\substack{ i \in [n] \\  k \in [n-2]} }{C_{ik}x_i y_k} + D_tt - D_t
+		\end{split}
+	\end{align}
+	
+
+	Mivel azt is tudjuk, hogy csak a $t$ változó egyedül nem lehet $1$ értékű, és így ebből az $D_t > 0$ egyenlőtlenség következik, ez pedig ellentmond az előbb kapott $A_t=0$ kifejezésnek. Ezzel az indirekt bizonyítás a végére ért, tehát az eredeti feltevésünk volt a helyes.
+
+\end{theorem}
