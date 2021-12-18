@@ -93,6 +93,13 @@
 \def\bibInSelf#1{In u\H{o}: }
 \csname bibOverride\endcsname
 
+\bibitem{Pegasus}
+{Alex K. - D-Wave Systems}:
+\bibNewBlock {What Is the Pegasus Topology?}
+\bibNewBlock
+  \url{https://support.dwavesys.com/hc/en-us/articles/360054564874-What-Is-the-Pegasus-Topology-},
+  2020.
+
 \bibitem{biqcrunch}
 {BiqCrunch developers}:
 \bibNewBlock Biqcrunch -- a semidefinite branch-and-bound method for solving
@@ -147,6 +154,13 @@ Steven Diamond\bibAnd 1Stephen Boyd:
 \bibNewBlock
 \bibUrll{URL} >http://stanford.edu/~boyd/papers/pdf/cvxpy_paper.pdf>.
 \bibNewBlock To appear.
+
+\bibitem{Chimera}
+{Fiona H. - D-Wave Systems}:
+\bibNewBlock {What Is the Chimera Topology?}
+\bibNewBlock
+  \url{https://support.dwavesys.com/hc/en-us/articles/360003695354-What-Is-the-Chimera-Topology-},
+  2018.
 
 \bibitem{fuchs2020efficient}
 Franz~Georg Fuchs\bibAnd 0Herman Øie Kolden\bibAnd 0Niels~Henrik Aase\bibAnd

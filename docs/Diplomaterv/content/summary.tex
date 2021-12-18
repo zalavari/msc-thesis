@@ -5,7 +5,7 @@
 \chapter{Összegzés}
 %----------------------------------------------------------------------------
 
-A munka során jelentős irodalomkutatást végeztem a kombinatorikus optimalizálás egyes részein, beleértve, hogy alaposan megvizsgáltam a kvadratikus bináris korlátmentes optimalizálás használatát. Ennek elméleti és gyakorlati jelentőségét is megvizsgáltam és megértettem.
+A munka során jelentős irodalomkutatást végeztem a kombinatorikus optimalizálás egyes részein, beleértve, hogy tanulmányoztam a kvadratikus bináris korlátmentes optimalizálás használatát. Ennek elméleti és gyakorlati jelentőségét is megvizsgáltam és megértettem.
 
 Tetszőleges feladatok megfogalmazása bármilyen optimalizálási problémaként úgy gondolom, hogy nem magától értetődő feladat, de ezen a területen is sikerült sok tapasztalatot gyűjtenem, ismét különös tekintettel a QUBO-k formalizálására.
 
@@ -15,10 +15,10 @@ Számomra a Python, mint programozási nyelv is újdonság volt, csakúgy, mint 
 
 Minden nehézség ellenére úgy gondolom, hogy az alkotott munka értelmes és egész, miközben betekintést nyújt a QUBO-k világába, és több általam konstruált példával (\ref{sec:QUBOonehot}, \ref{sec:QUBObinary}) gazdagítom a szakirodalmat is. Külön eredmény például a logikai kapuk megvalósításánál leírt és bizonyított állítások, melyek a XOR kapura (\ref{sec:XORgate}) és a több bemenetű OR kapura vonatkoznak (\ref{sec:MORgate}).
 
-A kutatás a továbbiakban sokféle irányba folytatható. Például természetesen adja magát, hogy a maximális K-vágást nagyobb bemenetekre is tudjuk kezelni. Ehhez akár a meglévő, már felkonfigurált optimalizálókat finomítani, vagy újakat behozni (\ref{sec:practiceOthers}). A repertoárt is tovább bővíthetjük további, akár nem feltétlen csak vágással kapcsolatos feladatokkal. Akár ide bekapcsolódhat a logikai kapuk implementálása (\ref{sec:theoryLogicalGates}), mely egy matematikailag letisztultabb, ugyanakkor gyakorlatilag is érdekesnek ígérkező témakör.
+A kutatás a továbbiakban sokféle irányba folytatható. Például természetesen adja magát, hogy a maximális K-vágást nagyobb bemenetekre is tudjuk kezelni. Ehhez akár a meglévő, már felkonfigurált optimalizálókat lehetne finomítani, vagy újakat behozni (\ref{sec:practiceOthers}). A repertoárt is tovább bővíthetjük nem feltétlen csak vágással kapcsolatos feladatokkal. Akár ide bekapcsolódhat a logikai kapuk implementálása (\ref{sec:theoryLogicalGates}), mely egy matematikailag letisztultabb, ugyanakkor gyakorlatilag is érdekesnek ígérkező témakör.
 
 Nem csak a megoldók halmazát, hanem a vizsgált problémák körét is bővíthetjük. A dolgozat eredményei alapján logikus folytatás lenne megvizsgálni a minimális K-vágás problémáját is, mely egészen más közelítéseket is igényelhet.
 
 Amely szerintem a diplomatervet kimondottan teljesebbé tenné, az \az+\refstruc{chap:cuts+ben} közölt lineáris programok kipróbálása különböző megoldószoftverekkel, és ezek összehasonlítása a QUBO témakörnél kapott gyakorlati eredményekkel. Sajnos erre nem került sor, mert a Gurobi bár alkalmas lett volna a feladatra, az utolsó hetekben gondok adódtak a licenccel, más új  megoldószoftvert, vagy a Gurobi-t más környezetben pedig nem akartam már a közelgő határidő miatt felkonfigurálni.
 
-Természetesen ezeken kívül is rengeteg szál maradt elvarratlanul. Például a QUBO-k kvantum elven működő fizikai hardware-re való beágyazás éppen csak említésre került. Szintén \az+\refstruc{sec:QUBOform+ban} volt szó a kvadratizálásról, azaz amikor egy tetszőleges fokszámú polinomból kvadratikus polinomot hozunk létre új változók bevezetésével. A feladat bár egyszerűen megfogalmazható, mégsem világos, hogy mi lenne az optimális módszer erre, sőt még az is vita tárgya lehet, hogy egyáltalán milyen metrikára nézve legyen a kapott polinom ,,optimális".
+Természetesen ezeken kívül is rengeteg szál maradt elvarratlanul. Például a QUBO-k kvantum elven működő fizikai hardverre való beágyazás éppen csak említésre került. Szintén \az+\refstruc{sec:QUBOform+ban} volt szó a kvadratizálásról, azaz amikor egy tetszőleges fokszámú polinomból kvadratikus polinomot hozunk létre új változók bevezetésével. A feladat bár egyszerűen megfogalmazható, mégsem világos, hogy mi lenne az optimális módszer erre, sőt még az is vita tárgya lehet, hogy egyáltalán milyen metrikára nézve legyen a kapott polinom ,,optimális".

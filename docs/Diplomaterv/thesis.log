@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.6) (preloaded format=xelatex 2021.7.12)  13 DEC 2021 22:36
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.6) (preloaded format=xelatex 2021.7.12)  18 DEC 2021 18:56
 entering extended mode
 **./thesis.tex
 (thesis.tex
@@ -678,7 +678,11 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count315
 )) (C:\Users\zalavari\AppData\Local\Programs\MiKTeX\tex/latex/tools\xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
-) (include/tdk-variables.tex) (include/thesis-hu.tex) (include/preamble.tex
+) (include/tdk-variables.tex) (include/thesis-hu.tex
+(C:\Users\zalavari\AppData\Local\Programs\MiKTeX\tex/latex/tools\indentfirst.st
+y
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+)) (include/preamble.tex
 Package hyperref Info: Option `unicode' set `true' on input line 39.
 Package hyperref Info: Option `pdfnewwindow' set `true' on input line 39.
 Package hyperref Info: Option `colorlinks' set `true' on input line 39.
@@ -694,10 +698,10 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 39.
 \c@currtheoremctr=\count325
 \c@endtheoremctr=\count326
 \c@theorem=\count327
-)
-(thesis.aux (include/titlepage.aux) (include/declaration.aux)
-(content/abstract.aux) (content/introduction.aux) (content/optimalization.aux)
-(content/cuts.aux) (content/cutsinpractice.aux) (content/summary.aux))
+) (thesis.aux (include/titlepage.aux)
+(include/declaration.aux) (content/abstract.aux) (content/introduction.aux)
+(content/optimalization.aux) (content/cuts.aux) (content/cutsinpractice.aux)
+(content/summary.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
@@ -904,17 +908,16 @@ Overfull \hbox (0.98674pt too wide) in paragraph at lines 97--101
 [][] 
  []
 
-
+[7]
 Overfull \hbox (0.98674pt too wide) in paragraph at lines 126--129
 [][] 
  []
 
-[7]
 Package hyperref Info: bookmark level for unknown definition defaults to 0 on i
 nput line 150.
 Package hyperref Info: bookmark level for unknown allitas defaults to 0 on inpu
 t line 154.
- [8] [9] [10]
+[8] [9] [10]
 File: figures/embedding_3var4qubits.png Graphic file (type bmp)
 <figures/embedding_3var4qubits.png>
 ) [11]
@@ -928,7 +931,7 @@ File: figures/embedding_3var4qubits.png Graphic file (type bmp)
 
 
 ] [13] [14] [15] [16] [17] [18] [19] [20] [21]
-Underfull \hbox (badness 10000) in paragraph at lines 283--284
+Underfull \hbox (badness 10000) in paragraph at lines 282--283
 []\TU/lmr/m/n/10.95 Azt
  []
 
@@ -966,6 +969,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 381.
 
+[24]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 419.
@@ -978,7 +982,6 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 419.
 
-[24]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 457.
@@ -1007,9 +1010,10 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 493.
 
+[25]
 Package hyperref Info: bookmark level for unknown theorem defaults to 0 on inpu
 t line 499.
-[25] [26]
+ [26]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 583.
@@ -1026,61 +1030,57 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 583.
 
-[27]) [28]
+[27]) [28] [29]
 \openout2 = `content/cutsinpractice.aux'.
 
  (content/cutsinpractice.tex
 4. fejezet.
-[29
+[30
 
 
 
 
-] [30]
+] [31]
 (C:\Users\zalavari\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.st
 y
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 46.
+nput line 47.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <8> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 47.
- [31] [32] [33]
-Underfull \hbox (badness 4505) in paragraph at lines 178--180
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 48.
+ [32] [33] [34]
+Underfull \hbox (badness 4505) in paragraph at lines 182--184
 []\TU/lmr/m/n/10.95 Sajnos a megoldószoftverek összehasonlításából a Gurobi ezú
 ttal kimaradt,
  []
 
 
-Overfull \hbox (1.66016pt too wide) in paragraph at lines 178--180
+Overfull \hbox (1.66016pt too wide) in paragraph at lines 182--184
 [][]\TU/lmtt/m/n/10.95 GurobiError: Web license service only available for cont
 ainer environments[]\TU/lmr/m/n/10.95 .
  []
 
-[34]
+[35]
 File: figures/diagrams/minCutRuntimes.png Graphic file (type bmp)
 <figures/diagrams/minCutRuntimes.png>
- [35]
+ [36]
 File: figures/diagrams/maxCutQUBO.png Graphic file (type bmp)
 <figures/diagrams/maxCutQUBO.png>
- [36]
+ [37]
 File: figures/diagrams/Gurobi_runtimes.png Graphic file (type bmp)
 <figures/diagrams/Gurobi_runtimes.png>
- [37]
+ [38] [39]
 File: figures/diagrams/maxKCutQUBO_K2.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2.png>
 File: figures/diagrams/maxKCutQUBO_K4.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4.png>
- [38]
-
-LaTeX Warning: Text page 39 contains only floats.
-
-[39]
+ [40] [41]
 File: figures/diagrams/maxKCutQUBO_K2approx.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2approx.png>
 File: figures/diagrams/maxKCutQUBO_K4approx.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4approx.png>
- [40] [41] [42] [43]
+ [42] [43] [44]
 File: figures/diagrams/maxKCutQUBO_K2approx_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2approx_bin.png>
 File: figures/diagrams/maxKCutQUBO_K4approx_bin.png Graphic file (type bmp)
@@ -1089,81 +1089,104 @@ File: figures/diagrams/maxKCutQUBO_K2_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K2_bin.png>
 File: figures/diagrams/maxKCutQUBO_K4_bin.png Graphic file (type bmp)
 <figures/diagrams/maxKCutQUBO_K4_bin.png>
-) [44] [45] [46]
+) [45] [46] [47]
 \openout2 = `content/summary.aux'.
 
- (content/summary.tex
+
+(content/summary.tex
 5. fejezet.
-[47
+[48
 
 
 
 
-]) [48] (thesis.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 177--183
+]) [49] (thesis.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 97--102
+[]\TU/lmr/m/n/10.95 Alex K. - D-Wave Systems: What Is the Pegasus To-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--102
+\TU/lmr/m/n/10.95 pology? [][]$[][][][][] [] [] [] [][][][][][][] [] [][][][][]
+[][][] [] [][][] [] [][] [] [][][][][][] [] [][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--164
+[]\TU/lmr/m/n/10.95 Fiona H. - D-Wave Systems: What Is the Chimera To-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--164
+\TU/lmr/m/n/10.95 pology? [][]$[][][][][] [] [] [] [][][][][][][] [] [][][][][]
+[][][] [] [][][] [] [][] [] [][][][][][] [] [][][][][][][][] []
+ []
+
+[50
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 191--197
 []\TU/lmr/m/n/10.95 Gurobi Community: How to install academic license in google
  colab,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 177--183
+Underfull \hbox (badness 10000) in paragraph at lines 191--197
 \TU/lmr/m/n/10.95 2021. [] URL  [][]$[][][][][] [] [] [] [][][][][][][] [] [][]
 [][][][] [] [][][] [] [][] [] [][][][][][] [] [][][][][][][][][] [] [][][][][] 
 []
  []
 
-[49
 
-
-
-]
-Underfull \hbox (badness 1072) in paragraph at lines 204--213
+Underfull \hbox (badness 1072) in paragraph at lines 218--227
 []\TU/lmr/m/n/10.95 Christopher Hojny[]Imke Joormann[]Hendrik Lüthen[]Martin Sc
 hmidt: Mixed-
  []
 
 
-Underfull \hbox (badness 6859) in paragraph at lines 267--273
+Underfull \hbox (badness 6859) in paragraph at lines 281--287
 []\TU/lmr/m/n/10.95 Wikipedia: Maximum cut — Wikipedia, the free encyclopedia. 
 [][]$[][][][] [] [] []
  []
 
 
-Underfull \hbox (badness 6876) in paragraph at lines 275--282
+Underfull \hbox (badness 6876) in paragraph at lines 289--296
 []\TU/lmr/m/n/10.95 Wikipedia: Very Large Scale Integration — Wikipedia, the fr
 ee encyc-
  []
 
 
-Underfull \hbox (badness 2103) in paragraph at lines 284--291
+Underfull \hbox (badness 2103) in paragraph at lines 298--305
 \TU/lmr/m/n/10.95 the free encyclopedia, 2021. [] URL  [][]$[][][][][] [] [] []
  [][] [] [][][][][][][][][] [] [][][] [] [] [] [][][][][] [] [][][] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 284--291
+Underfull \hbox (badness 10000) in paragraph at lines 298--305
 [][][][][] [] [][][][][][][][][] [] [][][][][][][][][][][][][] [] [][][][][][] 
 [] [][][][][][][][][][][][] [] [][][][][] [] [][][][][][][][][][]$[][]\TU/lmr/m
 /n/10.95 .
  []
 
-)
+[51])
 \tf@thm=\write5
 \openout5 = `thesis.thm'.
 
- [50] (thesis.aux (include/titlepage.aux) (include/declaration.aux)
+ [52] (thesis.aux (include/titlepage.aux) (include/declaration.aux)
 (content/abstract.aux) (content/introduction.aux) (content/optimalization.aux)
 (content/cuts.aux) (content/cutsinpractice.aux) (content/summary.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 4ACF361EC14997829DB323CC80AE8337;8211.
+(rerunfilecheck)             Checksum: 22187DDAEBB2A43CCB14D37830215C27;8204.
  ) 
 Here is how much of TeX's memory you used:
- 17415 strings out of 411271
- 313328 string characters out of 2828191
- 1179951 words of memory out of 3000000
- 37544 multiletter control sequences out of 15000+600000
+ 17432 strings out of 411271
+ 313699 string characters out of 2828191
+ 1215030 words of memory out of 3000000
+ 37558 multiletter control sequences out of 15000+600000
  412389 words of font info for 88 fonts, out of 8000000 for 9000
  1352 hyphenation exceptions out of 8191
- 78i,20n,84p,1404b,1860s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 78i,20n,84p,1404b,1259s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.pdf (54 pages).
+Output written on thesis.pdf (56 pages).

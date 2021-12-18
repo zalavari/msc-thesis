@@ -17,14 +17,16 @@ Ez a fajta optimalizációs technika többek között azért is érdekes és has
 
 Gráfokon vágások keresése a (számítógép)hálózatok megjelenése óta egy sokat kutatott tématerület. Maximális vágást találni közismerten NP-nehéz probléma, ugyanakkor gyakorlati szempontból fontos, hiszen például a tipikus klaszterezési problémák megfogalmazhatók így, ha az adatot gráfként tudjuk reprezentálni.
 
-A maximális vágással kapcsolatos problémákra többféle QUBO felírást is adok, melyeket elméleti és gyakorlati szempontból is összehasonlítóan elemzek. Az elkészített formulákat több szempontból elemzem, például a legegyszerűbb ilyen összehasonlítási metrika a felhasznált változók száma.
+A minimális és maximális vágással kapcsolatos problémákra a lineáris programozás mellett többféle QUBO felírást is adok, melyeket elméleti és gyakorlati szempontból is összehasonlítok. Az elkészített formulákat több szempontból elemzem, például a legegyszerűbb ilyen összehasonlítási metrika a felhasznált változók száma.
+
+A maximális K-vágás egyik QUBO megfogalmazása kapcsán logikai függvények kvadratikus optimalizálását is megmutatom, melyek egyszerűbb esetben bár ismertek, nincs részletes vagy egységes dokumentációjuk, illetve összetettebb esetben egyáltalán nem találtam korábbi szakirodalmat. Ilyen összetett logikai kifejezésekre, különös tekintettel a kizáró vagy (XOR) műveletére saját bizonyításokat is közlök.
 
 A QUBO-k optimalizálásához a  D-Wave Ocean nevű programcsomagját használtam fel, mely több lehetőséget kínál a formulák megoldására. A klasszikus megoldók mellett lehetőség van például valódi, a D-Wave Systems által forgalmazott kvantumszámítógépeket is használni, vagy a klasszikus és kvantum eljárásokat hibrid módon ötvözni.
 
 Összehasonlítom a különböző lehetőségekből adódó módszereket azok eredményessége és hatékonysága alapján.
-Természetesen a kapott eredményeket összevetem más, klasszikus heurisztikus megoldók használatával is.
+A kapott eredményeket összevetem más, klasszikus heurisztikus megoldók használatával, és minimális vágás esetében a polinom idejű folyamalgoritmussal is.
 
-A munka jelentős részét tette ki számos tapasztalat gyűjtése a D-Wave-es programcsomaggal kapcsolatban, hiszen a terület újdonságából kifolyólag az elérhető dokumentációk meglehetősen limitáltnak bizonyultak.
+A munka jelentős részét tette ki, hogy tapasztalatot gyűjtsek a D-Wave-es programcsomaggal kapcsolatban, hiszen a terület újdonságából kifolyólag az elérhető dokumentációk meglehetősen limitáltnak bizonyultak.
 
 \vfill
 \selectenglish
@@ -42,11 +44,14 @@ One of the reasons this kind of optimization technique can gain interest, is bec
 
 Finding a maximum cut in a graph is a well-known NP-hard problem, but at the same time, it is a very significant question in practical sense, because typical clustering problems can be described this way, if we convert the data into graph representation.
 
-I present multiple different formulas related to maximum cut, which I compare from a theoretical and practical point of view. I analyze the formulas by different metrics, such as the number of used variables, which is one of the simplest example.
+I present multiple different formulas related to minimum and maximum cuts, which I compare from a theoretical and practical point of view. I analyze the formulas by different metrics, such as the number of used variables, which is one of the simplest example.
 
-For optimizing the QUBOs I use the D-Wave Ocean tools, which provide multiple methods for solving the formulas. Besides the classical solvers, there is possibility to utilize real quantum machines issued by D-Wave System or combining classical and quantum approaches in a hybrid way. 
+In connection with one of the QUBO formulas, I present the quadratic optimization of different logical expressions, which might be known in simpler cases, there is no detailed or unified documentation about them, and regarding complex cases I was unable to find in any previous literature. Therefore I even show some of my own proofs to complex logical expressions, especially the excluding or (XOR) operation.
 
-I compare the different methods based on their effectiveness and efficiency. Naturally I juxtapose the results with using other classical heuristic solvers as well.
+
+For optimizing the QUBOs I use the D-Wave Ocean tools, which provide multiple methods for solving the formulas. Besides the classical solvers, there is a possibility to utilize real quantum machines issued by D-Wave System or combining classical and quantum approaches in a hybrid way. 
+
+I compare the different methods based on their effectiveness and efficiency. I also juxtapose the results with using other classical heuristic solvers, and in case of the minimal cut the polynomial-time flow algorithm as well.
 
 A significant part of the work consisted of obtaining plenty of experience by using the D-Wave tools, since the available documentation proved to be quite limited, because the field has just newly emerged.
 

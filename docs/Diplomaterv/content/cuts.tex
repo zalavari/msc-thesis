@@ -25,7 +25,7 @@ Ez egy klasszikus, kombinatorikusan is ,,könnyen" megoldható feladat. Ha ismer
 
 \subsection{Lineáris programozással}\label{sec:theoryMinCutLP}
 A probléma közismerten formalizálható lineáris optimalizálási problémaként.
-Vegyünk fel változót minden élre $(d_{uv})$ és csúcsra $(x_{u})$. Egy csúcsváltozó legyen 0 ha a vágás szerinti egyik, illetve 1 ha a másik csoportba kerül. Egy élváltozó pedig legyen 1, ha az él benne van a vágásban és 0 egyébként.
+Vegyünk fel változót minden élre $(d_{uv})$ és csúcsra $(x_{u})$. Egy csúcsváltozó legyen 0, ha a vágás szerinti egyik, illetve 1, ha a másik csoportba kerül. Egy élváltozó pedig legyen 1, ha az él benne van a vágásban és 0 egyébként.
 
 Mivel a feladat azon múlik, hogy a vágásban szereplő élek összsúlyát akarjuk minimalizálni, ezért ebből következik a (\ref{mincutlp}) célfüggvény.
 
@@ -69,7 +69,7 @@ A maximálás vágás problémája arra keresi a választ, hogy (élsúlyozott) 
 
 \subsection{Kombinatorikus megoldás}\label{sec:theoryMaxCutComb}
 
-Polinom idejű algoritmust sajnos nem várhatunk, mivel a feladat egy a leghíresebb NP-nehéz problémák közül. Természetesen exponenciális futásidejű algoritmus adható, hiszen a gráf csúcsait összesen $2^{n-1}$ féleképpen lehet szétválasztani két csoportra, egy vágás súlyának kiszámítása, pedig lineáris idejű a bemenet méretének függvényében. Ezzel így adódok egy $O(m 2^n)$ lépésszámú algoritmus.
+Polinom idejű algoritmust sajnos nem várhatunk, mivel a feladat egy a leghíresebb NP-nehéz problémák közül. Természetesen exponenciális futásidejű algoritmus adható, hiszen a gráf csúcsait összesen $2^{n-1}$ féleképpen lehet szétválasztani két csoportra, egy vágás súlyának kiszámítása, pedig lineáris idejű a bemenet méretének függvényében. Ezzel így adódik egy $O(m 2^n)$ lépésszámú algoritmus.
 
 Ha gyors algoritmust szeretnénk, akkor a pontos optimum helyett egy közel optimális megoldást célszerű keresni. Szerencsére ilyen létezik is. 2-approximációt viszonylag gyors és egyszerű algoritmus segítségével lehet már adni, például úgy, hogy a csúcsokat egyesével kiválasztva döntünk, hogy melyik csoportba osszuk be őket, aszerint, hogy az aktuálisan kiválasztott csúcsból kiinduló élek összsúlyának nagyobb része menjen a másik csoportba. Ezzel elértük, hogy minden bekerülő csúcsnál legalább annyi élsúly lesz a két csoport között, mint a csoportokon belül. Mivel tudjuk, hogy az optimum legfeljebb az élek összsúlya lehet, és ez a megoldás legalább az összsúly felét kiválasztja, ezért ez egy (legrosszabb esetben is) 2-approximáció\footnote{Itt nem bizonyítjuk, de valójában létezik rá éles példa, így az approximációs faktora nem jobb 2-nél.}.
 
@@ -99,7 +99,7 @@ Ugyanakkor, ahogyan azt is már kiemeltem, a legjobb ismert közelítést mégis
 
 \subsection{QUBO}\label{sec:theoryMaxCutQUBO}
 
-QUBO-val a feladat természetesen módon felírható. Az élekre (csúcspárokra) felírt változók helyett, azonban csak a csúcsokra definiáljuk a bináris változóinkat, és ezek kvadratikus polinomjaikból állnak majd össze az élekre kikövetkeztetett változók. Tehát az ötlet, hogy minden csúcsot jelöljünk egy $x_u$ bináris változóval, amelynek értéke mutatja, hogy az $u.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk maximalizálni.
+QUBO-val a feladat természetes módon felírható. Az élekre (csúcspárokra) felírt változók helyett, azonban csak a csúcsokra definiáljuk a bináris változóinkat, és ezek kvadratikus polinomjaikból állnak majd össze az élekre kikövetkeztetett változók. Tehát az ötlet, hogy minden csúcsot jelöljünk egy $x_u$ bináris változóval, amelynek értéke mutatja, hogy az $u.$ csúcs melyik csoportba tartozik. A célfüggvényt úgy konstruáljuk, hogy egy él súlyát csak akkor számoljuk bele az összegbe, ha az a két csoport közt fut, és ezt az összeget szeretnénk maximalizálni.
 Lényegében ugyanúgy, mint a minimális vágás QUBO-ként felírt alakjában, annyi különbséggel, hogy ezúttal maximalizálni szeretnénk. Sőt, a helyzetünk ezúttal még könnyebb is, hiszen nincsenek elfajuló esetek, melyek esetén beállna a maximum, tehát további korlátok felvételére, vagyis büntető tagok hozzávételére sincs szükség.
 
 \begin{align}
@@ -152,7 +152,7 @@ Vagyis a lineáris programhoz hasonlóan, a $x_{vi}$ változókat megtartjuk, az
 Ez alapján meg is konstruálhatjuk és fel is írhatjuk a maximalizálandó célunkat. (Egyelőre megengedjük további korlátok létezését is.) Világos, hogy minden, csoportok között futó élet pontosan egyszer fogunk megszámolni, mivel minden csúcs pontosan egy csoportnak lehet az eleme.
 
 \begin{align}
-	 \max_{x} & \left\{ \sum _{uv \in E}  \sum _{ {i,j} \in [K]} w_{uv}\,(x_{vi} \, x_{uj}) \right\}
+	 \max_{x} & \left\{ \sum _{uv \in E}  \sum _{ \substack{ i,j \in [K] \\  i \neq j}} w_{uv}\,(x_{vi} \, x_{uj}) \right\}
 \end{align}
 
 \begin{align}
@@ -169,23 +169,21 @@ Ezt a módszert is alkalmazhatnánk $k=1$ helyettesítéssel, azonban most egy m
 
 Fontos megjegyezni, hogy a korábban vázolt általános módszerhez képest, elég a nagyobb esetet büntetni, vagyis amikor legalább 2 változó értéke is 1-es. Hiszen az optimumnál impliciten teljesül, hogy az egy csúcshoz tartozó bináris változók közül legalább az egyik $1$ értéket vesz fel. Mivel ha lenne egy változóbehelyettesítés, melynél egy csúcs nem kerülne bele egyetlen csoportba sem, a belőle kimenő élek nem kerülnének bele a vágásba. Így azt bármelyik csoportba is tegyük bele, a célfüggvény értéke biztosan nőni fog.
 
-Így kapjuk a \aref{QUBOOnehot} kifejezés szerinti végső QUBO alakot.
-
-
+Így kapjuk \aref{QUBOOnehot} kifejezés szerinti végső QUBO alakot.
 
 \begin{align} 
-	\max_{x} & \left\{ \sum _{uv \in E}  \sum _{i,j\in [K]} w_{uv}(x_{vi}  x_{uj}) + \sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-P) \, x_{vi} \, x_{vj}\right\} 
+	\max_{x} & \left\{ \sum _{uv \in E}  \sum _{\substack{ i,j \in [K] \\  i \neq j}} w_{uv}(x_{vi}  x_{uj}) + \sum _{v \in V } \sum _{\substack{ i,j \in [K] \\  i \neq j}} (-P) \, x_{vi} \, x_{vj}\right\} 
 	\label{QUBOOnehot}
 \end{align}
 
 
-\subsection{QUBO-val (bináris kódolással}\label{sec:QUBObinary}
+\subsection{QUBO-val (bináris kódolással)}\label{sec:QUBObinary}
 
-Más megoldást is megpróbáltam keresni, amellyel a QUBO-t tovább egyszerűsíthetjük, a változók számát csökkenthetjük. Erre egy lehetséges irányzat, hogy azt, hogy a csúcs mely csoportba tartozik nem úgy kódoljuk, hogy minden csoport-csúcs párhoz egy bináris változót rendelünk, és a csúcs csoportját ,,one-hot" módon kódoljuk, hanem kifinomultabb módon, a csoport sorszámát binárisan kódoljuk le. Ennek előnye lehet, hogy így nem szükséges $n \cdot K$ darab bit, hanem elég volna $n \cdot \log K$, ráadásul a problémás korlátot, amely azért szükséges, hogy biztosítsuk, hogy egy csúcs pontosan egy csoportba kerüljön, ez impliciten teljesítené. Motivációt ad egy friss kutatás, ahol ezt a módszert sikeresen alkalmazták kvantumgép esetében, bár ezt natív módon tették meg  \cite{fuchs2020efficient}. A mi kérdésünk, hogy vajon ezt meg lehet-e csinálni eggyel magasabb absztrakciós szinten, csupán QUBO felírást használva.
+Más megoldást is megpróbáltam keresni, amellyel a QUBO-t tovább egyszerűsíthetjük, a változók számát csökkenthetjük. Erre egy lehetséges irányzat, hogy azt, hogy a csúcs mely csoportba tartozik nem úgy kódoljuk, hogy minden csoport-csúcs párhoz egy bináris változót rendelünk, és a csúcs csoportját ,,one-hot" vagy unáris módon kódoljuk, hanem kifinomultabb módon, a csoport sorszámát binárisan kódoljuk le. Ennek előnye lehet, hogy így nem szükséges $n \cdot K$ darab bit, hanem elég volna $n \cdot \log K$, ráadásul a problémás korlátot, amely azért szükséges, hogy biztosítsuk, hogy egy csúcs pontosan egy csoportba kerüljön, ez impliciten teljesítené. Motivációt ad egy friss kutatás, ahol ezt a módszert sikeresen alkalmazták kvantumgép esetében, bár ezt natív módon tették meg  \cite{fuchs2020efficient}. A mi kérdésünk, hogy vajon ezt meg lehet-e csinálni eggyel magasabb absztrakciós szinten, csupán QUBO felírást használva.
 
-A továbbiakban az egyszerű szemléltetés kedvéért feltesszük, hogy a készítendő csoportok száma valamilyen kettő hatvány, vagyis $K=2^m$, így $\log K$ egész. Ezzel mindig feltehető, hogy minden bit szabadon lehet 0 és 1, mert nem lesznek ,,tiltott" csoportok. Később kitérek arra az esetre, ha ez nem így volna.
+A továbbiakban az egyszerű szemléltetés kedvéért feltesszük, hogy a készítendő csoportok száma valamilyen kettő hatvány, vagyis $K=2^m$, így $\log K$ egész. Ezzel mindig feltehető, hogy minden bit szabadon lehet 0 vagy 1, mert nem lesznek ,,tiltott" csoportok. Később kitérek arra az esetre, ha ez nem így volna.
 
-A megoldáshoz elsősorban minden csúcshoz definiálunk kell az ő csoportját tartalmazó változókat. Az $u$ csúcs csoportját jelölje $x_u$, illetve ennek bináris felírását tekintve, az $x_u$ $i.$ bitjét jelölje $x_{ui}$.
+A megoldáshoz elsősorban minden csúcshoz definiálnunk kell az ő csoportját tartalmazó változókat. Az $u$ csúcs csoportját jelölje $x_u$, illetve ennek bináris felírását tekintve, az $x_u$ $i.$ bitjét jelölje $x_{ui}$.
 
 Amire szükségünk van, az egy bináris függvény, amely megmondja, hogy két csúcs különböző csoportba esik-e. Használjuk erre a $D_{uv}$ jelölést, melyet a (\ref{eq:D_uv_def}) kifejezés szerint definiálhatunk. Ha $D_{uv}=1$, vagyis a két csúcs különböző csoportba esik, akkor természetesen a köztük lévő él súlya hozzá kell adódjon a maximalizálandó célfüggvényhez. Ellenkező esetben viszont figyelmen kívül kell hagyni ezt a súlyt (\ref{D_uv_qubo} kifejezés).
 
@@ -197,13 +195,13 @@ D_{uv} = \text{isDifferent}(x_u,x_v)
 	\max_{x} & \left\{\sum _{uv \in E } D_{uv} \, w_{uv} \right\} 
 \end{align}
 
-A $D_{uv}$ meghatározása azonban problémákat vet fel. Első körben megpróbálhatjuk, hogy a korábban látott formulák szerint pontosan meghatározható egyes bitek különbsége, hiszen csak a különbségük négyzetét kell venni. A négyzetek, mint tagok összeadása természetesen adja magát, azonban ekkor egy olyan számot kapunk, amely pontosan meghatározza, hogy hány bitben különbözik a két szám, vagyis a Hamming-távolságot. Ha a két bináris szám azonos, akkor ez pont meg is felel nekünk, de ha bármely helyiértéken van különbség, akkor szeretnénk végeredményben $1$-et kapni, és nem csak egy pozitív számot. (Ha csak egy tetszőleges pozitív számot használunk $D_{uv}=1$ helyett, akkor ezzel az él súlyát többszörösen beleszámolnánk az eredménybe, amennyiben több helyiértéken van eltérés.) Erre a módszer az lehet, hogy minden négyzetkülönbséget binárisan negálunk, azaz kivonjuk az értékét $1$-ből, és az így kapott kifejezéseket összeszorozzuk, így ha bárhol volt különbség a szorzat valamely tényezője 0, ezért maga a szorzat is 0. Amennyiben sehol nincs különbség, a szorzat minden tagja 1, így maga a szorzat is. Mivel a $D_{uv}$ definíciója szerint akkor 1, ha a két kettes számrendszerben felírt szám különbözik, ezért a végén még egy negálást kell elvégezni (\refstruc{eq:D_uv_poli}).
+A $D_{uv}$ meghatározása azonban problémákat vet fel. A korábban látott formulák szerint pontosan meghatározható az egyes bitek különbözősége, hiszen csak a különbségük négyzetét kell venni. A négyzetek, mint tagok összeadása természetesen adja magát, azonban ekkor egy olyan számot kapunk, amely pontosan meghatározza, hogy hány bitben különbözik a két szám, vagyis a Hamming-távolságot. Ha a két bináris szám azonos, akkor ez pont meg is felel nekünk, de ha bármely helyiértéken van különbség, akkor szeretnénk végeredményben $1$-et kapni, és nem csak egy pozitív számot. (Ha csak egy tetszőleges pozitív számot használunk $D_{uv}=1$ helyett, akkor ezzel az él súlyát többszörösen beleszámolnánk az eredménybe, amennyiben több helyiértéken van eltérés.) Erre a módszer az lehet, hogy minden négyzetkülönbséget binárisan negálunk, azaz kivonjuk az értékét $1$-ből, és az így kapott kifejezéseket összeszorozzuk, így ha bárhol volt különbség, a szorzat valamely tényezője 0, ezért maga a szorzat is 0. Amennyiben sehol nincs különbség, a szorzat minden tagja 1, így maga a szorzat is. Mivel a $D_{uv}$ definíciója szerint akkor 1, ha a két kettes számrendszerben felírt szám különbözik, ezért a végén még egy negálást el kell végezni (\refstruc{eq:D_uv_poli}).
 
 \begin{align}\label{eq:D_uv_poli}
 	D_{uv} = 1-  \left( 1-(x_{u1}-x_{v1})^2 \right) \cdot \left( 1-(x_{u2}-x_{v2})^2 \right) \cdot ...  \cdot \left( 1-(x_{u\log K}-x_{v \log K})^2 \right) 
 \end{align}
 
-Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \log K$ is lehet a változók összes kitevője egy tagban. Sőt, ha végiggondoljuk majdnem minden lehetséges változókombináció megjelenik, ha elvégezzük a szorzásokat. (Csak annyi a szabály, hogy ha $x_{ui}$ megjelenik, akkor az vagy a négyzeten szerepel, vagy meg van szorozva $x_{vi}$-vel.)
+Az így kapott formula azonban nem kvadratikus, hanem jóval nagyobb, akár $2 \log K$ is lehet a változók összes kitevője egy tagban. Sőt, ha végiggondoljuk, majdnem minden lehetséges változókombináció megjelenik, ha elvégezzük a szorzásokat. (Csak annyi a szabály, hogy ha $x_{ui}$ megjelenik, akkor az vagy a négyzeten szerepel, vagy meg van szorozva $x_{vi}$-vel.)
 
 Kellő számú változó bevezetésével, és azok behelyettesítésével természetesen a formula kvadratikus alakra hozható, ahogyan azt már kimondta \az+\refstruc{theorem:kvadratizalhato} is, de ez ettől a konkrét esetben még nem könnyű feladat. Bár mechanikusan elvégezhető, de nem ismert jó módszer erre a feladatra, amely az újonnan bevezetett változókra és a keletkező kvadratikus tagokra minimalizálna. Így a továbbiakban, bár az eredményében lényegében az előzővel azonos, egy másik szemléletet fogok alkalmazni, amely természetesebben adja, hogy hol és mennyi változó bevezetése szükséges.
 
@@ -227,13 +225,14 @@ Valamennyit spórolhatunk, ha a gráf ritka, és ezáltal csak azokat a csúcsp�
 
 A bináris elkódolás módszerével kapott változószám első közelítésre mindenképpen rosszabb, mint a másik felírásban kapott $nK$, hiszen $n$ legalább akkora, de tipikusan jóval nagyobb, mint $K$, így az $\binom{n}{2}$ tényező (vagy az $m$) várhatóan önmagában is nagyobb lesz, mint $nK$.
 
-A valóságban ráadásul sajnos még ennél is több segédváltozó szükségeltetik. Mint ahogyan\az+\refstruc{sec:XORgate+ban} látni fogjuk a XOR kapu megvalósításához egy további segédváltozót igénybe kell venni, és $\log K$ darab bitre alkalmazott OR művelet sem megy egy lépésben, amely kiderül \az+\refstruc{sec:MORgate+ban}. Ez utóbbinál például egymás után láncolt, vagy bináris fában felépített OR kapukkal érhető el a kívánt eredmény, amely további $\log K -1$ változót igényel, bár ebben már benne van maga a $D_{uv}$ is. Ez így minden csúcspárnál $(3\log K - 1)$ változót jelent, vagyis összesen $\left(\binom{n}{2} \, (3\log K -  1 ) + n \log K\right)$ változóra van szükség.
+A valóságban ráadásul sajnos még ennél is több segédváltozó szükségeltetik. Mint ahogyan 
+\az+\refstruc{sec:XORgate+ban} látni fogjuk a XOR kapu megvalósításához egy további segédváltozót igénybe kell venni, és $\log K$ darab bitre alkalmazott OR művelet sem megy egy lépésben, amely kiderül \az+\refstruc{sec:MORgate+ban}. Ez utóbbinál például egymás után láncolt, vagy bináris fában felépített OR kapukkal érhető el a kívánt eredmény, amely további $\log K -1$ változót igényel, bár ebben már benne van maga a $D_{uv}$ is. Ez így minden csúcspárnál $(3\log K - 1)$ változót jelent, vagyis összesen $\left(\binom{n}{2} \, (3\log K -  1 ) + n \log K\right)$ változóra van szükség.
  
 Térjünk át \az+\refstruc{def:valtozokgrafja} szerinti változók gráfjára, és vizsgáljuk a továbbiakban azt.
 Itt a maximum fokszám szempontjából is érdemes lehet elemezni az eredményt, azaz egy változó legfeljebb hány másik változóval van kapcsolatban. A segédváltozók fokszáma többnyire kicsi, hiszen csak néhány másikkal állnak kapcsolatban, viszont a csoportot elkódoló változókra ez már nem igaz, hiszen egy $x_{ui}$ változó kapcsolatban lesz a $d_{uvi}$ és $x_{vi}$ változókkal, minden $v \neq u$-ra. Így ezen változók fokszáma az eredeti gráf csúcsszámának közel kétszeresével egyenlő. Sőt, valójában ennél még rosszabb a helyzet, mert ahogyan korábban említettem, a XOR kapu implementálásánál bejön még egy segédváltozó, amely miatt a csúcsszám majdnem háromszorosa lesz a maximum fokszám.
 
  
-Az eredeti, \refstruc{sec:QUBOonehot+ban} látott felírásnál, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így ott a változók gráfja, egy $nK$ csúcsú teljes gráf, tehát a maximum fokszám  $nK -1$. Ez bár rosszabb, mint \az+\refstruc{sec:QUBObinary+ban} bináris felírással adott megoldás, ugyanakkor előbbinél egy nagy teljes gráfról beszélhetünk, amíg utóbbinál, csupán $n$ méretű teljes részgráfok jelennek meg, hiszen minden $x_{ui}$ kapcsolatban van minden $x_{vi}$-vel. Ezekből az egymástól független klikkekből $\log K$ darab van, hiszen minden helyiértékre 1 darab ilyen klikk található. Ezek a klikkek viszont a segédváltozók segítségével több faszerű struktúrán keresztül közvetetten kapcsolódnak egymáshoz, hiszen a $D_{uv}$ változók összekapcsolják az $u$ illetve $v$ csúcsokhoz változóinak különbségbitjeit.
+Az eredeti, \refstruc{sec:QUBOonehot+ban} látott felírásnál, legrosszabb esetben, ha teljes a gráfunk, akkor minden változó minden másik változóval kapcsolatba kerül, így ott a változók gráfja, egy $nK$ csúcsú teljes gráf, tehát a maximum fokszám  $nK -1$. Ez bár rosszabb, mint \az+\refstruc{sec:QUBObinary+ban} bináris felírással adott megoldás, ugyanakkor előbbinél egy nagy teljes gráfról beszélhetünk, amíg utóbbinál, csupán $n$ méretű teljes részgráfok jelennek meg, hiszen minden $x_{ui}$ kapcsolatban van minden $x_{vi}$-vel. Ezekből az egymástól független klikkekből $\log K$ darab van, hiszen minden helyiértékre 1 darab ilyen klikk található. Ezek a klikkek viszont a segédváltozók segítségével több faszerű struktúrán keresztül közvetetten kapcsolódnak egymáshoz, hiszen a $D_{uv}$ változók összekapcsolják az $u$ illetve $v$ csúcsok változóinak különbségbitjeit.
 
 Ahogyan \az+\refstruc{sec:QUBOform+ban} leírtakból is következik, egy teljes gráf beágyazásához nagyon sok qubitre van szükségünk, így az a szerencsés, ha a gráf klikkszáma minél kisebb. Bár a klikkszám illetve a maximális fokszám az új felírásunkban valóban kisebb, a rengeteg újonnan bejövő változó, és bonyolult struktúra miatt nem sejthető, hogy ezzel valóban egyszerűbb lett a probléma gyakorlati szempontból, különösképpen, hogy a klikkszámnál a különbség csak nagy $K$ értékekre lenne megfigyelhető.
 
@@ -266,14 +265,14 @@ Valójában logikai kapu alatt jelen esetben csupán azt értjük, hogy változ�
 Kicsit formálisabban, adott $C(\mathbf{x}) : \mathbf{x} \in \mathbb{B}^n$ logikai kifejezéshez keresünk olyan kvadratikus $f(\mathbf{x})$ függvényt, hogy a függvény pontosan azokon a helyeken vegye fel a minimumát, ahol $C$ igazra értékelődik ki. Ezt adja meg formálisan a (\ref{eq:logicalQUBO}) kifejezés.
 
 \begin{align} \label{eq:logicalQUBO}
-	C(\mathbf{x}) \Leftrightarrow  \min_{\mathbf{x}} \left\{ f(\mathbf{x}) \right\}
+	C(\mathbf{x}) \Leftrightarrow  (f(\mathbf{x}) = \min_{\mathbf{x}} \left\{ f(\mathbf{x}) \right\})
 	: f(\mathbf{x})=\mathbf{x}^T A \mathbf{x}
 \end{align}
 
 Mivel konstans hozzáadásával az $f$ minimumértéke eltolható, ezért kényelmi okokból fixálhatjuk a minimumot nullában, így  a (\ref{eq:logicalQUBOv2}) kifejezést kapjuk. Világos tehát, hogy a (\ref{eq:logicalQUBOv2}) szerinti $f$ függvény a konstans elhagyása után megfelel a (\ref{eq:logicalQUBO}) szerintinek, de amennyiben az első esetben találtunk egy megfelelő $f$ függvényt, abból alkalmas konstans hozzáadásával kapható egy, a (\ref{eq:logicalQUBOv2}) kifejezést kielégítő $f$ függvény is.
 
 \begin{align} \label{eq:logicalQUBOv2}
-	C(\mathbf{x}) \Leftrightarrow  f(\mathbf{x})=0 
+	C(\mathbf{x}) \Leftrightarrow  ( f(\mathbf{x})=0 )
 	: f(\mathbf{x})=\mathbf{x}^T A \mathbf{x} + const. \geq 0
 \end{align}
 
@@ -290,15 +289,16 @@ Nyilvánvalóan, ha önmagának ellentmondó kombinációs hálózatot képzünk
 Végül még egyszer szeretném hangsúlyozni, hogy mivel változók bizonyos konfigurációit szeretnénk csak megengedni, ezért a logikai kapukra is jobb így tekinteni, és nem mint olyan (áramköri/logikai) elemek vagy függvények, melyeknek adott bemenete(i) és arra adott kimenete(i) van. Ezért fontos a (\ref{eq:logicalQUBO}) kifejezésben is az ,,oda-vissza" irány.
 
 %TODO definiciónál
-Érdemes megfigyelni, hogy bár nem minden logikai kifejezésnek van segédváltozómentes kvadratikus függvénye, mégis tetszőleges logikai kifejezéshez lehet neki megfelelő QUBO alakot felírni. Ezt mondja ki formálisan az alábbi, \az+\refstruc{def:kvadFunc}nál általánosabb definíció, mely megengedi további segédváltozók hozzátételét is a kvadratikus függvényhez és az azt követő \refstruc{allitas:altkvadfunc}.
+Érdemes megfigyelni, hogy bár nem minden logikai kifejezésnek van segédváltozómentes kvadratikus függvénye, mégis tetszőleges logikai kifejezéshez lehet neki megfelelő QUBO alakot felírni. Ezt mondja ki formálisan az alábbi, \az+\refstruc{def:kvadFunc}nál általánosabb definíció, mely megengedi további segédváltozók hozzátételét is a kvadratikus függvényhez, és az azt követő \refstruc{allitas:altkvadfunc}.
 
 \begin{definition}[Logikai kifejezés általánosított kvadratikus függvénye]\label{def:kvadFuncgen}
 	Azt mondjuk, hogy egy $C(\mathbf{x})$ \textit{logikai formula általánosított kvadratikus függvénye} az $f(\mathbf{x},\mathbf{y})$ függvény, ha az $f$ egy bináris változókon értelmezett, nem-negatív kvadratikus függvény, mely értéke akkor és csak akkor lehet zérus, ha $C(\mathbf{x})$ igaz. (Ahol $\mathbf{x}$ az eredeti változóink vektora, $\mathbf{y}$ pedig a segédváltozóké.)
 \end{definition}
 
 Itt külön felhívnám a figyelmet \az+\refstruc{def:kvadFuncgen+ban} szereplő \textit{lehet} szócskára.
-Ez a definíció ugyanis nem kéri, hogy a $f$ minden esetben 0 értéket vegyen fel, ha az $\mathbf{x}$ kielégíti a $C$ kifejezést. Ha így lenne, akkor nem is lenne sok haszna a segédváltozóknak, hiszen azok tetszőleges értéke sem változtathatná meg a függvény nullhelyeit, és elég volna csupán \az+\refstruc{def:kvadFunc+t} használnunk. Amit ez az általánosabb definíció kér, hogy $f$ értéke mindig egy nullánál nagyobb pozitív szám legyen, ha $\mathbf{x}$ egy érvénytelen konfiguráció (vagyis $C(\mathbf{x})$ hamis), és létezzen olyan $\mathbf{y}$ segédváltozó-behelyettesítés, amely esetén $f(\mathbf{x},\mathbf{y})$ nulla, amennyiben $C(\mathbf{x})$ igaz.
+Ez a definíció ugyanis nem kéri, hogy az $f$ minden esetben 0 értéket vegyen fel, ha az $\mathbf{x}$ kielégíti a $C$ kifejezést, hanem csupán annyit, hogy létezzen olyan $\mathbf{y}$ segédváltozó-behelyettesítés, amely esetén $f(\mathbf{x},\mathbf{y})=0$, amennyiben $C(\mathbf{x})$ igaz. És persze továbbra is érvényes, hogy $f$ értéke mindig egy nullánál nagyobb pozitív szám legyen, ha $\mathbf{x}$ egy érvénytelen konfiguráció (vagyis $C(\mathbf{x})$ hamis).
 
+Gondoljuk végig, hogy amennyiben ezt nem így definiálnánk, akkor nem is lenne sok haszna a segédváltozóknak, hiszen azok tetszőleges értéke sem változtathatná meg a függvény nullhelyeit, és elég volna csupán \az+\refstruc{def:kvadFunc+t} használnunk.
 
 
 \begin{allitas} \label{allitas:altkvadfunc}
@@ -312,11 +312,11 @@ Ez a definíció ugyanis nem kéri, hogy a $f$ minden esetben 0 értéket vegyen
 
 \subsection{Elemi kapuk}\label{sec:theoryElementaryGates}
 
-Ezek ismeretében, a következő részben szeretném áttekinteni a leggyakrabban előforduló logikai kifejezéseket, és hogy azok miként valósíthatók meg QUBO-val, azaz miként írható fel kvadratikus függvényük.
+Ezek ismeretében, a következő részben szeretném áttekinteni a leggyakrabban előforduló logikai kifejezéseket (logikai kapukat), és hogy azok miként valósíthatók meg QUBO-val, azaz miként írható fel kvadratikus függvényük.
 
 \subsubsection{Azonosság ($x=y$)}
 
-Első ilyen ,,kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonosság. (Nem mint eldöntendő logikai kifejezés, hanem mint értékadás.) Igazából nem is kapu, hanem a fizikai interpretációja a vezeték vagy a buffer volna. 
+Az első ilyen ,,kapu" a legtriviálisabb mind közül, az egyenlőség vagy azonosság. (Nem mint eldöntendő logikai kifejezés, hanem mint értékadás.) A fizikai interpretációja igazából nem is egy kapu, hanem a vezeték vagy a buffer volna. 
 
 \begin{allitas}
 	Az $x=y$ (segédváltozómentes) kvadratikus függvénye az $f(x,y)=(x-y)^2=-2xy+x+y$.
@@ -380,14 +380,14 @@ A következő hasonlóan egyszerű eset a nem-egyenlőség esete. Ha azt szeretn
 
 \subsubsection{AND kapu ($x \wedge y = z$)}
 
-Mivel két változóra felírható összefüggéseket az előző két esettel lényegében kimerítettük, hiszen két bináris változó vagy azonos, vagy különböző értéket vesz fel, ezért nézzük meg néhányat a klasszikus értelemben vett logikai kapuk közül, melyeknél általában, (de minden esetben legalább) 3 változó szerepel.
+Mivel két változóra felírható összefüggéseket az előző két esettel lényegében kimerítettük, hiszen két bináris változó vagy azonos, vagy különböző értéket vesz fel, ezért nézzünk meg néhányat a klasszikus értelemben vett logikai kapuk közül, melyeknél általában, (de minden esetben legalább) 3 változó szerepel.
 
 
 Első ilyen kifejezésünk az AND kaput fogja leírni, vagyis a $z=x \wedge y$ kifejezést.
 \begin{allitas}
 	Az $x \wedge y = z$ (segédváltozómentes) kvadratikus függvénye a $f(x,y)=xy-2(x+y)z+3z$.
 	
-	Ellenőrizhető, hogy, amennyiben az $x$ és $y$ változók közül legfeljebb egy értéke $1$, addig a kifejezés $3z$, illet $z$ értékével lesz egyenlő. A kifejezés értéke így természetesen akkor lesz minimális, ha $z=0$. Amennyiben viszont $x=y=1$, akkor a kifejezés $x$ és $y$ behelyettesítése után $1-z$ lesz, mely a minimumhelyét $z=1$ esetben veszi fel.	
+	Ellenőrizhető, hogy amennyiben az $x$ és $y$ változók közül legfeljebb egy értéke $1$, addig a kifejezés $3z$, illet $z$ értékével lesz egyenlő. A kifejezés értéke így természetesen akkor lesz minimális, ha $z=0$. Amennyiben viszont $x=y=1$, akkor a kifejezés $x$ és $y$ behelyettesítése után $1-z$ lesz, mely a minimumhelyét $z=1$ esetben veszi fel.	
 \end{allitas}
 
 Szintén ellenőrizhetjük a kapott kifejezést igazságtábla felírásával. 
@@ -456,7 +456,7 @@ Az AND kapu mellett a másik alapvető logikai kapu az OR kapu. Ez persze a De M
 
 \subsubsection{NOR kapu ($x \vee y = \neg z$)}
 
-A NOR kaput megkaphatjuk az OR kapu kimeneti változójának negálásával, azonban ez plusz egy változót kellene jelentsen. Ehelyett direkt módon próbáljuk meg felírni a kifejezést. Használhatnánk a NOT kapunál látott logikai negálást, azonban amíg ott az kifejezés értékkészlete is bináris volt, ezúttal a kifejezés akár a $3$-at is felveheti értékként. Ennek ellenére a NOR kapu kifejezése majdnem valóban az OR logikai negáltja lesz, csupán az $xy$ szorzat együtthatója változatlan marad.
+A NOR kaput megkaphatjuk az OR kapu kimeneti változójának negálásával, azonban ez plusz egy változót kellene jelentsen. Ehelyett direkt módon próbáljuk meg felírni a kifejezést. Használhatnánk a NOT kapunál látott logikai negálást, azonban amíg ott a kifejezés értékkészlete is bináris volt, ezúttal a kifejezés akár a $3$-at is felveheti értékként. Ennek ellenére a NOR kapu kifejezése majdnem valóban az OR logikai negáltja lesz, csupán az $xy$ szorzat együtthatója változatlan marad.
 
 \begin{allitas}
 	Az $x \vee y = \neg z$ (segédváltozómentes) kvadratikus függvénye a 
@@ -531,7 +531,7 @@ Ha megpróbáljuk direkt módon, csupán 3 változó segítségével felírni, p
 
 
 
-\Az+\refstruc{allitas:altkvadfunc}+ból is következik, hogy segédváltozók használatával azonban megoldható a probléma. Ez például megtehető az alábbi módon. Elég egyetlen segédváltozót bevezetni, ráadásul ennek a változónak mellékesen szemantikusan is adhatunk értelmet, így mondhatjuk a $t$ segédváltozó jelentése legyen $x \wedge y$.
+\Az+\refstruc{allitas:altkvadfunc}ból is következik, hogy segédváltozók használatával azonban megoldható a probléma. Ez például megtehető az alábbi módon. Elég egyetlen segédváltozót bevezetni, ráadásul ennek a változónak mellékesen szemantikusan is adhatunk értelmet, így mondhatjuk a $t$ segédváltozó jelentése legyen $x \wedge y$.
 Ekkor a kifejezésünket megkonstruálhatjuk, hogy már a korábban látott módon megkötjük, hogy $t = x \wedge y$, az $xy-2(x+y)z+3z$ kifejezéssel, majd ezt a kifejezést aztán egy megfelelően nagy számmal beszorozzuk, hogy amikor a további együtthatókat határozzuk meg, biztosan igaz maradjon ez az összefüggés. $-2xy-2(x+y)t+(x+y)+t+4zt$ kifejezés minden esetben $0$-t ad a megfelelő konfigurációkra, és egy pozitív számot a helytelenekre, amennyiben csak azokat az eseteket nézzük, ahol $t = x \wedge  y$ teljesül. Amennyiben a feltétel nem adott, akár $-3$-at is kaphatunk eredményül. Ezért tehát a $t = x \wedge  y$-t kikényszerítő feltételt legalább 4-gyel meg kell szorozzuk, ezáltal a büntető tag értéke minden esetben nagyobb lesz $0$-nál, ha a konfiguráció helytelen. Tehát a végleges kifejezést a (\ref{XORQUBO}) írja le.
 
 Minderről persze egy igazságtáblázat felrajzolásával győződhetünk meg legkönnyebben (\refstruc{tab:XORgate}).
